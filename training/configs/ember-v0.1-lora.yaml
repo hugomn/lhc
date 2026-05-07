@@ -1,0 +1,63 @@
+# Ember v0.1 — LoRA fine-tune of the chosen base model.
+# Hyperparameters are conservative starting points; tune against
+# evals/results/ before committing to a published run.
+
+base_model: moonshotai/Kimi-K2.6  # placeholder — confirm exact HF id at training time
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+
+load_in_8bit: false
+load_in_4bit: true  # QLoRA — fits the base on a single 80GB GPU
+
+strict: false
+
+datasets:
+  - path: data/sft/v0.1/train.jsonl
+    type: chat_template
+    chat_template: chatml
+    field_messages: messages
+
+dataset_prepared_path: data/sft/v0.1/prepared
+val_set_size: 0.05
+output_dir: runs/ember-v0.1-lora
+
+sequence_len: 32768  # long-context training is the whole point
+sample_packing: true
+pad_to_sequence_len: true
+
+adapter: qlora
+lora_model_dir:
+
+lora_r: 64
+lora_alpha: 128
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+wandb_project: ember
+wandb_name: v0.1-lora
+
+gradient_accumulation_steps: 4
+micro_batch_size: 1
+num_epochs: 2
+optimizer: adamw_bnb_8bit
+lr_scheduler: cosine
+learning_rate: 1.0e-4
+warmup_ratio: 0.03
+weight_decay: 0.0
+
+bf16: auto
+tf32: true
+flash_attention: true
+gradient_checkpointing: true
+
+logging_steps: 10
+eval_steps: 200
+save_steps: 500
+save_total_limit: 3

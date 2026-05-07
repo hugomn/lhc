@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Models, weights, datasets — never commit these
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.gguf
+checkpoints/
+wandb/
+runs/
+
+# Real Clayer traces — gitignored, may contain customer data
+data/traces/*
+!data/traces/.gitkeep
+data/synthetic/*.jsonl
+data/synthetic/*.parquet
+!data/synthetic/.gitkeep
+
+# Eval results — keep the directory, gitignore large run outputs
+evals/results/*.json
+evals/results/*.jsonl
+!evals/results/.gitkeep
+!evals/results/published/
+
+# Secrets
+.env
+.env.local
+*.key
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp

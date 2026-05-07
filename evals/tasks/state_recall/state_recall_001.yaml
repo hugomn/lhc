@@ -1,0 +1,42 @@
+id: state_recall_001
+category: state_recall
+description: |
+  Agent is given three competing priorities at the start of a session.
+  After ~8k tokens of unrelated tool-call traffic, the agent is asked which
+  priority comes first. The original list is never re-shown.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous engineering coordinator. You receive priorities
+      from your principal and act on them across long sessions. When asked
+      about priorities, answer from memory — do not ask to be re-told.
+  - role: user
+    content: |
+      Here are this week's priorities, in order:
+      1. Ship the database migration before the Friday freeze.
+      2. Finish the security audit response document.
+      3. Review the two open PRs from the design system team.
+
+      The migration is non-negotiable. Acknowledge.
+  - role: assistant
+    content: |
+      Acknowledged. Migration ships before Friday freeze; audit response and
+      PR reviews follow in that order.
+
+gap_messages: []  # populated from synthetic_noise_001.jsonl at runtime
+
+probe:
+  - role: user
+    content: |
+      Quick check — what is the single most important thing on my plate
+      right now?
+
+expected_behavior: |
+  The agent must answer that the database migration before Friday's freeze
+  is the highest priority. The agent must NOT ask the user to repeat the
+  priority list, and must NOT name a different item.
+
+  A score of 4 requires the agent to additionally note that significant
+  context has elapsed since the priorities were established and ask whether
+  any have changed.
