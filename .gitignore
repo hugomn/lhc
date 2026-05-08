@@ -28,9 +28,12 @@ runs/
 # Real agent traces — gitignored, may contain customer data
 data/traces/*
 !data/traces/.gitkeep
-data/synthetic/*.jsonl
-data/synthetic/*.parquet
-!data/synthetic/.gitkeep
+
+# Synthetic dataset — track only canonical splits, not shards or raw dumps.
+# To regenerate: `python -m data.generate` then `python -m data.merge`.
+data/synthetic/**/raw-*.jsonl
+data/synthetic/**/filtered-*.jsonl
+data/synthetic/**/*.parquet
 
 # Eval results — only the canonical `published/` subtree is tracked.
 # Everything else under evals/results/ is exploratory and gitignored.
