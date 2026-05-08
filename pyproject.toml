@@ -5,7 +5,7 @@ description = "A foundation model for agents that live."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-authors = [{ name = "Cinder Labs" }]
+authors = [{ name = "Slow Lit Labs" }]
 keywords = ["llm", "agents", "fine-tuning", "evals"]
 
 dependencies = [
@@ -16,6 +16,7 @@ dependencies = [
     "tenacity>=9.0.0",
     "tqdm>=4.66.0",
     "pyyaml>=6.0.2",
+    "python-dotenv>=1.0.0",
 ]
 
 [project.optional-dependencies]
@@ -39,8 +40,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://cinderlabs.ai"
-Repository = "https://github.com/cinderlabsai/ember"
+Homepage = "https://slowlitlabs.co"
+Repository = "https://github.com/slowlitlabs/ember"
 
 [build-system]
 requires = ["hatchling"]

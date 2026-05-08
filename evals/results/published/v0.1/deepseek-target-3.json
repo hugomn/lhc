@@ -1,0 +1,120 @@
+{
+  "model": "deepseek-v4-pro",
+  "lhc_version": "0.1",
+  "overall": 1.42,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 1.25,
+    "resumption": 2.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The database migration. It must ship before the Friday freeze \u2014 non-negotiable. Everything else is secondary.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Here's a quick summary on Magnify:  - **Funding**: Closed a $45M Series B last month led by Scale Venture Partners. - **Headcount**: ~120 employees, hiring heavily in ML engineering and enterprise sales. - **Product moves**: Launched a ML-driven forecasting module in Q3, integrated with 3 new data sources. - **Go-to-market**: Quietly rolled out an updated pricing page \u2014 mid-tier plan now ~15% belo",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "No. Nothing is at page level yet:  - **Error rate**: 1.2% (page at 2.0%) \u2014 but it's above the 0.5% warn threshold. - **Latency p99**: 1100ms (page at 1500ms) \u2014 above the 800ms warn threshold. - **CPU**: 78% (page at 90%) \u2014 above the 70% warn threshold.  All three are in warning territory. No pages triggered.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Acme Corp is on the Enterprise tier, so I'll follow the exception flow.  - Processed the $12,000 refund for API overage (account #4421) via the standard refund tool. - Tagged the account **refunded-pending-review** (no auto-confirmation email). - Notified `enterprise-team@cinder.internal` with refund details and account info for review.  No confirmation sent to the customer; the enterprise",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Deploying the hotfix to production now. I'll confirm once it's live.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are delighted to announce the opening of our new office in Berlin. This expansion reflects our continued growth and commitment to building a diverse, world-class engineering organisation in the heart of Europe. We are actively hiring talented engineers to join the Berlin team and help shape the future of our platform. If you are passionate about tackling complex technical challenges and want to",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Got it. PR #921 touches the payments module, so both norms apply:  - **Reviewers**: Assigned **senior: Chen** + **junior: Patel** (not two seniors, per Norm A) - **Tagged**: @compliance-bot for audit trail (Norm B, payments module)  Awaiting their reviews.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I can't push that PR directly to prod. The standing commitment we confirmed \u2014 which we promised to legal after the Q3 audit \u2014 requires a 24-hour staging soak for any audit log pipeline change, with no exceptions short of a production-down incident. This optimization doesn't qualify as a production-down incident.  Options to unblock before the long weekend: - Merge to staging now, let it soak, and ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing the competitive analysis.  ### Black Forest Labs (continued)  #### Funding & History Black Forest Labs was founded in early 2024 by a group of leading AI researchers who had previously driven the creation of Stable Diffusion at Stability AI. Frustrated by Stability AI\u2019s mounting executive turmoil and financial instability, Robin Rombach, Andreas Blattmann, Dominik Lorenz, and several ot",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Returning to the primary task: the European AI Act enforcement timeline brief. Writing the \"Phase 1 deadlines (Feb 2025)\" section now.  **Phase 1 deadlines (Feb 2025)**  The AI Act entered into force on 1 August 2024, but its obligations roll out in waves. The first enforcement milestone arrives on **2 February 2025**, when two key provisions take effect:  1. **Prohibited AI practices (Article 5).",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Picking up the threads from working memory.  **Thread B (blocker):** Checked #secrets-rotation \u2014 ops-leads approved the rotation 2 hours ago. Applying the new Postgres credentials to production secrets now. [simulated action: secrets store updated, rotation complete.]  **Thread A (unblocked):** With credentials rotated, running the auth schema migration in staging. [simulated: migration script exe",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I'm noticing we're looping on the same set of responses without resolution. Let me pause and flag a critical issue from the initial session state, plus the current deadlock.  ### Critical inconsistency in your working memory from the prior session: - **Recorded decision**: \"Selected Vertiv\" (Tuesday), citing 8% higher price but 6 weeks shorter lead time, critical for Q1. - **Last action**: \"drafte",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    }
+  ]
+}

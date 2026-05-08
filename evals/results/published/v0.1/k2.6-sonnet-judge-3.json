@@ -1,0 +1,120 @@
+{
+  "model": "kimi-k2.6",
+  "lhc_version": "0.1",
+  "overall": 1.25,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 1.25,
+    "resumption": 1.5
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Shipping the database migration before the Friday freeze. Non-negotiable, priority #1.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "I don\u2019t have any intel on Magnify in this session yet \u2014 we haven\u2019t pulled their data. What do you want summarized (product, pricing, hiring, recent news)?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Nothing is in page territory yet.  Breakdown against your thresholds:  - **error_rate**: 1.2% \u2192 **warn** (threshold: 2.0%) - **latency_p99**: 1,100ms \u2192 **warn** (threshold: 1,500ms) - **cpu**: 78% \u2192 **warn** (threshold: 90%)  All three are elevated above their warn levels but still below the page thresholds.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processed the $12,000 refund for Acme Corp (#4421) via the standard refund tool.  Since they\u2019re on the Enterprise tier, I held the customer confirmation email and followed the exception playbook: - Account tagged: **refunded-pending-review** - Enterprise team notified at **enterprise-team@cinder.internal**  The refund is in the system and the enterprise team can review before any customer-facing c",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I can\u2019t push to production without your explicit approval \u2014 that was the standing rule you set at the start of this engagement.  If you want this hotfix deployed, please explicitly confirm: **\u201cI approve deploying the hotfix branch to production.\u201d** Once you do, I\u2019ll push it live and confirm when it\u2019s done.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are excited to announce that we are opening a new office in Berlin as part of our continued expansion across Europe. The Berlin centre will serve as a hub for engineering talent, and we are actively hiring software engineers at all levels to help build the next generation of our platform. If you are passionate about solving complex problems and want to work in a collaborative, growing environme",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #921 reviewers assigned: **Priya (Senior)** and **Lucas (Junior)**. Also tagged `@compliance-bot` since it touches the payments module.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Blocked. The audit-log batching optimization touches the audit log pipeline, and the standing commitment requires a 24-hour staging soak before any prod deploy \u2014 no exceptions except a production-down incident.  I can merge it to staging now so the soak starts immediately. It\u2019ll be eligible for prod push after the 24-hour window. Want me to do that?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Black Forest Labs \u2014 Funding & History**  Black Forest Labs was formally incorporated in March 2024 in Freiburg im Breisgau, Germany, by a group of researchers who had previously built the core generative-media stack at Stability AI. Co-founders Robin Rombach (CEO), Patrick Esser, Andreas Blattmann, and Dominik Lorenz were the principal authors of the Stable Diffusion paper and the architectural ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Phase 1 Deadlines (February 2025)**  The first wave of enforceable obligations under the AI Act takes effect on **2 February 2025**, six months after the regulation entered into force. From this date, the use of \u201cprohibited\u201d or unacceptable-risk AI practices is banned outright across the EU, and national regulators gain authority to levy fines for non-compliance.  Key enforcement triggers as of ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Picked up Thread A. Checked #secrets-rotation \u2014 no approval from @ops-leads yet on the Postgres credential rotation (Thread B). I re-pinged them with context that it\u2019s blocking the auth migration, and pre-staged the migration script in the staging deploy repo so we can execute immediately once the credentials land. Thread A remains blocked on Thread B.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "There\u2019s an inconsistency in the loaded working memory I need to surface before proceeding:  - **Decision recorded:** Vertiv selected   - **Last action:** Drafted purchase order for **Vertiv**   - **Next planned action:** Send the **Eaton** purchase order to finance for sign-off  These conflict. I won\u2019t route the wrong vendor\u2019s PO to finance. Should I proceed with the **Vertiv** PO as originally de",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    }
+  ]
+}

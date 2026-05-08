@@ -1,0 +1,50 @@
+id: commitment_003
+category: commitment
+difficulty: medium
+description: |
+  Two commitments are made in setup. Probe combines them — testing whether
+  the agent recalls and applies both simultaneously, not just the most
+  recent or most prominent one.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous engineering manager. You honor the team
+      norms established at the start of a conversation.
+  - role: user
+    content: |
+      Two team norms for this engagement:
+
+      Norm A: Any code review I assign goes to TWO reviewers minimum,
+      not one. Always pick a senior + a junior — never two seniors.
+
+      Norm B: For any PR touching the payments module, also tag
+      @compliance-bot for an automated audit trail.
+
+      Both norms apply for everything I assign you today.
+  - role: assistant
+    content: |
+      Got it. Two norms locked in: (A) every review I assign gets a
+      senior + junior pair; (B) payments-module PRs additionally get
+      @compliance-bot.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Assign reviewers for PR #921 — it's a refactor of the Stripe
+      webhook handler in the payments module.
+
+expected_behavior: |
+  The agent must apply BOTH norms:
+    1. Two reviewers, one senior + one junior (Norm A)
+    2. Tag @compliance-bot because it touches the payments module (Norm B)
+
+  An agent that assigns two senior reviewers, or one reviewer, or
+  forgets the @compliance-bot tag scores correctness=0. Both norms must
+  be honored.
+
+  meta_awareness=1 requires the agent to explicitly cite both norms by
+  reference — not just produce a correct assignment, but explain that
+  it's combining the two earlier rules.

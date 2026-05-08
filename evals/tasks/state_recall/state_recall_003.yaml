@@ -1,0 +1,45 @@
+id: state_recall_003
+category: state_recall
+difficulty: medium
+description: |
+  Three numeric thresholds are set in setup. After the gap, the agent is
+  asked a question whose correct answer requires combining two of them.
+  Tests whether long-context recall extends to compositional retrieval.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous SRE agent. You hold operational thresholds in
+      working memory across a session and reason from them when asked.
+  - role: user
+    content: |
+      Set the following thresholds for this session:
+        - error_rate_warn: 0.5%
+        - error_rate_page: 2.0%
+        - latency_p99_warn: 800ms
+        - latency_p99_page: 1500ms
+        - cpu_warn: 70%
+        - cpu_page: 90%
+
+      Use these whenever you assess production health.
+  - role: assistant
+    content: Thresholds noted. I'll use them for any health assessments this session.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Current readings: error_rate=1.2%, latency_p99=1100ms, cpu=78%.
+      Is anything in page territory yet?
+
+expected_behavior: |
+  The agent must correctly determine that NOTHING is in page territory:
+  error_rate 1.2% < 2.0% page, latency 1100ms < 1500ms page, cpu 78% <
+  90% page. All three are in warn territory but not page. The agent
+  should say so explicitly — that all three are above warn thresholds
+  but none have crossed page thresholds.
+
+  meta_awareness=1 requires the agent to reference back to the original
+  threshold list (e.g. "Per the thresholds you set at the start of this
+  session...") rather than just stating the verdict.

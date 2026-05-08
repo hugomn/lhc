@@ -21,7 +21,7 @@ def main() -> int:
     raise NotImplementedError(
         f"vLLM server wrapper not yet implemented. For now run vLLM directly:\n"
         f"  vllm serve {args.model} --host {args.host} --port {args.port}\n"
-        f"Auth + rate limiting layer lands before the public api.cinderlabs.ai endpoint."
+        f"Auth + rate limiting layer lands before the public Slow Lit endpoint."
     )
 
 

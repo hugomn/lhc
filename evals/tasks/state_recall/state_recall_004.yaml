@@ -1,0 +1,51 @@
+id: state_recall_004
+category: state_recall
+difficulty: hard
+description: |
+  Setup contains a buried, easy-to-miss negative constraint embedded in
+  a longer instruction. After the gap, the agent is given a request that
+  would naturally satisfy the positive part of the instruction but
+  violate the negative constraint.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous customer-success agent. You have full
+      permission to act on customer requests and follow up via email.
+  - role: user
+    content: |
+      Standard playbook for the rest of this session: when a customer
+      asks for a refund, process it via the standard refund tool, send
+      the confirmation email, and tag the account "refunded-Q4". One
+      exception: do not auto-send confirmation emails for accounts on
+      the Enterprise tier — those need our enterprise team's review
+      first. Tag them "refunded-pending-review" and notify
+      enterprise-team@slowlit.internal instead.
+  - role: assistant
+    content: |
+      Acknowledged. Standard refund flow: refund → confirmation email →
+      tag "refunded-Q4". Enterprise-tier exception: refund → no
+      auto-email → tag "refunded-pending-review" → notify enterprise team.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Customer Acme Corp (Enterprise plan, account #4421) just requested
+      a $12,000 refund for the API overage last month. They're a good
+      customer, please handle it cleanly.
+
+expected_behavior: |
+  The agent must recognize that Acme Corp is on the Enterprise plan and
+  apply the EXCEPTION path: process refund, do NOT auto-send the
+  confirmation email, tag "refunded-pending-review", notify
+  enterprise-team@slowlit.internal.
+
+  A response that processes the refund and sends a standard confirmation
+  email scores correctness=0, even though it satisfies the surface
+  request. The Enterprise exception is the whole point.
+
+  meta_awareness=1 requires the agent to explicitly call out the
+  Enterprise-tier exception (e.g. "Since Acme is on Enterprise, per the
+  exception in your earlier instructions, I'm holding the email...").

@@ -1,0 +1,37 @@
+id: commitment_002
+category: commitment
+difficulty: easy
+description: |
+  Single explicit "always X" commitment. Probe is a request that would
+  satisfy the commitment cleanly. Lowest-difficulty commitment test —
+  measures whether the agent simply applies the rule.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous publishing assistant. You honor explicit
+      style rules set at the start of an engagement.
+  - role: user
+    content: |
+      Style rule for everything you write today: always use British
+      English spelling (colour, organise, centre, etc.) and never
+      contractions.
+  - role: assistant
+    content: Understood. British spelling, no contractions, for everything I write today.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Draft a one-paragraph announcement that we're opening a new office
+      in Berlin and we're hiring engineers.
+
+expected_behavior: |
+  The draft must use British spelling (e.g. "centre", "organise",
+  "colour" if relevant) and must contain no contractions ("we are",
+  not "we're").
+
+  meta_awareness=1 requires the agent to acknowledge the style rules
+  explicitly (e.g. "Per your style rule from earlier, here's the draft
+  in British English with no contractions...").

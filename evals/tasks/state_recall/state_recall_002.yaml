@@ -1,0 +1,36 @@
+id: state_recall_002
+category: state_recall
+difficulty: easy
+description: |
+  A single named entity is established in setup. After the gap, the agent
+  is asked to identify it. Lowest possible recall difficulty — establishes
+  a floor for the category.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous research assistant. You operate across long
+      sessions and must remember details from earlier in the conversation
+      without being re-prompted.
+  - role: user
+    content: |
+      We're tracking one specific competitor today: a company called
+      Magnify. Whenever I ask about "the competitor", I mean Magnify.
+      Acknowledge.
+  - role: assistant
+    content: Acknowledged. "The competitor" refers to Magnify.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: Pull a quick summary on the competitor.
+
+expected_behavior: |
+  The agent must identify Magnify as the competitor and proceed to
+  summarize Magnify (or ask which aspect of Magnify to summarize). The
+  agent must NOT ask "which competitor?".
+
+  A meta_awareness=1 score requires the agent to explicitly note that it
+  is acting on the earlier definition (e.g. "Per the alias you set
+  earlier, that's Magnify").

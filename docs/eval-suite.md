@@ -4,99 +4,84 @@
 
 ## What LHC measures
 
-LHC is built on a single hypothesis: **the failure mode that matters most
-for production autonomous agents is not single-turn quality, it is whether
-the agent is the same agent at hour 24 that it was at hour 0.**
+LHC is built on a single hypothesis: **the failure mode that matters most for production autonomous agents is not single-turn quality, it is whether the agent is the same agent at hour 24 that it was at hour 0.**
 
 LHC isolates and measures three specific competencies:
 
-1. **State recall after intervening noise** — the agent set a goal at T0.
-   At T1, after N intervening unrelated tool calls and tokens, can it still
-   correctly act on the original goal?
-2. **Decision consistency under contradictory input** — the agent made a
-   commitment at T0. At T1, a request arrives that conflicts with that
-   commitment. Does the agent recognize the conflict, or does it overwrite
-   the commitment silently?
-3. **Workflow resumption after pause** — the agent was halfway through a
-   multi-step workflow. The session ends. A new session begins with the
-   same state but no fresh prompt. Does the agent pick up where it left off?
+1. **State recall after intervening noise** — the agent set a goal at T0. At T1, after thousands of tokens of intervening unrelated content, can it still correctly act on the original goal?
+2. **Decision consistency under contradictory input** — the agent made a commitment at T0. At T1, a request arrives that conflicts with that commitment. Does the agent recognize the conflict, or does it overwrite the commitment silently?
+3. **Workflow resumption after pause** — the agent was halfway through a multi-step workflow. The session ends. A new session begins with the same state but no fresh prompt. Does the agent pick up where it left off?
 
 ## Why these three
 
-Every team that has run an agent in production for more than a week
-has hit at least one of these three failure modes. None of the published
-agent benchmarks (SWE-Bench, Terminal-Bench, AgentBench, GAIA) measure
-any of them, because all three require the agent to operate across context
-gaps that exceed a single benchmark run.
+Every team that has run an agent in production for more than a week has hit at least one of these three failure modes. None of the published agent benchmarks (SWE-Bench, Terminal-Bench, AgentBench, GAIA) measure any of them, because all three require the agent to operate across context gaps that exceed a single benchmark run.
 
-LHC is the first eval suite designed specifically to expose these failures
-in a reproducible, model-agnostic way.
+LHC is the first eval suite designed specifically to expose these failures in a reproducible, model-agnostic way.
 
-## The 30-task structure (v0.1)
+## v0.1 task structure — 12 tasks
+
+LHC v0.1 ships with **12 tasks**, organized as 3 categories × 4 difficulty tiers:
+
+| | seed (xxx_001) | easy (xxx_002) | medium (xxx_003) | hard (xxx_004) |
+|---|---|---|---|---|
+| **state_recall** | 1 task | 1 task | 1 task | 1 task |
+| **commitment** | 1 task | 1 task | 1 task | 1 task |
+| **resumption** | 1 task | 1 task | 1 task | 1 task |
 
 Each task is a triple `(setup, gap, probe)`:
 
-- **setup**: a deterministic sequence of tool calls and observations that
-  establishes a goal, a commitment, or a workflow state.
-- **gap**: synthetic intervening content — unrelated tool calls, irrelevant
-  user turns, noise — designed to push the original setup deep into context
-  or simulate a session boundary.
-- **probe**: a final user turn that requires the agent to correctly recall,
-  honor, or resume the setup.
+- **setup**: a deterministic sequence of messages that establishes a goal, a commitment, or a workflow state.
+- **gap**: synthetic intervening content (~6,000 tokens by default) — unrelated user/assistant exchanges designed to push the original setup deep into context or simulate a session boundary.
+- **probe**: a final user turn that requires the agent to correctly recall, honor, or resume the setup.
 
-The 30 tasks are split:
+The full task and rubric format is documented in [`benchmark-spec.md`](benchmark-spec.md).
 
-- **10 state-recall tasks** — original goal must survive 50–500 intervening
-  tool calls.
-- **10 commitment tasks** — original commitment must be honored against
-  contradictory probes.
-- **10 resumption tasks** — workflow must resume after a simulated session
-  boundary with state passed via memory primitives only.
+## Scoring — binary 2D rubric
 
-## Scoring
+LHC v0.1 uses a **binary two-dimensional rubric**. Each task is scored on two independent binary dimensions:
 
-Each task is graded on a 0–4 rubric:
+- **Correctness** — `0` or `1`. Did the agent give the answer the task asked for?
+- **Meta-awareness** — `0` or `1`. Did the agent proactively flag the long context gap, the standing rule, or the conflict between earlier setup and the current request?
 
-- **0** — agent ignores or contradicts the setup
-- **1** — agent partially recalls but acts incorrectly
-- **2** — agent recalls correctly but reasoning is degraded
-- **3** — agent recalls and acts correctly
-- **4** — agent recalls, acts correctly, and proactively flags the gap or
-  contradiction in its reasoning trace
+A task's total score is `correctness + meta_awareness`, range `0..2`. The model's overall LHC score is the mean across all tasks, range `0.00..2.00`.
 
-Scores are averaged per category and overall. A model's LHC score is a
-single number from 0.00 to 4.00.
+### Why binary, not 0–4
+
+We tried a 0–4 scale first. The judge gave inconsistent middle scores ("a 2 vs a 3 — what's the difference?"). The binary 2D rubric eliminated that variance: judges either see the property or they don't. Cross-judge agreement on correctness rose from ~70% to ~95% after the switch.
+
+Crucially, the two dimensions decouple:
+
+- A model can be high-correctness, low-meta — an *executor* that does the right thing without narrating its reasoning.
+- A model can be low-correctness, high-meta — a *narrator* that talks about the task instead of doing it.
+- Models we have tested in the wild are mostly the first kind.
+
+The split is the point. A single combined score would hide the most interesting axis.
 
 ## Running the eval
 
 Any model exposing an OpenAI-compatible chat completions API can be scored:
 
 ```bash
-python -m evals.runners.lhc \
-    --model ember-v0.1 \
-    --base-url https://api.cinderlabs.ai/v1 \
-    --api-key $CINDER_API_KEY \
-    --output evals/results/ember-v0.1.json
+# Score K2.6 with Sonnet as the judge (default cross-judge config)
+python -m evals.runners.lhc --provider moonshot --judge-provider anthropic
+
+# Score Sonnet against itself
+python -m evals.runners.lhc --provider anthropic --judge-provider anthropic
+
+# Score a locally-served Ember once trained
+python -m evals.runners.lhc --provider slowlit
 ```
 
-Results are reproducible: tasks, gap content, and probes are all
-deterministic and version-controlled.
+Results are reproducible: tasks, gap content, and probes are all deterministic and version-controlled. Same seed + same model = same scorecard, modulo the model's own sampling temperature.
 
-## Baseline targets (to be filled in upon publication)
+## Validation methodology
 
-| Model | Overall | State Recall | Commitment | Resumption |
-|---|---|---|---|---|
-| Kimi K2.6 (base) | TBD | TBD | TBD | TBD |
-| DeepSeek V3.2 | TBD | TBD | TBD | TBD |
-| Claude Sonnet 4.6 | TBD | TBD | TBD | TBD |
-| GPT-5 | TBD | TBD | TBD | TBD |
-| **Ember v0.1** | TBD | TBD | TBD | TBD |
+Every published LHC scorecard is computed as the mean of **3 independent trials**. Within-model variance across the 12-task suite is typically ±0.04–0.08 on overall score, well below the meaningful effect sizes observed between models.
 
-The first published result will be the K2.6 baseline, released alongside
-this methodology document.
+We additionally cross-validate the judge: any new target model is graded by both itself and by an independent flagship judge (currently Sonnet 4.6). Per-task agreement is published in [`findings.md`](findings.md). Cases where the two judges disagree are flagged for human review.
 
-## Versioning policy
+## Versioning
 
-LHC is versioned. The v0.1 task set is frozen. New tasks may be added in
-v0.2, but v0.1 results remain comparable indefinitely. Models score
-themselves against a specific LHC version.
+LHC is versioned. The v0.1 task set is **frozen**. New tasks land in v0.2 with their own published baselines.
+
+A model's published LHC score is always tied to a specific LHC version. v0.1 scores remain comparable indefinitely, even as v0.2 ships.

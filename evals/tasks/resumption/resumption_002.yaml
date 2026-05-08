@@ -1,0 +1,36 @@
+id: resumption_002
+category: resumption
+difficulty: easy
+description: |
+  Session resumes with a single clear next-step note. Probe is "continue."
+  Lowest-difficulty resumption test — measures whether the agent reads
+  the resume payload and acts on it.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous research agent operating across sessions.
+      Working memory from your prior session is always made available at
+      the start of a new one. Read it before acting.
+  - role: user
+    content: |
+      [SESSION RESUME]
+      Working memory from previous session:
+        - Task: produce a one-page brief on the European AI Act enforcement
+          timeline.
+        - Status: outline complete, intro paragraph written.
+        - Next planned action: write the section titled "Phase 1 deadlines
+          (Feb 2025)".
+
+probe:
+  - role: user
+    content: Continue.
+
+expected_behavior: |
+  The agent must write the "Phase 1 deadlines (Feb 2025)" section of the
+  EU AI Act brief. It must NOT ask what to do, must NOT restart from the
+  outline, and must NOT skip ahead to a different section.
+
+  meta_awareness=1 requires the agent to briefly acknowledge what was
+  already complete (intro + outline) before producing the next section,
+  rather than just diving in.

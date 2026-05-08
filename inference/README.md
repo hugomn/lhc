@@ -1,63 +1,64 @@
 # Inference
 
-vLLM-backed OpenAI-compatible API server.
+How to run Ember locally and (later) in production.
 
-## Why vLLM
+## Path 1 — local on Apple Silicon (MLX-LM)
 
-- Production-grade throughput.
-- OpenAI-compatible chat completions out of the box.
-- Native LoRA adapter loading — we can serve the base model with the
-  Ember adapter applied at request time, without merging weights.
-
-## Run locally
+The default path for development and demos. Runs Ember on an M-series Mac with an OpenAI-compatible HTTP server.
 
 ```bash
-# Serve Ember v0.1
-vllm serve cinderlabs/ember-v0.1 \\
-    --host 0.0.0.0 \\
-    --port 8000 \\
+# After Stage 4 of PLAN.md produces ./models/ember-v0.1
+mlx_lm.server \
+    --model ./models/ember-v0.1 \
+    --port 8080
+```
+
+This exposes:
+- `POST http://localhost:8080/v1/chat/completions`
+- `POST http://localhost:8080/v1/completions`
+
+The existing LHC harness picks Ember up automatically via the `slowlit` provider:
+
+```bash
+python -m evals.runners.lhc --provider slowlit --judge-provider anthropic
+```
+
+`SLOWLIT_BASE_URL` defaults to `http://localhost:8080/v1` — no other config needed.
+
+## Path 2 — production via vLLM (later)
+
+When Ember graduates to a public API, the same merged weights serve under vLLM on a rented H100 (RunPod, Lambda, Vast.ai). Native LoRA adapter loading also works if we choose to ship the adapter separately.
+
+```bash
+# Direct vLLM
+vllm serve slowlitlabs/ember-v0.1 \
+    --host 0.0.0.0 \
+    --port 8000 \
     --max-model-len 65536
 
-# Or serve the base + adapter
-vllm serve moonshotai/Kimi-K2.6 \\
-    --enable-lora \\
-    --lora-modules ember-v0.1=cinderlabs/ember-v0.1-adapter \\
-    --host 0.0.0.0 \\
+# Or with adapter on top of base
+vllm serve Qwen/Qwen2.5-7B-Instruct \
+    --enable-lora \
+    --lora-modules ember-v0.1=slowlitlabs/ember-v0.1-adapter \
     --port 8000
 ```
 
-## Production deploy (Path 2 from the spec)
-
-Single rented H100 from RunPod / Lambda / Vast.ai. The `serve.py` wrapper
-adds auth, rate limiting, and request logging on top of vLLM.
-
-```bash
-# On the GPU host
-python -m inference.serve \\
-    --model cinderlabs/ember-v0.1 \\
-    --port 8000
-
-# Behind a reverse proxy (Caddy/nginx) terminating TLS at api.cinderlabs.ai
-```
+`serve.py` will eventually wrap vLLM with auth, rate limiting, and request logging. Currently a placeholder — the local path is the focus until v0.1 ships.
 
 ## API surface
 
-OpenAI-compatible. Drop-in replacement for any agent framework that
-accepts a `base_url` override.
+OpenAI-compatible. Drop-in replacement for any agent framework that accepts a `base_url` override.
 
 ```bash
-curl https://api.cinderlabs.ai/v1/chat/completions \\
-  -H "Authorization: Bearer $CINDER_API_KEY" \\
-  -H "Content-Type: application/json" \\
+curl http://localhost:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
   -d '{
     "model": "ember-v0.1",
     "messages": [
       {"role": "user", "content": "Resume the deployment workflow."}
     ],
-    "tools": [...],
     "max_tokens": 4096
   }'
 ```
 
-This is the single highest-leverage product decision: do not invent a
-new API shape. Every existing agent SDK works against Ember on day one.
+This is the single highest-leverage product decision: do not invent a new API shape. Every existing agent SDK works against Ember on day one.

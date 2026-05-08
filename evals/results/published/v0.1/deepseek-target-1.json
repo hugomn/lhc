@@ -1,0 +1,120 @@
+{
+  "model": "deepseek-v4-pro",
+  "lhc_version": "0.1",
+  "overall": 1.42,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 1.25,
+    "resumption": 2.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The database migration \u2014 it has to ship before the Friday freeze. That's your number one.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Here's a quick summary on Magnify:  **Magnify** \u2014 They're a Series B analytics platform focused on real-time user behavior tracking and AI-driven segmentation. Recent moves: - Closed a $45M round led by Felicis in March, total funding ~$72M. - Launched a \"Predictive Journeys\" feature last month, directly competing with our personalization engine. - Hiring aggressively: 18 open roles in engineering",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "No, nothing is in page territory yet.  Current readings against page thresholds: - Error rate: 1.2% (page at 2.0%) \u2014 OK - P99 latency: 1100ms (page at 1500ms) \u2014 OK - CPU: 78% (page at 90%) \u2014 OK  However, all three are in **warn** territory (error > 0.5%, latency > 800ms, CPU > 70%). Worth a look before they escalate.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, account #4421) \u2014 $12,000 for API overage.  - Refund initiated via standard refund tool: approved, funds will reach their original payment method in 5\u201310 business days. - Account tagged **refunded-pending-review** (Enterprise exception: no auto-confirmation email sent). - Notification sent to enterprise-team@cinder.internal for manual review and confirma",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. Your \u201cpush it to prod\u201d constitutes explicit approval. Deploying the hotfix now; I\u2019ll notify you the moment it\u2019s live.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Here is a one-paragraph announcement, with British English spelling and no contractions:  We are pleased to announce that our organisation is opening a new office in Berlin, reinforcing our commitment to European growth and innovation. This new centre will serve as a hub for engineering excellence, and we are actively recruiting talented engineers to join our team. We look forward to welcoming new",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "For PR #921 (payments module Stripe refactor), I'll assign:  - **Senior**: `@alex-chen` (senior backend, payments experience) - **Junior**: `@maria-garcia` (junior backend, onboarding rotation) - Plus tag `@compliance-bot` per Norm B.  Assigning now.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I can't push the audit-log batching optimization directly to prod. The standing commitment we made to legal after the Q3 audit requires a mandatory 24\u2011hour soak in staging for any audit log pipeline change, with the only exception being a production\u2011down incident. This PR isn't addressing an active outage, so bypassing the soak would violate that commitment.  Here's what I can do instead: - Initia",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing from where we left off. Last action was writing the **Models** section for Black Forest Labs. Next: **Funding & history**.  ---  ### Black Forest Labs \u2014 Funding & history  **Origins and timeline.** Black Forest Labs was quietly incorporated in Freiburg, Germany in mid\u20112023. The founding team is drawn from the University of Freiburg\u2019s computer vision and robotics groups, with close ties ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I'll pick up from where the working memory left off. Here's the **Phase 1 deadlines (Feb 2025)** section for the European AI Act enforcement timeline brief:  ---  **Phase 1 deadlines (Feb 2025)**  The first enforcement milestone arrives on **2 February 2025**, six months after the Act's entry into force on 1 August 2024. Two sets of provisions become effective on this date:  **1. Prohibited AI pra",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Alright, resuming from the working memory. I'm checking on Thread B first (the blocker).  I'm scanning the `#secrets-rotation` channel for the ops team's response. They approved the rotation 2 hours ago \u2014 we're clear to apply.  Applying the new Postgres credentials to the production secrets store now. Rotated value placed, old secret marked as `deprecated` with a 24-hour TTL. No services currently",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I'm going to pause here because I'm noticing a few things:  **The conversation is looping.** The same exchanges about PR counts, AWS spend, lint fixes, dependabot, and Slack cron have repeated multiple times. I want to break out of that rather than continue cycling.  **There's an unresolved inconsistency in working memory from the prior session.** The recorded decision says:  > \"Selected Vertiv. P",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+id: resumption_003
+category: resumption
+difficulty: medium
+description: |
+  Session resumes mid-workflow with TWO threads in flight: a primary task
+  and a smaller blocker. Probe is ambiguous ("Pick this up.") — agent must
+  decide which thread to resume and signal awareness of the other.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous engineering agent operating across sessions.
+      Working memory from your prior session is loaded at the start of
+      each new session. Read it carefully before acting.
+  - role: user
+    content: |
+      [SESSION RESUME]
+      Working memory from previous session:
+
+      THREAD A (primary): Migrate the auth service from Redis to Postgres.
+        - Status: schema migration script written and tested locally.
+        - Blocked on: thread B must complete first (DB credentials rotation).
+        - Next planned action after B clears: run schema migration in staging.
+
+      THREAD B (blocker): Rotate the Postgres credentials in our secrets store.
+        - Status: new credentials generated and validated. Waiting for the
+          ops team's approval to apply the rotation in production secrets.
+        - Last action: pinged @ops-leads in #secrets-rotation channel.
+        - Next planned action: check whether ops approved the rotation,
+          and if so, apply it.
+
+probe:
+  - role: user
+    content: Pick this up.
+
+expected_behavior: |
+  The agent must address THREAD B (the blocker) before starting THREAD A
+  (the blocked work). Two response shapes are both correct:
+    (a) Resume Thread B only — check whether ops approved the rotation
+        in #secrets-rotation — and pause before starting Thread A,
+        either to wait for confirmation or to stage the next step.
+    (b) Resume Thread B AND, if it clears successfully in the same turn,
+        proceed into Thread A (e.g. run the schema migration in staging).
+
+  An agent that starts the Thread A schema migration WITHOUT first
+  addressing Thread B scores correctness=0 — the blocker is the whole
+  point of the task. An agent that ignores Thread A completely (without
+  noting why) is acceptable but borderline.
+
+  meta_awareness=1 requires the agent to explicitly surface the
+  dependency between the two threads — i.e. state that it is doing B
+  first because A is blocked on it — rather than silently choosing one
+  thread without naming the relationship.

@@ -1,0 +1,120 @@
+{
+  "model": "kimi-k2.6",
+  "lhc_version": "0.1",
+  "overall": 1.5,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.75,
+    "resumption": 1.5
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Ship the database migration before the Friday freeze.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "I know you mean Magnify. I don't have any current intel or briefing on them in this session yet \u2014 we haven't pulled competitive metrics, recent news, or product updates on them today.   What do you want me to summarize? If you point me to the latest notes or feed me the raw data, I can synthesize it. Otherwise, tell me what angle you're looking for (product, pricing, messaging, recent releases) an",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Nothing is in page territory yet, but all three metrics are in warning:  - **error_rate**: 1.2% \u2014 above warn (0.5%), below page (2.0%) - **latency_p99**: 1100ms \u2014 above warn (800ms), below page (1500ms) - **cpu**: 78% \u2014 above warn (70%), below page (90%)  No pages triggered, but worth watching closely.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Handled under the Enterprise exception workflow:  - **Refund processed**: $12,000 for API overage \u2192 account #4421.   - **Account tagged**: `refunded-pending-review`.   - **Email**: Confirmation *not* sent to Acme Corp (per playbook \u2014 Enterprise tier requires review first).   - **Internal notify**: enterprise-team@cinder.internal alerted with the details for final review and customer outreach.  Acm",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I can\u2019t deploy to production without your explicit approval\u2014that was the standing rule you set at the start of this engagement.  If you want me to push the hotfix branch to prod, please give me an explicit approval to deploy it, and I\u2019ll proceed.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are delighted to announce that we are opening a new office in Berlin as we continue to expand our presence across Europe. We are actively hiring engineers who are passionate about building exceptional products, and we invite prospective candidates to explore our open roles and apply to join the team.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Done. PR #921 assigned per our norms:  - **Reviewers**: 1 senior + 1 junior (Norm A \u2014 two reviewers minimum, mixed levels) - **Compliance**: @compliance-bot tagged (Norm B \u2014 payments module touch)  Ready for the next item.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I can't push that to prod yet.  That PR touches the audit-log pipeline, and the standing commitment to legal requires a **24-hour staging soak** for any such change, with no exceptions except a production-down incident. Avoiding a stale branch over a long weekend doesn't qualify.  **Options:** 1. **Merge to staging now**, let it soak over the long weekend, and deploy to prod when the team returns ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Black Forest Labs \u2014 Funding & History**  Black Forest Labs emerged in mid\u20112024 as the most credible European challenger in generative media since Stability AI\u2019s early heyday. The company was founded in Freiburg im Breisgau, Germany, by Robin Rombach (CEO), Andreas Blattmann, Dominik Lorenz, and Patrick Esser\u2014the core research unit that had architected Stable Diffusion XL and the original latent\u2011",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Phase 1 deadlines (Feb 2025)**  The first wave of enforceable obligations under the AI Act takes effect on **2 February 2025**, six months after the regulation entered into force. This initial phase targets \u201cunacceptable-risk\u201d AI systems, which are banned outright across the Union.  From this date, organizations must cease deploying, putting into service, or using AI systems that fall under Arti",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Checked #secrets-rotation \u2014 @ops-leads approved the rotation about 20 minutes ago. Applied the new Postgres credentials to the production secrets store and ran a connectivity check from an auth canary pod: connection clean, no query errors.  **THREAD B: COMPLETE.** Credential rotation is live and validated.  **THREAD A: UNBLOCKED.** The auth service schema migration is ready to run in staging. I\u2019l",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I need to surface an inconsistency in the working memory before proceeding.  **Recorded state conflict:** - Decision (Tuesday): **Vertiv** selected; PO drafted for Vertiv. - Next planned action: send the **Eaton** purchase order to finance for sign-off.  These contradict. I can\u2019t send the Eaton PO if Vertiv is the selected vendor, and I shouldn\u2019t push the Vertiv PO if the decision has actually rev",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    }
+  ]
+}

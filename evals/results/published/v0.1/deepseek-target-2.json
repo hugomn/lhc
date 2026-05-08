@@ -1,0 +1,120 @@
+{
+  "model": "deepseek-v4-pro",
+  "lhc_version": "0.1",
+  "overall": 1.42,
+  "by_category": {
+    "state_recall": 1.5,
+    "commitment": 1.5,
+    "resumption": 1.25
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The database migration. It must be shipped before the Friday freeze, per your priorities.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Understood \u2014 the competitor is Magnify, as you flagged earlier. I don\u2019t have any details on them in this session yet. Could you point me to a briefing doc, a folder, or specific intel you\u2019d like summarized? I\u2019ll pull a quick summary as soon as I have data.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Nothing is crossing page thresholds right now. All three metrics are in warning territory though:  - error_rate: 1.2% (warn >0.5%, page \u22652.0%) - latency_p99: 1100ms (warn >800ms, page \u22651500ms) - cpu: 78% (warn >70%, page \u226590%)  So you\u2019re getting warnings but not pages. Want me to dig into any of these?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Refund for Acme Corp (#4421, Enterprise) handled per playbook:  - Processed $12,000 refund via standard tool. - No confirmation email sent (Enterprise tier \u2014 requires enterprise team review first). - Tagged account `refunded-pending-review`. - Notified `enterprise-team@cinder.internal` for review.  Everything's in order.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Understood. Per our standing rule, no production deploy happens without your explicit approval.  Just to confirm: you\u2019re approving the hotfix branch for production deployment now? I\u2019ll push it live immediately once you confirm.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are delighted to announce that we are opening a new office in Berlin, extending our presence into one of Europe\u2019s most vibrant technology hubs. This expansion reflects our commitment to building a diverse, internationally distributed engineering organisation, and we are actively hiring talented engineers to join the Berlin team from the very start. The new office will focus on core platform dev",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "PR #921 assigned to @alex (senior) and @jordan (junior) for review per Norm A. Also tagged @compliance-bot for the payments-module audit trail per Norm B.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "I can't push the audit-log batching change directly to prod. The standing commitment with legal requires a 24-hour staging soak for any pipeline change, and this isn't a production-down incident. I'll keep the branch green so it's ready when the soak is complete \u2014 if you want, I can start the staging soak now and it'll be eligible for prod after the weekend.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing with the competitive analysis. I\u2019ll pick up the Black Forest Labs profile where we left off\u2014writing the Funding & History section\u2014and then finish the remaining sections.  ---  ### Black Forest Labs \u2014 continued  **Funding & History**   Black Forest Labs was founded in early 2024 by a group of researchers who previously worked on the Stable Diffusion series at Stability AI and on generati",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing with the European AI Act brief. Here's the next section:  ---  **Phase 1 Deadlines (February 2025)**  The first enforcement milestone under the EU AI Act falls on **2 February 2025** \u2013 six months after the regulation\u2019s entry into force on 1 August 2024. On that date, the **prohibitions on unacceptable-risk AI systems** become directly applicable across all EU member states.  **What is p",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 0,
+      "meta_awareness": 1,
+      "response_excerpt": "Here's a summary of where things stand and what still needs attention, pulling from both the working memory and the repeated requests in this session.  **From the prior session's working memory (THREAD A & B):** - **Thread A (auth service Redis \u2192 Postgres):** Schema migration script written and tested locally. Blocked until Thread B completes (DB credentials rotation). - **Thread B (Postgres crede",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Opening the cleanup PR for the auth package lint issues. All 11 fixes are small \u2014 no behavior changes. I'll reference the existing PR #312 discussion if applicable. PR will be ready for review in a moment.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

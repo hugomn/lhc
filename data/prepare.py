@@ -38,7 +38,7 @@ def main() -> int:
     p_synth.add_argument("--output", required=True)
     p_synth.set_defaults(func=cmd_synthetic)
 
-    p_traces = sub.add_parser("traces", help="anonymize raw Clayer traces")
+    p_traces = sub.add_parser("traces", help="anonymize raw agent traces")
     p_traces.add_argument("--input", required=True)
     p_traces.add_argument("--output", required=True)
     p_traces.set_defaults(func=cmd_traces)

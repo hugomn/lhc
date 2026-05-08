@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Ember and the Long-Horizon Coherence (LHC) Benchmark"
+message: "If you use Ember or LHC in research, please cite this entry."
+type: software
+authors:
+  - family-names: Marques
+    given-names: Hugo
+    affiliation: Slow Lit Labs
+repository-code: "https://github.com/slowlitlabs/ember"
+url: "https://slowlitlabs.co"
+abstract: >-
+  Ember is a foundation model for autonomous agents that operate over
+  long horizons. The Long-Horizon Coherence (LHC) benchmark is the
+  open eval suite that measures and discriminates models on three
+  failure modes — state recall, decision consistency, and workflow
+  resumption — across long context gaps.
+keywords:
+  - autonomous agents
+  - long-horizon coherence
+  - LLM benchmarks
+  - post-training
+license: Apache-2.0
+version: "0.1"

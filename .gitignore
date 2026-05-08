@@ -25,16 +25,16 @@ checkpoints/
 wandb/
 runs/
 
-# Real Clayer traces — gitignored, may contain customer data
+# Real agent traces — gitignored, may contain customer data
 data/traces/*
 !data/traces/.gitkeep
 data/synthetic/*.jsonl
 data/synthetic/*.parquet
 !data/synthetic/.gitkeep
 
-# Eval results — keep the directory, gitignore large run outputs
-evals/results/*.json
-evals/results/*.jsonl
+# Eval results — only the canonical `published/` subtree is tracked.
+# Everything else under evals/results/ is exploratory and gitignored.
+evals/results/*
 !evals/results/.gitkeep
 !evals/results/published/
 
@@ -51,4 +51,7 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+.history/
 *.swp
+*.swo
+.DS_Store
