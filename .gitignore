@@ -24,6 +24,7 @@ dist/
 checkpoints/
 wandb/
 runs/
+models/
 
 # Real agent traces — gitignored, may contain customer data
 data/traces/*
@@ -34,6 +35,8 @@ data/traces/*
 data/synthetic/**/raw-*.jsonl
 data/synthetic/**/filtered-*.jsonl
 data/synthetic/**/*.parquet
+# MLX-LM staging dir — regenerated from canonical splits via prepare_mlx.py
+data/synthetic/**/mlx_lora/
 
 # Eval results — only the canonical `published/` subtree is tracked.
 # Everything else under evals/results/ is exploratory and gitignored.

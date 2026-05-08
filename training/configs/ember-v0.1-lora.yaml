@@ -1,63 +1,73 @@
-# Ember v0.1 — LoRA fine-tune of the chosen base model.
-# Hyperparameters are conservative starting points; tune against
-# evals/results/ before committing to a published run.
+# Ember v0.1 fine-tuning configuration (MLX-LM, DoRA)
+#
+# This file is the source of truth for the v0.1 training recipe.
+# Hyperparameters were chosen to optimize for the executor → narrator
+# behavior: small adapter, conservative learning rate, modest epochs.
+#
+# Reasoning behind each value is in the inline comments. If you change
+# anything here, document the change in docs/findings.md.
 
-base_model: moonshotai/Kimi-K2.6  # placeholder — confirm exact HF id at training time
-model_type: AutoModelForCausalLM
-tokenizer_type: AutoTokenizer
+# ── Base model ────────────────────────────────────────────────────────
+# Qwen3-8B (released Sep 2025). Apache-2.0 dense 8B with
+# strong instruction-following and first-class MLX-LM support.
+# In the Qwen3 family, "Qwen3-8B" *is* the chat-tuned variant —
+# the family dropped the -Instruct suffix in this generation.
+# Fits in M5 Pro 64GB unified memory at bf16 with room for training
+# (~16GB weights + ~5GB optimizer + ~10-15GB activations during fwd/bwd).
+# We deliberately skip Qwen3.5/3.6 — those use a hybrid Gated DeltaNet
+# architecture that routes through mlx-vlm not mlx-lm, with known
+# Apple Silicon regressions. Qwen3-8B is the right target for fine-tuning
+# in May 2026.
+model: "models/qwen3-8b"
 
-load_in_8bit: false
-load_in_4bit: true  # QLoRA — fits the base on a single 80GB GPU
+# ── Dataset ──────────────────────────────────────────────────────────
+# 1810 hand-validated synthetic examples teaching executor → narrator.
+# MLX-LM expects a directory containing train.jsonl and valid.jsonl.
+data: "data/synthetic/v0.1/mlx_lora"
 
-strict: false
+# ── Adapter hyperparameters (DoRA) ───────────────────────────────────
+# DoRA (Decomposed LoRA) replaces plain LoRA as the May 2026 default for
+# behavioral fine-tuning. Same compute footprint, slightly better
+# convergence per step. MLX-LM supports it natively via `use_dora: true`.
+# Rank 16 = ~20M trainable params (~0.25% of the 8B base). The 2026
+# convention is r=16 with target_modules="all-linear" for behavioral
+# fine-tunes; reach for r=32-64 only on heavy domain shifts (we're not
+# doing one — we're teaching style, not adding new knowledge).
+fine_tune_type: "dora"
+lora_parameters:
+  keys: ["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj", "self_attn.o_proj"]
+  rank: 16
+  scale: 16.0  # alpha / rank, with alpha=16 (1× scaling, the conservative pick).
+  dropout: 0.05  # Mild regularization against memorizing individual examples.
 
-datasets:
-  - path: data/sft/v0.1/train.jsonl
-    type: chat_template
-    chat_template: chatml
-    field_messages: messages
+# ── Training schedule ────────────────────────────────────────────────
+# Batch size 4: balances memory headroom against gradient noise.
+batch_size: 4
 
-dataset_prepared_path: data/sft/v0.1/prepared
-val_set_size: 0.05
-output_dir: runs/ember-v0.1-lora
+# 2 epochs over 1810 examples ≈ 3620 forward passes ≈ 905 optimizer steps
+# at batch_size=4. Round to 1000 for a clean checkpointing schedule.
+iters: 1000
 
-sequence_len: 32768  # long-context training is the whole point
-sample_packing: true
-pad_to_sequence_len: true
-
-adapter: qlora
-lora_model_dir:
-
-lora_r: 64
-lora_alpha: 128
-lora_dropout: 0.05
-lora_target_modules:
-  - q_proj
-  - k_proj
-  - v_proj
-  - o_proj
-  - gate_proj
-  - up_proj
-  - down_proj
-
-wandb_project: ember
-wandb_name: v0.1-lora
-
-gradient_accumulation_steps: 4
-micro_batch_size: 1
-num_epochs: 2
-optimizer: adamw_bnb_8bit
-lr_scheduler: cosine
+# Learning rate: 1e-4 is the sweet spot for LoRA/DoRA on 7-9B models.
+# Higher (3e-4+) destabilizes; lower (5e-5) underfits in 1000 steps.
 learning_rate: 1.0e-4
-warmup_ratio: 0.03
-weight_decay: 0.0
 
-bf16: auto
-tf32: true
-flash_attention: true
-gradient_checkpointing: true
+# Warmup: 50 steps of linear ramp from 0 to learning_rate.
+# Without warmup, the first few steps' gradients can spike and
+# destabilize training.
+warmup: 50
 
-logging_steps: 10
-eval_steps: 200
-save_steps: 500
-save_total_limit: 3
+# ── Validation and checkpointing ─────────────────────────────────────
+val_batches: 25  # Run validation on 25 batches every `steps_per_eval` steps.
+steps_per_eval: 100  # Eval every 100 steps for visibility into overfitting.
+steps_per_save: 250  # Save a checkpoint every 250 steps so we can pick the
+                     # best one based on val loss + LHC scorecard.
+adapter_path: "checkpoints/ember-v0.1"
+
+# ── Reproducibility ──────────────────────────────────────────────────
+seed: 42
+
+# ── Behavior switches ────────────────────────────────────────────────
+train: true
+test: false  # set true to run held-out test after training (we use LHC instead)
+grad_checkpoint: true  # trade compute for memory. Lets us fit longer contexts.

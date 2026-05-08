@@ -97,7 +97,11 @@ PROVIDER_DEFAULTS = {
         "api_key_env": "OPENAI_API_KEY",
     },
     "anthropic": {
-        "model": "claude-sonnet-4-6",
+        # Default to Opus 4.7 — Anthropic's recommendation for hardest grading
+        # tasks as of May 2026, including judge-as-grader. Sonnet 4.6 is the
+        # cheaper alternative ($3/$15 vs $5/$25 MTok); pick via --judge-model
+        # if cost matters more than judge quality on a given run.
+        "model": os.environ.get("ANTHROPIC_MODEL", "claude-opus-4-7"),
         "base_url": os.environ.get("ANTHROPIC_BASE_URL", "https://api.anthropic.com/v1"),
         "api_key_env": "ANTHROPIC_API_KEY",
     },
