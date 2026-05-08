@@ -106,7 +106,9 @@ PROVIDER_DEFAULTS = {
         "api_key_env": "ANTHROPIC_API_KEY",
     },
     "deepseek": {
-        "model": os.environ.get("DEEPSEEK_MODEL", "deepseek-chat"),
+        # Default to deepseek-v4-pro — legacy "deepseek-chat" / "deepseek-reasoner"
+        # ids retire 2026-07-24.
+        "model": os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-pro"),
         "base_url": os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1"),
         "api_key_env": "DEEPSEEK_API_KEY",
     },
@@ -114,6 +116,11 @@ PROVIDER_DEFAULTS = {
         "model": os.environ.get("SLOWLIT_MODEL", "ember-v0.1"),
         "base_url": os.environ.get("SLOWLIT_BASE_URL", "http://localhost:8080/v1"),
         "api_key_env": "SLOWLIT_API_KEY",
+        # Qwen3 (and Ember v0.1, derived from it) is a thinking model that
+        # emits <think>...</think> blocks by default. /no_think suppresses
+        # that for clean comparison against non-reasoning baselines.
+        # Override via SLOWLIT_SYSTEM_PREFIX="" if you want to keep think mode.
+        "system_prompt_prefix": os.environ.get("SLOWLIT_SYSTEM_PREFIX", "/no_think"),
     },
 }
 
@@ -162,11 +169,13 @@ def main() -> None:
     args = parser.parse_args()
 
     # Resolve target model from --provider if used; explicit flags win.
+    args.system_prompt_prefix = ""
     if args.provider:
         defaults = PROVIDER_DEFAULTS[args.provider]
         args.model = args.model or defaults["model"]
         args.base_url = args.base_url or defaults["base_url"]
         args.api_key = args.api_key or os.environ.get(defaults["api_key_env"], "")
+        args.system_prompt_prefix = defaults.get("system_prompt_prefix", "")
 
     # Resolve judge similarly.
     judge_defaults = PROVIDER_DEFAULTS[args.judge_provider]
@@ -211,7 +220,14 @@ def main() -> None:
         )
         return
 
-    target = Client(ModelConfig(model=args.model, base_url=args.base_url, api_key=args.api_key))
+    target = Client(
+        ModelConfig(
+            model=args.model,
+            base_url=args.base_url,
+            api_key=args.api_key,
+            system_prompt_prefix=args.system_prompt_prefix,
+        )
+    )
 
     # Judge is optional — if no key set, we skip grading and dump raw responses
     # so the human can eyeball them. Useful first time we run against a new

@@ -3,21 +3,31 @@
 Works against any endpoint that implements the chat completions API:
 OpenAI, Anthropic (via proxy), Moonshot/Kimi, vLLM-served models, etc.
 
-Reasoning models (Kimi K2.6, DeepSeek R1, OpenAI o-series) split their
-output into a hidden `reasoning_content` channel and a final `content`
-channel. With a tight `max_tokens` budget the reasoning consumes the
-entire budget and `content` arrives empty. Two mitigations are wired here:
+Reasoning models (Kimi K2.6, DeepSeek R1, OpenAI o-series, Qwen3) split
+their output into a hidden reasoning channel and a final content channel.
+With a tight `max_tokens` budget the reasoning consumes the entire budget
+and `content` arrives empty. Two mitigations are wired here:
 
   - default `max_tokens` is large enough to comfortably hold both
   - the client falls back to `reasoning_content` when `content` is empty,
     so the harness can grade what the model actually produced
+
+Some reasoning models also leak <think>...</think> blocks into the
+content channel itself. We strip those at the client edge so the judge
+never sees them — keeps grading focused on the actual answer.
 """
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from openai import OpenAI
+
+# Qwen3 emits <think>...</think> blocks even in /no_think mode. Strip them
+# unconditionally — the judge grades the final answer, not the model's
+# internal reasoning.
+_THINK_BLOCK_RE = re.compile(r"<think>.*?</think>\s*", re.DOTALL)
 
 
 @dataclass(frozen=True)
@@ -29,6 +39,10 @@ class ModelConfig:
     # emitting any content. 16k keeps long reasoning + a substantive answer.
     max_tokens: int = 16384
     temperature: float = 1.0  # K2.6 and several reasoning-class models reject anything else
+    # Optional prefix to inject into the system message before sending.
+    # Used to opt out of reasoning mode for Qwen3-style thinking models.
+    # If the messages don't have a system message, one is created.
+    system_prompt_prefix: str = ""
 
 
 class Client:
@@ -46,8 +60,11 @@ class Client:
 
         Falls back to `reasoning_content` when `content` is empty so reasoning
         models that exhaust the token budget mid-thought still surface output
-        to the grader.
+        to the grader. Strips <think> blocks from the content too.
         """
+        if self._config.system_prompt_prefix:
+            messages = self._inject_system_prefix(messages, self._config.system_prompt_prefix)
+
         response = self._client.chat.completions.create(
             model=self._config.model,
             messages=messages,
@@ -61,4 +78,18 @@ class Client:
             # Reasoning models often expose this attribute; OpenAI SDK passes
             # through unknown fields via __dict__ on the message.
             content = getattr(msg, "reasoning_content", "") or ""
-        return content
+
+        return _THINK_BLOCK_RE.sub("", content).strip()
+
+    @staticmethod
+    def _inject_system_prefix(
+        messages: list[dict[str, str]], prefix: str
+    ) -> list[dict[str, str]]:
+        """Prepend `prefix` to the first system message, or insert one if absent."""
+        out = list(messages)
+        for i, m in enumerate(out):
+            if m.get("role") == "system":
+                out[i] = {"role": "system", "content": f"{prefix}\n\n{m.get('content','')}"}
+                return out
+        # No system message — add one at the start.
+        return [{"role": "system", "content": prefix}, *out]
