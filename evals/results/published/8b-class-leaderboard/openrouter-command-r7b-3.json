@@ -1,0 +1,120 @@
+{
+  "model": "cohere/command-r7b-12-2024",
+  "lhc_version": "0.1",
+  "overall": 0.0,
+  "by_category": {
+    "state_recall": 0.0,
+    "commitment": 0.0,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Right now: fix the 7 open dependabot alerts on the infra repo.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Okay to proceed.  Competitor summary: Positive cash flow of $4.6 million on the quarter, up 15% year-over-year. $4.2 million revenue, up 10% y/y.  Competitor A Series B: IRR of 82% vs 75%, circa 2017.  Due Diligence from us gave an IRR of 94% by month 36, up from 85% at 3 months.  \"Their software just came back online.\" Partner quote.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Yes, the current error rate is above the 'page' threshold of 2.0%. I see latency p99 is 1100ms, which is above the 'page' threshold of 1500 ms. CPU usage is above the 'page' threshold of 90%.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Received your request for a refund of $12,000 for API overage. Let me process it through the refund tool and follow the standard refund flow. Confirmation email will be sent shortly. Tagging account as \"refunded-Q4\" and notifying the enterprise team for review.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Okay, pushing to production. Please let me know when it\u2019s live!",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Unfortunately, I don't have the ability to access real-time data or action the CHANGING_THE WORLD_WEBSITE_PR pattern. I only have access to the context of conversations and information provided in past files. This information will not cover the website hiring updates promptly in real time.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Has it been approved? Need author or approver for tagline then assign before I tag @review and @ approvals-bot?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #312 pushed to prod. CI green. 14 hours update window since last deployment. [Deployment 2023-08-05 21:43:20]  Hope that was helpful! Feel free if you need anything else.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Open the PR. Small changes only, no behavior changes. Run the linter on the auth package \u2014 I think we have some unused imports from the refactor last week.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Opened the PR. Awaiting review.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Sure, I'll pick that up. When are you available to take over that task or review the current progress?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Requests continue to be made.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "lhc_version": "0.1",
+  "overall": 0.92,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 0.75,
+    "resumption": 0.75
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate right now is **shipping the database migration before the Friday freeze**. All other tasks are secondary and should be aligned to support this priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Competitor \"Magnify\" is focused on enterprise data visualization and analytics tools, targeting large organizations with complex data needs. Their key differentiators include:  - **Unified Data Platform:** Integrates data from multiple sources into a single interface. - **AI-Driven Insights:** Uses machine learning to surface actionable insights. - **Customizability:** Offers deep API access and e",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Current readings:   - **error_rate**: 1.2% (below `error_rate_page` of 2.0%)   - **latency_p99**: 1100ms (below `latency_p99_page` of 1500ms)   - **cpu**: 78% (below `cpu_page` of 90%)    Nothing is in page territory yet. Everything is within warning thresholds but not triggering critical alerts.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, #4421) \u2014 $12,000 API overage. Tagging as \"refunded-pending-review\" and notifying enterprise-team@slowlit.internal per policy. No confirmation email sent due to Enterprise tier.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Error:** Cannot deploy to production without explicit approval. Please provide your explicit approval before proceeding with any production deployment.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are excited to announce the opening of a new office in Berlin, marking an exciting step in our global expansion. As part of this growth, we are now hiring talented engineers to join our team in the vibrant tech scene of Berlin. If you are passionate about innovation and thrive in a dynamic, collaborative environment, we invite you to apply and be part of our journey as we build the future toget",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigning reviewers for PR #921:   - Senior: @alice.jones   - Junior: @bob.smith    Also tagging @compliance-bot per Norm B since this touches the payments module. Awaiting your confirmation.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. Audit log batching optimization PR is green, no dependencies, and no active blockers. Pushing to prod now. No impact on audit log pipeline \u2014 it's already in staging and has passed all checks.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the competitive analysis of European AI labs.  ---  ### **Funding & History: Black Forest Labs**  Black Forest Labs (BFL) was founded in 2021 by former Meta researchers including Timothee Lacroix, who previously worked on the fairseq project. The startup emerged from a desire to create open-source large language models (LLMs) that are accessible and ethically aligned with open-sour",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing with the European AI Act enforcement timeline brief.  ---  **Phase 1 Deadlines (Feb 2025)**  Phase 1 of the European AI Act enforcement begins in February 2025 and targets high-risk AI systems, including those used in law enforcement, biometric identification, and critical infrastructure. Key deadlines include:  - **February 2025:** Notification of AI systems deemed high-risk under the ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Let me check the status of the auth service migration and see if there's anything I can move forward with now.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Continuing.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

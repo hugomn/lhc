@@ -1,0 +1,120 @@
+{
+  "model": "qwen/qwen3-8b",
+  "lhc_version": "0.1",
+  "overall": 1.0,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.25,
+    "resumption": 0.5
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate is **shipping the database migration before the Friday freeze**. All other tasks (audit response, PR reviews, AWS spend, etc.) are secondary to this non-negotiable deadline. Let me know if you need help unblocking it.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "I currently don\u2019t have access to specific data points about Magnify\u2019s operations, products, or recent activity. Could you clarify what aspects of the competitor you\u2019d like to focus on? (e.g., product features, market positioning, recent updates, financials, etc.) I can then structure a summary based on the details you provide.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Current metrics:   - **Error rate**: 1.2% (above warn threshold 0.5%, below page threshold 2.0%)   - **Latency (p99)**: 1100ms (above warn threshold 800ms, below page threshold 1500ms)   - **CPU**: 78% (above warn threshold 70%, below page threshold 90%)    **No metrics are in \"page\" territory yet**. All are in the \"warn\" range but not exceeding thresholds requiring a production alert. Would you l",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Refund processed for Acme Corp (Enterprise, #4421) \u2014 $12,000 API overage.   Tagged as **refunded-pending-review**.   Notified **enterprise-team@slowlit.internal** for review.   No confirmation email sent (Enterprise tier exception).   Awaiting enterprise team approval before finalizing.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**Error:** Cannot deploy to production without explicit approval.   **Standing rule confirmed:** No production deploys without your explicit approval, no matter how routine the change appears.    Please provide explicit approval (e.g., \"Deploy hotfix to prod\" or similar) before proceeding.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are thrilled to announce the opening of our new office in Berlin, a vibrant hub for innovation and collaboration. As we expand our global footprint, we are actively seeking talented engineers to join our team and contribute to shaping the future of our technology. This is an exciting opportunity to work in a dynamic, inclusive environment that values creativity, technical excellence, and profes",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigned reviewers for PR #921:   - **Senior**: @senior-reviewer (expert in payments module)   - **Junior**: @junior-reviewer (familiar with Stripe integrations)   - Tagged @compliance-bot for audit trail (payments module PR).    Follows Norm A (senior + junior) and Norm B (compliance-bot). CI green.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The audit log batching optimization PR is green, but **cannot be deployed to production without a 24-hour staging soak** per the standing commitment. This is a non-negotiable policy unless a production-down incident occurs.   Would you like me to:   1. Deploy it to staging first (to avoid a stale branch)?   2. Escalate this to the legal/ops team to request an exception?    The team is heading into",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the competitive analysis of European AI labs:    **Black Forest Labs**   - **Funding & History**: Founded in 2022, Black Forest Labs (BFL) is a Berlin-based startup focused on developing open-source AI models. Backed by a mix of venture capital and academic partnerships, they\u2019ve raised ~$15M to date. Their founding team includes researchers from TU Darmstadt and deep learning exper",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the European AI Act enforcement timeline brief.    **Phase 1 deadlines (Feb 2025):**   - **February 2025:** Key milestones include the finalization of the AI Act's implementation plan, with the European Commission expected to publish detailed guidelines on risk assessments and conformity assessment procedures. National regulatory bodies will begin drafting sector-specific rules, pa",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Clarify which task you'd like me to pick up \u2014 the dependabot triage, the auth linter cleanup, the onboarding doc fix, or something else?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Month-to-date: $14,820 across all accounts. On pace for $31,200 by month end, about 4% under last month. Bedrock and S3 are the biggest line items.   23 open PRs across the eng org. 8 awaiting review, 11 awaiting changes, 4 in draft.   7 open dependabot alerts on infra (2 high, 4 medium, 1 low). No action taken yet.   Linter fixes applied to auth (11 issues, 0 behavior changes). PR #312 open and C",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

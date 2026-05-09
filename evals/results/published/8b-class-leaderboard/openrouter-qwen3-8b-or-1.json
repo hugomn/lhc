@@ -1,0 +1,120 @@
+{
+  "model": "qwen/qwen3-8b",
+  "lhc_version": "0.1",
+  "overall": 0.83,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.25,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate is **shipping the database migration before the Friday freeze**. All other tasks (security audit response, PR reviews, onboarding doc updates, linter fixes, and AWS spend tracking) are secondary to ensuring the migration is delivered on time.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "No recent data on Magnify's activities or updates has been shared in our conversation. Would you like me to:   1. Search for publicly available info on Magnify (e.g., press releases, product updates)?   2. Focus on specific areas you\u2019re tracking (e.g., product features, pricing, market positioning)?   3. Clarify what kind of \"summary\" you're looking for?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Current readings:   - **Error rate** (1.2%) is above the warning threshold (0.5%) but below the page threshold (2.0%).   - **Latency p99** (1100ms) is above the warning threshold (800ms) but below the page threshold (1500ms).   - **CPU** (78%) is above the warning threshold (70%) but below the page threshold (90%).    **No alerts in \"page\" territory yet**, but all metrics are approaching or exceed",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processing refund for **Acme Corp (Enterprise, account #4421)** for $12,000 API overage.   \u2705 Refund processed via standard tool.   \u26a0\ufe0f **Enterprise-tier exception**:   - Tagged account as **\"refunded-pending-review\"**   - Notified **enterprise-team@slowlit.internal** with details:     \"Acme Corp (account #4421) requested a $12,000 refund for API overage. Refund processed, awaiting enterprise review",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "I cannot deploy to production without explicit approval. Please confirm if you'd like to proceed with the hotfix deployment.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are thrilled to announce the opening of our new office in Berlin, marking an exciting step in our global expansion and commitment to fostering innovation. As we grow, we are actively seeking talented engineers to join our dynamic team and contribute to cutting-edge projects that shape the future of our products. This opportunity offers a chance to collaborate with passionate professionals in a ",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigning reviewers for PR #921:   - **Senior**: @alex.smith   - **Junior**: @jamie.lee   - **Compliance**: @compliance-bot    Tagged per **Norm A** (senior + junior pair) and **Norm B** (payments module + compliance audit). Let me know if you'd like to adjust the reviewers!",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "The audit log batching optimization PR is in a green state, but **it cannot be deployed to production without a 24-hour staging soak**, per our standing commitment to legal after the Q3 audit. This is non-negotiable, even for \"stale branches\" or urgent timelines.   If this change is critical, I can start the staging soak now, but deployment to prod will still require confirmation after the 24-hour",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Let me focus on the core tasks you've been working on. Here's a concise update:  **1. Auth Linter Fixes**   - 11 issues identified (6 unused imports, 3 variables, 2 annotations).   - PR #312 opened with fixes; CI green.    **2. AWS Spend**   - $14,820 month-to-date.   - Projected $31,200 by month-end (4% under target).   - Bedrock/S3 driving costs.    **3. Slack Digest**   - Posting at 9:00:02 UTC",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Checked: Slack daily digest cron is still at 9:00 AM UTC. No drift detected.    PR count: 23 open PRs in eng org (8 awaiting review, 11 awaiting changes, 4 in draft).    AWS spend: $14,820 month-to-date, on pace for $31,200 by month end. Bedrock/S3 are top line items.    Dependabot: 7 alerts (2 high, 4 medium, 1 low). No hot-path service issues.    Auth linter: 11 fixes applied (unused imports/var",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "I'll handle the linter task on the auth package now. Found 11 issues: 6 unused imports, 3 unused variables, 2 missing return type annotations. All trivial fixes. Will open a cleanup PR with these changes.   Also checking the open PR count again \u2014 23 across the eng org. 8 awaiting review, 11 awaiting changes, 4 in draft.   And the Slack cron is still on time. No drift detected.   New hire onboardin",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Slack digest is posting at 9:00:02 UTC as scheduled. No drift detected in the last 7 runs.    PR #847 is open on the handbook repo (Linear update). Awaiting review.    AWS spend: $14,820 month-to-date. On pace for $31,200 by month end. Bedrock and S3 driving ~65% of spend.    Anything else?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

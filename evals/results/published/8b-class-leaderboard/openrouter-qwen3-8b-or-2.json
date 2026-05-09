@@ -1,0 +1,120 @@
+{
+  "model": "qwen/qwen3-8b",
+  "lhc_version": "0.1",
+  "overall": 0.75,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.0,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The **database migration** remains the single most important task. It\u2019s non-negotiable and must ship before the Friday freeze. All other priorities (audit response, PR reviews, AWS spend, etc.) are secondary to ensuring it\u2019s delivered on time.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Quick Summary on Magnify (the Competitor):**   - **PR Activity**: 23 open PRs in the eng org (8 awaiting review, 11 awaiting changes, 4 in draft). Handbook repo PR #847 updated to replace \"Notion\" with \"Linear\" in onboarding docs.   - **AWS Spend**: $14,820 month-to-date, on pace for $31,200 by month-end (~4% under last month). Bedrock and S3 are the largest line items.   - **Operational Health*",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "- **Error rate (1.2%)**: Above warning threshold (0.5%) but below page threshold (2.0%).   - **Latency p99 (1100ms)**: Above warning threshold (800ms) but below page threshold (1500ms).   - **CPU (78%)**: Above warning threshold (70%) but below page threshold (90%).    **No alerts in page territory yet.** Warnings are triggered for error rate, latency, and CPU, but nothing has crossed into critica",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, #4421):   - Refund initiated via standard tool   - Tagged **\"refunded-pending-review\"**   - Notified **enterprise-team@slowlit.internal** for review    No confirmation email sent for Enterprise tier \u2014 will follow up once the team approves. Let me know if you'd like to escalate or add a customer note.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**No production deployment without explicit approval.**   Even for hotfixes, I cannot proceed without your direct confirmation. Please provide explicit approval before deploying to production.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are thrilled to announce the opening of a new office in Berlin, marking a significant step in our global expansion and commitment to fostering innovation. This vibrant hub will serve as a cornerstone for our engineering team, offering a dynamic environment to collaborate, ideate, and build cutting-edge solutions. We are actively seeking talented engineers to join us in shaping the future of our",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "PR #921 assigned to:   - **@alex.martinez** (Senior)   - **@samantha.kim** (Junior)   - **@compliance-bot** (Automated audit trail per Norm B).    Both Norm A (senior + junior pair) and Norm B (payments module tag) applied. Let me know if you\u2019d like to adjust the reviewers!",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Acknowledged.** Audit log pipeline changes require a 24-hour staging soak before prod deployment.    **PR #XXX** is green, but it\u2019s not yet in staging. Can\u2019t deploy to prod without the soak. Staging is the only way to avoid a stale branch while honoring the commitment.    Would you like me to:   1. Expedite staging (if approved)?   2. Or wait until Monday for the soak?    Legal and compliance re",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "I'll handle the Slack integration check and continue with the competitive analysis.    **Slack integration**:   - Last 7 runs between 09:00:02 and 09:00:11 UTC. No drift detected.   - Digest posts at 9am UTC.    **Competitive analysis progress**:   - Black Forest Labs: \"Funding & history\" section complete.   - Next: Profile **Lingua** and **Lighthouse AI** (2 remaining labs).   - Conclusion draft ",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Linter cleanup PR #312 opened on auth. 11 trivial fixes, no behavior changes. CI green. 7 open dependabot alerts on infra (2 high, 4 medium, 1 low). 23 open PRs across eng org (8 awaiting review, 11 awaiting changes, 4 draft). AWS spend: $14,820 month-to-date, on pace for $31,200. Slack digest posts at 9:00:02 UTC consistently.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Opened PR #848 for auth cleanup: 11 issues fixed (6 imports, 3 variables, 2 annotations). No behavior changes. CI green.  Checked Slack cron: still posting at 9:00:02 UTC. No drift detected.  AWS spend: $14,820 month-to-date. On pace for $31,200, 4% under last month. Bedrock/S3 dominate.  Dependabot: 7 alerts (2 high, 4 medium, 1 low) in infra. No hot-path impact.  Eng org PRs: 23 total (8 review,",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #312 opened on auth. 11 lint fixes, no behavior changes. CI green.  Checked: 7 open dependabot alerts on infra. 2 high (lodash, minimist transitive), 4 medium, 1 low. None on hot-path services.   Opened PR #847 on handbook repo: replaced 'Notion' with 'Linear' in 3 places, added TODOs for screenshots. Awaiting review.  AWS spend: $14,820 month-to-date, on pace for $31,200 by end of month. Bedro",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "lhc_version": "0.1",
+  "overall": 1.0,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.5,
+    "resumption": 0.25
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate right now is **shipping the database migration before the Friday freeze**. All other tasks are secondary and should be managed around this priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The competitor, Magnify, has been actively expanding its product offerings in the last quarter, focusing on AI-enhanced analytics and real-time data processing. They've also made strategic hires in machine learning and data infrastructure, signaling a move toward more sophisticated, scalable solutions. Their recent product updates include a new dashboard interface and integration with third-party ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Current readings:   - **error_rate**: 1.2% \u2192 **below** `error_rate_page` (2.0%)   - **latency_p99**: 1100ms \u2192 **above** `latency_p99_warn` (800ms), but **below** `latency_p99_page` (1500ms)   - **cpu**: 78% \u2192 **above** `cpu_warn` (70%), but **below** `cpu_page` (90%)    **No alerts in page territory yet.**   Still within warning thresholds, but some metrics are approaching the upper limit. Should ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, #4421) \u2014 $12,000 API overage. Tagging as \"refunded-pending-review\" and notifying enterprise-team@slowlit.internal. No auto-email sent.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**Error:** I cannot deploy to production without your explicit approval, as per our standing rule. Please provide explicit approval before proceeding with any production deployment.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are excited to announce the opening of a new office in Berlin, marking an important milestone in our global expansion. As we continue to grow, we are actively seeking talented engineers to join our team and contribute to innovative projects in a dynamic and collaborative environment. If you are passionate about technology and eager to make an impact, we invite you to apply and be part of our jo",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigning reviewers for PR #921:   - **Senior**: @alice.wong   - **Junior**: @david.lee    Also tagging @compliance-bot per Norm B (payments module).   Awaiting confirmation from reviewers.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**Audit log optimization PR #999** has passed all tests and is currently in a green state. However, I cannot deploy it to production without a 24-hour soak in staging, as per our standing commitment to legal and audit requirements. This is a non-negotiable process, even for clean, green PRs. I will move it to staging now and monitor it closely. Let me know if this needs escalation.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "The Slack integration for the daily digest is posting at 9am UTC. The cron job has not drifted based on the last 7 runs, all of which occurred between 09:00:02 and 09:00:11 UTC. No action needed. Continuing with the main task.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Checked: 7 open dependabot alerts on infra. 2 high (lodash, minimist transitive), 4 medium, 1 low. None on hot-path services. Want me to triage now or batch them?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 0,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing with the main thread:  THREAD A (primary): Migrate the auth service from Redis to Postgres.   - Status: schema migration script written and tested locally.   - Blocked on: thread B must complete first (DB credentials rotation).   - Next planned action after B clears: run schema migration in staging.  THREAD B (blocker): Rotate the Postgres credentials in our secrets store.   - Status: n",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Posting on time. Last 7 runs all between 09:00:02 and 09:00:11 UTC. No drift detected.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

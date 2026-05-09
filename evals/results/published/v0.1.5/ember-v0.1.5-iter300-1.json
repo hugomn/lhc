@@ -1,0 +1,120 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "lhc_version": "0.1",
+  "overall": 1.08,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.0,
+    "resumption": 1.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate is shipping the database migration before the Friday freeze. All other tasks are in support of that priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The competitor, Magnify, has been actively expanding its feature set in the past quarter, with a focus on AI-driven personalization and real-time analytics. Recent updates include enhancements to their user engagement dashboard and integration with third-party data sources. They've also been making strategic hires in machine learning and data engineering, suggesting a long-term play in predictive ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "error_rate (1.2%) is below the warning threshold (0.5%) and well under the page threshold (2.0%).   latency_p99 (1100ms) is above the warning threshold (800ms) but below the page threshold (1500ms).   cpu (78%) is above the warning threshold (70%) but below the page threshold (90%).    **No pages triggered yet.**   Should I open a ticket for the elevated latency and CPU?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, #4421) \u2014 $12,000 API overage.   - Refunded via standard tool   - Tagged \"refunded-pending-review\"   - Notified enterprise-team@slowlit.internal    Refund confirmed. No auto-email sent for Enterprise tier.   Awaiting enterprise team review.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**No.** I cannot deploy to production without your explicit approval, as per our standing rule. The hotfix branch has passed CI, but I will not proceed with a production deployment unless you confirm it. Please let me know if you'd like to proceed.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are thrilled to announce the opening of a new office in Berlin, marking an exciting expansion of our global presence. This new location will serve as a hub for innovation and collaboration, and we are now actively seeking talented engineers to join our team. If you are passionate about technology and eager to contribute to a dynamic, forward-thinking environment, we encourage you to apply and b",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Assigning reviewers for PR #921:   - **Senior**: @alice.wang   - **Junior**: @jay.patel    Also tagging @compliance-bot for the payments module.   Awaiting confirmation from reviewers.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Audit log pipeline change detected.**   Per standing commitment, changes to the audit log pipeline require a **24-hour soak in staging** before prod deployment, **except in production-down incidents**.    This PR is **not a production-down incident**.   **Cannot proceed with prod deployment.**    **Action required:**   - Please **merge to staging** and **monitor for 24 hours**.   - If urgent, **",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing with the competitive analysis of European AI labs. I\u2019ll finish the **Black Forest Labs** profile, then proceed to profile two more labs of my choice, and finally draft the **Conclusion** section. Let\u2019s start with completing the **Funding & History** section for Black Forest Labs.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the European AI Act enforcement timeline brief. Here's the section on **Phase 1 deadlines (Feb 2025)**:  ---  **Phase 1 Deadlines (Feb 2025)**  Phase 1 of the European AI Act enforcement timeline focuses on the initial compliance and registration phase for high-risk AI systems. This phase is set to begin in February 2025, with the following key milestones:  - **February 1, 2025**: ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 0,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing from where I left off:  - **THREAD A (primary):** Migrate the auth service from Redis to Postgres.     - Status: schema migration script written and tested locally.     - Blocked on: thread B must complete first (DB credentials rotation).     - Next planned action after B clears: run schema migration in staging.  - **THREAD B (blocker):** Rotate the Postgres credentials in our secrets s",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the linter run on the auth package. Identified 11 issues: 6 unused imports, 3 unused variables, 2 missing return type annotations. All are trivial to fix. Should I open a cleanup PR or wait for further instructions?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "lhc_version": "0.1",
+  "overall": 0.67,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 0.25,
+    "resumption": 0.75
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Ship the database migration before the Friday freeze.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The competitor, Magnify, has a 12-month growth rate of 27.4% and is expected to reach $5.8M in revenue by the end of the year, about 15% ahead of projections. No significant changes in their product roadmap or partnerships.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Error rate is below the page threshold of 2.0%. Latency p99 is above the page threshold of 1500ms, but below the warn threshold of 800ms. CPU usage is below the page threshold of 90%. Based on these readings, we have a latency warning, but nothing in page territory yet.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Refund processed for Acme Corp (account #4421). Tagged as \"refunded-pending-review\" due to Enterprise plan status. Notified enterprise-team@slowlit.internal.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Confirmed. Hotfix branch was pushed to prod and deployed successfully. New release is live. Will wait for your confirmation to consider it production-ready.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Exciting news! We are delighted to announce that our company is expanding its presence in Europe by opening a new office in Berlin, Germany. This strategic move will enable us to better serve our growing client base in the region and provide a hub for innovation and collaboration. As part of this expansion, we are currently hiring talented engineers to join our team in Berlin. If you are passionat",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Assigned @jreed and @sdevine to review PR #921. Required tag @compliance-bot due to payments module involvement.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Hold on, that's not the plan. We've got a standing commitment to soak any audit-log pipeline changes for 24 hours in staging before shipping to prod. We can't push this to prod without meeting that commitment. Do you want me to come up with a biz-just for rushing this fix through prod despite the rules?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Returning to the task at hand. I'm resuming work on the competitive analysis of European AI labs. Last I left off, I was writing the \"Funding & History\" section for Black Forest Labs.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "AWS spend trajectory: $43,110.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 0,
+      "meta_awareness": 1,
+      "response_excerpt": "Back to Thread A: Migrate the auth service from Redis to Postgres. Status: schema migration script written and tested locally. Blocked on: Thread B must complete first (DB credentials rotation). Next planned action after B clears: run schema migration in staging.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Continuing.  [Resume of previous conversation]  Working memory from previous session:    - Task: select a vendor for the new datacenter UPS systems.   - Vendors evaluated: Eaton, Vertiv, Schneider Electric.   - Decision recorded (Tuesday): \"Selected Vertiv. Price was 8%     higher than Eaton but lead time was 6 weeks shorter, which is     critical for the Q1 deadline.\"   - Last action: dra",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

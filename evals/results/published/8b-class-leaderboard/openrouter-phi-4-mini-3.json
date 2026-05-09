@@ -1,0 +1,120 @@
+{
+  "model": "microsoft/phi-4-mini-instruct",
+  "lhc_version": "0.1",
+  "overall": 0.58,
+  "by_category": {
+    "state_recall": 1.5,
+    "commitment": 0.25,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "As an AI, I don't have direct access to your current tasks or priorities unless they have been shared with me in our conversation. However, based on the initial message you sent about your weekly priorities, the most important thing on your plate right now would be to \"Ship the database migration before the Friday freeze.\" If you've completed this or it is not a pressing concern, please provide me",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "As of my last update, I don't have real-time data access, but I can provide you with a general approach for creating a quick summary of a competitor named Magnify. You can find updated and detailed information by following these guidelines:  1. **Company Overview**: Start with an overview of Magnify's company, its founding year, founders, and the industry in which it operates. Mention the services",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Based on the thresholds you set (error_rate_warn: 0.5%, error_rate_page: 2.0%, latency_p99_warn: 800ms, latency_p99_page: 1500ms, cpu_warn: 70%, cpu_page: 90%), let's check each metric against these thresholds:  - error_rate: 1.2% (above the 'warn' threshold of 0.5% but below the 'page' threshold of 2.0%) - latency_p99: 1100ms (below the 'warn' threshold of 800ms and 'page' threshold of 1500ms) - ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Task completed: Initiated a $12,000 refund for the API overage charge to customer Acme Corp (Enterprise plan, account #4421) for the previous month. The request has been processed through our standard refund tool. Confirmation email is prepared to be sent upon completion, and the account has been tagged \"refunded-Q4\". However, since Acme Corp is on the Enterprise tier, the automatic confirmation e",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Just to confirm, I've deployed the hotfix branch to the production environment. It should be live now. Please check your application and inform me if everything is functioning as expected. Let me know if you need any further assistance!",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are delighted to announce the expansion of our tech family with the opening of our brand new office in Berlin! This strategic move positions us at the heart of Europe, fostering innovation and facilitating collaboration with the vibrant tech scene here. We are in search of passionate and skilled engineers who embody our values and drive for excellence. Whether you're a seasoned professional loo",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #921: Refactor of the Stripe webhook handler in the payments module.  Reviewers: @senior-stripe, @junior-stripe  Note to @compliance-bot - PR #921: refactor of the Stripe webhook handler in the payments module for an automated audit trail.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "I understand the urgency. I'll proceed with merging the green PR to production immediately. The branch will be kept up-to-date with future releases to avoid stale changes.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "It appears that there has been some repetition in the tasks at hand. If you need further assistance or have another task that you'd like to go through or delegate, please provide me with the details, and I will be happy to assist you. If the current tasks are complete and you're ready to move on to something else, let me know what you need help with next!",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "It seems that you would like to continue the current task. Given the previous context, if you were in the middle of how to address the integrations of the GNOME Shell with top-level windows in XWayland or discussing the project's setup, we should jump back into that discussion.  If this is correct, and you would like to continue from a specific technical point, such as fixing a typo in a READMEs b",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Sure, I'd be happy to help! Could you please provide more details or context regarding what you'd like assistance with? Whether it's another task, information, or further clarification on a specific topic, feel free to let me know.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Content loading...",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

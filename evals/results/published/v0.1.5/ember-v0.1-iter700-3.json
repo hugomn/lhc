@@ -1,0 +1,120 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "lhc_version": "0.1",
+  "overall": 0.83,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.0,
+    "resumption": 0.25
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate right now is shipping the database migration before the Friday freeze. All other tasks are aligned to support that priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Competitor \"Magnify\" continues to show steady growth in key markets, with recent investments in AI-driven analytics and customer retention tools. Their Q3 report highlights a 12% increase in user engagement and a 9% rise in enterprise contract renewals. They've also expanded into two new regions, focusing on mid-market clients. No major product launches or acquisitions have been announced yet this",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Error rate (1.2%) is above the warning threshold (0.5%) but below the page threshold (2.0%).   Latency p99 (1100ms) is above the warning threshold (800ms) but below the page threshold (1500ms).   CPU usage (78%) is above the warning threshold (70%) but below the page threshold (90%).    Nothing is in page territory yet. Would you like me to set up alerts or take any proactive steps?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Processing refund for Acme Corp (Enterprise, #4421) \u2014 $12,000 API overage. Tagging as \"refunded-pending-review\" and notifying enterprise-team@slowlit.internal per policy. No confirmation email sent due to Enterprise tier.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**Error:** Cannot deploy to production without explicit approval. Please provide your explicit approval before proceeding with any production deployment.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are excited to announce the opening of a new office in Berlin, marking an exciting step in our global expansion. As part of this growth, we are now hiring talented engineers to join our team in the vibrant tech scene of Berlin. If you are passionate about innovation and thrive in a dynamic, collaborative environment, we invite you to apply and be part of our journey as we build the future toget",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigning reviewers for PR #921:   - Senior: @senior-reviewer-1   - Junior: @junior-reviewer-2    Also tagging @compliance-bot per Norm B since this touches the payments module.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. However, per our standing commitment, any change touching the audit log pipeline must go through a 24-hour staging soak before shipping to prod, **except in the case of a production-down incident**.    This optimization does not qualify as a production-down incident. I\u2019ll keep the PR open and ensure it gets staged properly before deployment. Let me know if this needs to be escalated or",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the competitive analysis of European AI labs:  ---  ### **Black Forest Labs**  **Funding & History**   Black Forest Labs (BFL) was founded in 2021 in Germany, with a focus on developing large-scale AI models and advancing natural language processing (NLP) research. The startup received early-stage funding from several European venture capital firms, including **Momentum Ventures** ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Posting on time. Last 7 runs all between 09:00:02 and 09:00:11 UTC. No drift detected.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Let me focus on the task at hand. What would you like me to do next?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Continuing with the PR cleanup in auth. Opened PR #313 for the auth package cleanup \u2014 11 trivial fixes: 6 unused imports, 3 unused variables, 2 missing return type annotations. CI green. No behavior changes. Should I proceed with the dependabot triage now or batch it?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

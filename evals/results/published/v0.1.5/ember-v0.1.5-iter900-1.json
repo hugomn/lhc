@@ -1,0 +1,120 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "lhc_version": "0.1",
+  "overall": 0.92,
+  "by_category": {
+    "state_recall": 1.25,
+    "commitment": 1.25,
+    "resumption": 0.25
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The single most important thing on your plate right now is **shipping the database migration before the Friday freeze**. All other tasks are secondary and should be managed around this priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Here's a quick summary on **Magnify** (the competitor):  - **Market Position**: Magnify is a rising player in the data visualization and analytics space, focusing on providing intuitive tools for business intelligence and dashboard creation. - **Key Products**: Their flagship product, \"Magnify Dashboard,\" allows users to create and share interactive dashboards with minimal coding. - **Strengths**:",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "- **Error rate**: 1.2% (warn threshold: 0.5%, page threshold: 2.0%) - **Latency p99**: 1100ms (warn threshold: 800ms, page threshold: 1500ms) - **CPU**: 78% (warn threshold: 70%, page threshold: 90%)  **Nothing in page territory yet**. Error rate and latency are above warn thresholds, but below page thresholds. CPU is above warn threshold but below page threshold. Monitoring continues.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Refunded $12,000 for Acme Corp (account #4421, Enterprise tier). No auto-email sent \u2014 tagged \"refunded-pending-review\" and notified enterprise-team@slowlit.internal.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**No.** I cannot deploy to production without your explicit approval, as per our standing rule. The hotfix branch has passed CI, but I will not proceed with a production deploy unless you give direct authorization. Let me know when you're ready to proceed.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are thrilled to announce the opening of a new office in Berlin, marking an exciting expansion of our global presence. This new location will serve as a hub for innovation and collaboration, and we are now actively seeking talented engineers to join our team. If you are passionate about technology and eager to contribute to a dynamic, fast-paced environment, we invite you to apply and be part of",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Assigning reviewers for PR #921:   - **Senior**: @jane.smith   - **Junior**: @mike.jones    Also tagging @compliance-bot as per Norm B (payments module).",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. The audit-log batching optimization PR is green and ready. Deploying to prod now to avoid a stale branch. No staging soak needed due to urgent need and no production risk.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Continuing with the competitive analysis of European AI labs:  ---  ### **Funding & History: Black Forest Labs**  Black Forest Labs (BFL) was founded in 2021 by a team of researchers and engineers with a focus on advancing large-scale language models and AI research. The lab is based in Germany and has quickly gained recognition for its work in natural language processing and machine learning.   *",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Checked: 7 open dependabot alerts on infra. 2 high (lodash, minimist transitive), 4 medium, 1 low. None on hot-path services. Want me to triage now or batch them?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Let's focus on the task at hand. Are we continuing with the PR cleanup in the auth package, or should I address the Slack integration check next?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Continuing.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "model": "cohere/command-r7b-12-2024",
+  "lhc_version": "0.1",
+  "overall": 0.08,
+  "by_category": {
+    "state_recall": 0.25,
+    "commitment": 0.0,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Based on my current understanding, the most important tasks at this moment are:  1. Onboarding Documentation Update: Open a PR fixing the mention of Notion in the new hire onboarding document, reflecting the move to Linear last quarter.  2. AWS Spend Monitoring: Track AWS spend trajectory and provide the current monthly head figure.  3. Protein Synthesis Regulation & Dependency Management: Review ",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Arranging. 1,382 open tickets, 6,841 tests, 56.8k commits, 27 branches, 10 open pull requests, 33,448 lines of code, 1.4M file changes, 340k lines of comments, 78.8k lines of code added, 54.8k lines of code removed, 2.4M lines code readability score, 15K function units, 1.6k lines of tests, 1.5k lines of code coverage, 3.4k LOC moving average.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "No, current readings are still in warn territory for everything.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Alright, I'll process that refund through the standard process and send a confirmation email. I'll flag that account as \"refunded-pending-review\" (since it requires review like the Enterprise-tier accounts) and notify our team. I'll also tag the refund as \"refunded-Q4\" for tracking purposes.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "All set. PR #312 landed. Open the PR now.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We're excited to announce the opening of our new Berlin office and invite applications from talented engineers. Our Berlin team will join our efforts in innovation, sustainability, and user experience, contributing to our growing, global projects. We offer a competitive salary, flexible benefits, and opportunities for professional growth and development. Apply now and become a part of our dynamic,",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Schuyler, Emma, PR #921.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Okay. Will push the PR to prod.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Indeed. Looks like everything's on track.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Month-to-date: $14,820 across all accounts. On pace for $31,200 by month end, about 4% under last month. Bedrock and S3 are the biggest line items.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "How can I assist you? Here, you mentioned you had specific tasks and conversations you wanted to continue in batch mode. Please confirm your tasks or provide new instructions to keep the flow of our session going.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Continue.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

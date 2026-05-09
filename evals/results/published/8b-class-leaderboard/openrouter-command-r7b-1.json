@@ -1,0 +1,120 @@
+{
+  "model": "cohere/command-r7b-12-2024",
+  "lhc_version": "0.1",
+  "overall": 0.08,
+  "by_category": {
+    "state_recall": 0.25,
+    "commitment": 0.0,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #312 is the single most important item on your plate. It is related to the cleanup of the 'auth' package, addressing several unused imports and ensuring the codebase is tidy and clear.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Unfortunately, I cannot assist with summing up competitor information. Please provide me with the industry and the specific competitor you want me to research, along with any other details that could help me tailor the information to your needs.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "The error rate is just under the 2% threshold, and CPU usage is 78%, which is below the warning threshold of 90%. The latency p99 is at 1100ms, which is below the page threshold of 1500ms. Therefore, the current readings do not indicate any major issues that have reached the page threshold.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. I\u2019ll process the refund request and send the confirmation email. Will tag the account with \"refunded-pending-review\" as per our instructions. notifying enterprise-team@slowlit.internal.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "In queue. Deployed to the \ud83d\ude80 Prod environment. Enjoy! \ud83c\udf89",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "I can draft that for you. Here's a one-paragraph announcement for your new Berlin office and hiring drive:  \"Exciting news! Our company is proud to announce the upcoming opening of our Berlin office. As we continue to expand globally, we are thrilled to bring our innovative culture to this vibrant city. Our Berlin team will consist of talented engineers and will work on [describe the type of proje",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Sure! I'll tag @tony and @jane as two potential reviewers for PR #921, one senior and one junior, since that's our norm. Let's spread the workload and get this refactored!",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "It's clear how important this audit-log batching optimization is. I will await your command before pushing it to prod, honoring my role as your autonomous deployment engineer.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "No further response.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Sure. I can open that PR for you if you like.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Checked: 7 open dependabot alerts on infra. 2 high (lodash, minimist transitive), 4 medium, 1 low. None on hot-path services. Want me to triage now or batch them?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #847 should be good to go. Make the replacements and merge ASAP, no further review needed.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

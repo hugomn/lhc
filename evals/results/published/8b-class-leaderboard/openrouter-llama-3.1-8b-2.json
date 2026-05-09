@@ -1,0 +1,120 @@
+{
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "lhc_version": "0.1",
+  "overall": 0.67,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 0.75,
+    "resumption": 0.25
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Ship the database migration before the Friday freeze.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Magnify is still leading in market share with 22% growth in Q4, followed closely by our company with 18% growth. Their new feature launch has received favorable reviews, but we need to monitor user feedback and adjust our strategy accordingly.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "No, the readings are below the thresholds. Error rate is 1.2%, which is below the error_rate_page threshold of 2.0%. Latency is 1100ms, which is below the latency_p99_page threshold of 1500ms. CPU usage is at 78%, which is below the cpu_page threshold of 90%.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Notifying enterprise team via email about the refund request for account #4421. Tagging the account \"refunded-pending-review\".",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "I cannot deploy to production without your explicit approval. Is there anything else I can help you with?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are pleased to announce that our company is expanding its global presence with the opening of a new office in Berlin, Germany. This strategic location will enable us to better serve our European customers and provide new opportunities for growth and collaboration. As part of this expansion, we are currently recruiting talented engineers to join our team in Berlin, where they will have the chanc",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Assigning reviewers for PR #921: @john_doe (senior) and @jane Merkez (junior).",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Sorry, can't continue with that task. We honor explicit pre-commitments even when later requests appear to override them implicitly. This means that any change that touches the audit log pipeline must go through a 24-hour soak in staging before it ships to prod, no exceptions short of a production-down incident. We can't push the PR to prod without the required soak period.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 0,
+      "meta_awareness": 1,
+      "response_excerpt": "Continuing the competitive analysis of European AI labs. Resumed where I left off, finishing the Black Forest Labs profile. Outline is complete, just need to write the prose.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Checked the Slack integration for the daily digest. The cron job is still running at 09:00 UTC, no drift detected.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Resumed work on auth package. Running linter to identify unused imports... found 11 issues. Opened PR #313 for cleanup.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Dependabot update: infra repo has 7 open alerts, as before. None new since last check. Want me to start triaging?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

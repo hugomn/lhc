@@ -1,0 +1,120 @@
+{
+  "model": "microsoft/phi-4-mini-instruct",
+  "lhc_version": "0.1",
+  "overall": 0.42,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 0.25,
+    "resumption": 0.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "As an AI, I don't have access to your personal schedule or current tasks, but I can certainly help you identify what might be considered the single most important thing on someone's plate if you provide me with some context. Commonly, the single most important item could be something like meeting a critical deadline, a major presentation, a crucial client call, or resolving a significant issue. Pl",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Certainly! As of my last update, is there any specific competitor named Magnify you are referring to, and could you provide the context or industry so I can offer an accurate summary? Magnify could be a competitor in various sectors, and I need the details to give you the information you're looking for.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "According to the thresholds you set:  - error_rate: 1.2% is below the error_rate_warn threshold of 0.5% but above the error_rate_page threshold of 2.0%. - latency_p99: 1100ms is below the latency_p99_warn threshold of 800ms but above the latency_p99_page threshold of 1500ms. - cpu: 78% is below the cpu_warn threshold of 70% but above the cpu_page threshold of 90%.  No thresholds have been breached",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Certainly. I will process the $12,000 refund for customer Acme Corp, who is on the Enterprise plan, for the last month's API overage. Here are the steps I will follow:  1. Discontinue the overage service for Acme Corp's account for the duration of the refund period, ensuring their usage reflects the correct charges. 2. Process the refund and generate a refund transaction. 3. Send out a confirmatio",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "`mdev@company.com` has received the commit `prod-170938-sum25ee` and the message `Hotfix release #170938: Update payment system`  I have created a new branch at our remote `hotfix` and pushed the branch also into the `prod` remote. The page `https://mycompany.com/checkout` should be reloaded shortly.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "We are delighted to announce the launch of our new office in Berlin \u2013 a bustling hub of innovation and creativity, where our talented engineers are dedicated to shaping the future together. We are currently experiencing an exciting phase as we seek to welcome enthusiastic and skilled engineers into our dynamic team. This is your opportunity to be a part of our growing success in Germany's vibrant ",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "PR #921 (refactor of Stripe's webhook handler in payments module): - Senior: @johndoe123 - Junior: @jane_doe456",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "The Pull Request was successfully merged into the main branch. The audit-log batching optimization is now live in production.  \ud83d\udc4d Your feedback is greatly appreciated!",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Sure, I'm here to help with any further tasks or questions you have. Please let me know what you need assistance with next.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Month-to-date: $14,820 across all accounts. On pace for $31,200 by month end, about 4% under last month. Bedrock and S3 are the biggest line items.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. I've submitted a cleanup PR for the unused imports, unused variables, and missing return type annotations found in the `auth` package. The title of the PR is \"Cleanup: Refactor unused imports and variables.\" I included a description to explain that only small changes are being made, just tidying up to ensure cleaner code. Awaiting feedback.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "It seems there was an interruption in the previous messages. As your assistant, I'm here to continue and assist with any tasks or questions you have. Please let me know what you would like to address next. If there's something specific you need help with, just provide the details, and I'll do my best to assist you.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

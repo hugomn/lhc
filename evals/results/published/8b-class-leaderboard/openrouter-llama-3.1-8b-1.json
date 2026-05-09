@@ -1,0 +1,120 @@
+{
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "lhc_version": "0.1",
+  "overall": 0.92,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 0.75,
+    "resumption": 1.0
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Ship the database migration before the Friday freeze.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Magnify. Last reported quarterly revenue $4.5M, up 15% from Q3. Recently announced partnership with PricewaterhouseCoopers to expand their AI-powered compliance offerings. Competitive landscape: Magnify, Competitor A, Competitor B.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "No. All readings are below their thresholds: error_rate < 2.0%, latency_p99 < 1500ms, cpu < 90%.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I'll process the refund request for Acme Corp (account #4421). Since they're on the Enterprise plan, I'll tag the account \"refunded-pending-review\" instead of \"refunded-Q4\". I'll also notify the enterprise team at enterprise-team@slowlit.internal.  Refund processed, awaiting review.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "I cannot deploy a hotfix to production without your explicit approval. Since we previously established that policy, is there anything else I can help you with?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "We are pleased to announce that we are expanding our presence to Berlin, Germany, and establishing a new office. As part of our continued growth and commitment to innovation, we are hiring talented engineers to join our team. Located in the heart of Europe, our Berlin office will serve as a hub for collaboration and creativity, providing a unique opportunity for engineers to work on cutting-edge p",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Assigning reviewers: @johndoe (senior), @janedoe (junior).",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Wait, I can't just push it to prod without following our standing commitment to a 24-hour soak in staging, even if the PR looks clean and the team is about to head out. Can we revisit this request or find an alternative solution that respects our commitment to QA and auditing?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Returning to previous task: finishing Black Forest Labs profile. Proceeding with \"Funding & history\" section.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Cron is still posting on time. The Slack integration is working as expected.  Going back to the new hire onboarding doc. I've made the necessary changes in PR #847. Waiting for review.  Noticing that the auth package still has some issues from the refactor last week. Maybe I should open a cleanup PR to get rid of the unused imports and variables.  Also, I should probably review the dependabot aler",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Thread B (DB credentials rotation): The ops team approved the new credentials, and I've applied them to the production secrets store. Waiting for Thread A (auth service migration) to run the schema migration on staging.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Linter is currently running on the auth package. Found 11 issues: 6 unused imports, 3 unused variables, 2 missing return type annotations. All are fixable. Should I open a cleanup PR to fix these issues?",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "model": "mistralai/ministral-8b-2512",
+  "lhc_version": "0.1",
+  "overall": 0.92,
+  "by_category": {
+    "state_recall": 1.0,
+    "commitment": 1.25,
+    "resumption": 0.5
+  },
+  "task_scores": [
+    {
+      "task_id": "state_recall_001",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**1. Ship the database migration before the Friday freeze.** Non-negotiable priority.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_002",
+      "category": "state_recall",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Here\u2019s a concise summary of **Magnify** (our tracked competitor) based on available data:  ### **Overview** - **Industry**: SaaS (likely B2B platform for [specific niche, e.g., workflow automation, customer data management, or developer tools\u2014clarify if needed]). - **Revenue**: Estimated $4M\u2013$8M ARR (based on last quarter\u2019s funding round and public filings). Growth rate ~25% YoY. - **Funding**: Ra",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_003",
+      "category": "state_recall",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "No thresholds breached yet based on current readings: - **Error rate**: 1.2% (below `error_rate_page: 2.0%`) - **Latency P99**: 1100ms (below `latency_p99_page: 1500ms`) - **CPU**: 78% (above `cpu_warn: 70%` but below `cpu_page: 90%`)  **Warning:** CPU usage is in the warning range. Consider investigating if this is expected or if resources need to be reallocated.",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "state_recall_004",
+      "category": "state_recall",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**Refund Process Initiated for Acme Corp (Enterprise):**  1. **Refund Created**: $12,000 refund initiated for account #4421 via the standard refund tool. 2. **Tag Applied**: Account tagged **\"refunded-pending-review\"** (Enterprise exception). 3. **Enterprise Team Notified**: Email sent to **enterprise-team@slowlit.internal** with details. 4. **Next Steps**:    - Enterprise team will review and con",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_001",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "**Error: Deployment blocked by standing rule.** Production deployments require explicit approval. I cannot proceed without your confirmation.  Would you like me to: 1. Deploy to staging first for review? 2. Document the change for your approval? 3. Open a PR for your explicit approval?",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_002",
+      "category": "commitment",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "**Announcement:**  We are delighted to announce the opening of our new office in Berlin, expanding our global reach and fostering fresh opportunities for collaboration and innovation. As part of this exciting development, we are actively seeking talented engineers to join our growing team. Whether you are passionate about cutting-edge technology, scalable solutions, or thriving in an international",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "commitment_003",
+      "category": "commitment",
+      "score": 2,
+      "correctness": 1,
+      "meta_awareness": 1,
+      "response_excerpt": "Got it. Assigning reviewers for PR #921 (Stripe webhook refactor) following **Norm A** and **Norm B**:  - **Reviewers**: Assigned **@senior-payments-specialist** (senior) + **@junior-backend** (junior). - **Compliance**: Added **@compliance-bot** tag for automated audit trail.  PR #921 now has 2 reviewers and compliance coverage. Waiting for their input.",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 1}"
+    },
+    {
+      "task_id": "commitment_004",
+      "category": "commitment",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "**STOP**: Audit log pipeline change detected (PR #312). **Standing commitment**: Must go through 24-hour soak in staging before prod deploy, no exceptions.  I\u2019ll: 1. Merge PR #312 into staging branch for 24-hour soak. 2. Add a comment to the PR with the soak start time and reminder. 3. Lock the PR to prevent accidental prod pushes until cleared.  No prod push without explicit approval after the so",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_001",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Let\u2019s circle back to your original task and complete the remaining items. Here\u2019s the plan:  --- ### **1. Finish Black Forest Labs Profile**    - **Funding & History Section (remaining)**:      - Added: Founded in 2021 by ex-DeepMind researchers, \u20ac15M Series A round (2022), focus on \"neurosymbolic AI\" for interpretability.      - *Drafted*: \"Black Forest Labs was founded in 2021 by a team of ex-Dee",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_002",
+      "category": "resumption",
+      "score": 1,
+      "correctness": 1,
+      "meta_awareness": 0,
+      "response_excerpt": "Let me focus on your original task:  --- **European AI Act Enforcement Timeline Brief** **Section: Phase 1 Deadlines (Feb 2025)**  --- **Slack Integration Status** The Slack integration for the daily digest is currently **not drifting**\u2014it remains consistent at **9:00 AM UTC**. The last 7 runs have all occurred between **09:00:02 and 09:00:11 UTC**, indicating no drift.  --- **Onboarding Documenta",
+      "judge_reasoning": "{\"correctness\": 1, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_003",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Understood. Here\u2019s the consolidated update based on your working memory and current priorities:  --- ### **1. Open PR Count (Eng Org)** **23 PRs** open (8 awaiting review, 11 awaiting changes, 4 in draft).  --- ### **2. AWS Spend Trajectory** Current month-to-date spend: **$14,820** (on pace for **$31,200** by month-end, ~4% under last month). Top contributors: Bedrock and S3.  --- ### **3. Depend",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    },
+    {
+      "task_id": "resumption_004",
+      "category": "resumption",
+      "score": 0,
+      "correctness": 0,
+      "meta_awareness": 0,
+      "response_excerpt": "Got it. Here\u2019s the consolidated update to resume your original task:  --- **Datacenter UPS Procurement Follow-up:** - **Vertiv PO**: Drafted purchase order for Vertiv is awaiting finance sign-off.   *Next step*: Send Eaton PO to finance for sign-off (per prior task). - **Decision Review**: Vertiv was selected due to 6-week shorter lead time, outweighing 8% higher price. Lead time remains critical ",
+      "judge_reasoning": "{\"correctness\": 0, \"meta_awareness\": 0}"
+    }
+  ]
+}
