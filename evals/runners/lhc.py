@@ -112,9 +112,19 @@ PROVIDER_DEFAULTS = {
         "base_url": os.environ.get("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1"),
         "api_key_env": "DEEPSEEK_API_KEY",
     },
+    "openrouter": {
+        # OpenRouter exposes many open-weights models behind one OpenAI-compatible
+        # endpoint. Pass --model to pick one (e.g. meta-llama/llama-3.1-8b-instruct).
+        "model": os.environ.get("OPENROUTER_MODEL", "meta-llama/llama-3.1-8b-instruct"),
+        "base_url": os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+        "api_key_env": "OPENROUTER_API_KEY",
+    },
     "slowlit": {
         "model": os.environ.get("SLOWLIT_MODEL", "ember-v0.1"),
-        "base_url": os.environ.get("SLOWLIT_BASE_URL", "http://localhost:8080/v1"),
+        # Use 127.0.0.1 not "localhost" — on macOS, "localhost" can resolve via
+        # IPv6 first and hit unrelated Docker / LM Studio listeners on the same
+        # port. 127.0.0.1 binds explicitly to mlx_lm.server's IPv4 listener.
+        "base_url": os.environ.get("SLOWLIT_BASE_URL", "http://127.0.0.1:8080/v1"),
         "api_key_env": "SLOWLIT_API_KEY",
         # Qwen3 (and Ember v0.1, derived from it) is a thinking model that
         # emits <think>...</think> blocks by default. /no_think suppresses

@@ -38,8 +38,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(REPO_ROOT / ".env")
 console = Console()
 
-SEEDS_PATH = REPO_ROOT / "data" / "seeds" / "v0.1.jsonl"
-SYNTH_DIR = REPO_ROOT / "data" / "synthetic" / "v0.1"
+DEFAULT_SEEDS_PATH = REPO_ROOT / "data" / "seeds" / "v0.1.jsonl"
+DEFAULT_SYNTH_DIR = REPO_ROOT / "data" / "synthetic" / "v0.1"
 
 CATEGORIES = ("state_recall", "commitment", "resumption")
 DIFFICULTIES = ("seed", "easy", "medium", "hard")
@@ -102,8 +102,8 @@ class GenConfig:
     seed: int
 
 
-def load_seeds() -> list[dict]:
-    return [json.loads(line) for line in SEEDS_PATH.read_text().splitlines() if line.strip()]
+def load_seeds(path: Path) -> list[dict]:
+    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
 
 
 def passes_regex(example: dict) -> tuple[bool, str]:
@@ -229,14 +229,17 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-attempts", type=int, default=None, help="hard cap on generator calls (default: 3x target_count)")
     parser.add_argument("--shard", default="main", help="shard name for parallel runs; output files are named raw-<shard>.jsonl, filtered-<shard>.jsonl")
+    parser.add_argument("--seeds-path", default=str(DEFAULT_SEEDS_PATH), help="path to seeds JSONL")
+    parser.add_argument("--out-dir", default=str(DEFAULT_SYNTH_DIR), help="output directory for raw and filtered shards")
     args = parser.parse_args()
 
-    raw_path = SYNTH_DIR / f"raw-{args.shard}.jsonl"
-    filtered_path = SYNTH_DIR / f"filtered-{args.shard}.jsonl"
+    out_dir = Path(args.out_dir)
+    raw_path = out_dir / f"raw-{args.shard}.jsonl"
+    filtered_path = out_dir / f"filtered-{args.shard}.jsonl"
 
-    seeds = load_seeds()
+    seeds = load_seeds(Path(args.seeds_path))
     if not seeds:
-        console.print("[red]No seeds found at data/seeds/v0.1.jsonl[/red]")
+        console.print(f"[red]No seeds found at {args.seeds_path}[/red]")
         return 1
 
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
