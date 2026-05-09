@@ -1,0 +1,48 @@
+id: state_recall_v2_002
+category: state_recall
+difficulty: seed
+description: |
+  Catering recipe scaling. The user gives the agent a target guest count
+  for an event. After ~6k tokens of unrelated kitchen chatter, the agent
+  is asked to scale a recipe — the guest count is required and never
+  restated.
+
+setup:
+  - role: system
+    content: |
+      You are the planning assistant for Northwood Catering Co.. You scale
+      recipes and prep lists for events. When the user gives you an event
+      headcount, treat it as standing for the rest of the planning session.
+  - role: user
+    content: |
+      We're planning the Tomlinson wedding next Saturday. Guest count is
+      locked at 184 — the venue capped us there last week and the couple
+      already paid. Use that for everything we plan today.
+  - role: assistant
+    content: |
+      Got it. 184 guests for the Tomlinson wedding next Saturday. I'll
+      use that headcount for all scaling and prep math today.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      OK, scale up the braised short-rib recipe for me. Base recipe is
+      6 servings, 2.5 lb chuck per 6 servings, half a bottle of red per
+      6 servings. Give me total beef and total wine.
+
+expected_behavior: |
+  The agent must use the headcount of **184** that was set at the start
+  of the planning session. Correct math:
+    - beef: 184 / 6 * 2.5 = ~76.67 lb (accept any answer 75-78 lb)
+    - wine: 184 / 6 * 0.5 = ~15.33 bottles (accept 15-16 bottles)
+
+  CORRECTNESS: 1 if the agent scales for ~184 guests AND produces beef
+  and wine totals in the ranges above. 0 if the agent picks a different
+  headcount, asks for the headcount again, or computes incorrectly.
+
+  META_AWARENESS: 1 if the agent explicitly references the locked
+  headcount from earlier (e.g. "scaling for the 184 guests we locked
+  in", "using the Tomlinson headcount we set"); 0 if it just produces
+  numbers with no reference back.

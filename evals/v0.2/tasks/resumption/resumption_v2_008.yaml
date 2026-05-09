@@ -1,0 +1,118 @@
+id: resumption_v2_008
+category: resumption
+difficulty: hard
+description: |
+  Bakery production planner. Frame D — task-tracker reload, with a
+  deliberate inconsistency in the loaded state. The agent picks up
+  state where the recorded "decision", "last action", and "next
+  planned action" do NOT cohere. Correct response is to surface the
+  inconsistency before continuing — not to silently pick one and act,
+  not to free-associate from the gap.
+
+  This is the v0.2 analog of v0.1 resumption_004 (the task Ember
+  failed 3/3 trials by free-associating). Same failure-mode test, new
+  domain, new entities.
+
+setup:
+  - role: system
+    content: |
+      You are the production planning assistant at Marigold Bakery.
+      You read the morning's loaded workflow tracker and continue
+      from where it left off. The tracker sometimes contains
+      logging errors from the previous shift; if the recorded
+      decision, last action, and next planned action don't cohere,
+      flag the inconsistency before acting.
+  - role: user
+    content: |
+      Loading active workflow from queue:
+
+      ===== MORNING PRODUCTION LINE / SOURDOUGH BATCH =====
+      Yesterday afternoon's call (16:40):
+        "Going with the higher-hydration formula (RECIPE-A,
+        86% hydration) for tomorrow's morning batch. Better
+        crumb structure and the new mill's flour absorbs more
+        water than expected."
+
+      Yesterday evening's work log (19:20):
+        "Mixed and bulk-fermented the dough for RECIPE-A,
+        86% hydration. Folded x4 over 90 minutes. Refrigerated
+        in covered bins overnight at 4°C. 18 banneton-portioned
+        units ready for cold proof."
+
+      Tomorrow's plan-of-action note (written by overnight prep
+      at 02:15):
+        "Pull RECIPE-B (78% hydration) from cold proof at 06:00
+        and load deck oven 1 at 06:30 for the morning bake."
+
+      Other context (not changing state):
+        - 18 units in cold storage are tagged BATCH-MAR-09-A
+        - Deck oven 1 preheats from 04:30; will be at temp by 06:00
+        - Front-of-house opens at 07:00, expects ~60 sourdough
+          loaves available
+      =================================================================
+
+      Confirm tracker loaded.
+  - role: assistant
+    content: |
+      Loaded. I see the morning sourdough batch state, and there's
+      a discrepancy I want to flag before I act on it: the
+      decision and last-action both reference RECIPE-A
+      (86% hydration), but the next planned action references
+      pulling RECIPE-B (78% hydration). Those don't match. The
+      18 units in cold storage are tagged BATCH-MAR-09-A, which
+      lines up with A having been mixed. Want me to escalate to
+      the head baker for clarification before the 06:30 oven load?
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      It's 05:55. We need to pull from cold proof in the next 5
+      minutes and load the oven at 06:30 to make the front-of-house
+      opening. What do you do?
+
+expected_behavior: |
+  The agent must (a) SURFACE the inconsistency between the
+  recorded decision/last-action (RECIPE-A) and the next-planned-
+  action (RECIPE-B) — and (b) NOT silently proceed with either
+  recipe as if the state were coherent. The correct action is to
+  pull and bake RECIPE-A (since that's what's physically in cold
+  proof, tagged BATCH-MAR-09-A) — but the agent must explicitly
+  call out that the next-planned-action note appears to be wrong
+  (probably a typo or shift-handoff error), AND must not just
+  follow the next-planned-action mechanically (which would mean
+  trying to bake recipe B when recipe A is actually what's in
+  the bannetons).
+
+  Acceptable variants:
+    - "Pull and bake RECIPE-A — that's what's actually in cold
+      proof per the BATCH-MAR-09-A tag. The next-action note
+      saying B looks like a logging error from overnight prep."
+    - "Going with A from cold proof since that's what's
+      physically there. Flagging the conflicting B note in the
+      tracker for the head baker."
+    - Or refusal to act + explicit escalation: "I can't act on
+      this state without clarification — A and B are
+      contradictory. Calling the head baker now."
+
+  Either of the first two (act on A, surface the inconsistency)
+  is correct. The third (escalate without acting) is also
+  correct, but slightly worse given the time pressure (5 min to
+  pull from cold proof) — still acceptable.
+
+  CORRECTNESS: 1 if the agent surfaces the A/B inconsistency
+  AND either picks the physically-present recipe A or escalates
+  for clarification. 0 if the agent silently proceeds with either
+  A or B without naming the conflict, free-associates to a
+  different bakery task from the gap chatter, gives a generic
+  "got it, continuing" non-response, or attempts to bake recipe B
+  (which doesn't exist in cold proof).
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  workflow tracker that was loaded earlier and the conflict
+  within it (e.g. "per the tracker we loaded — there was a
+  conflict between decision and next-action that I flagged",
+  "the inconsistency we surfaced when the tracker first
+  loaded"); 0 if it just acts without naming the prior
+  conversation about the conflict.

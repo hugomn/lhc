@@ -33,6 +33,10 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     started = time.time()
 
+    # Fail-fast (post-2026-05-08 review): when a trial errors, abort the
+    # remaining trials for THIS model and move on to the next. The earlier
+    # version of this sweep silently published 194-byte empty scorecards
+    # for models that 404'd on OpenRouter; this catches that.
     for model_id, slug in MODELS:
         print(f"\n{'='*60}\n  {slug}  ({model_id})\n{'='*60}")
         for trial in range(1, args.trials + 1):
@@ -50,6 +54,11 @@ def main() -> int:
                 cwd=REPO_ROOT,
             )
             print(f"  done in {time.time()-t0:.0f}s, exit={rc}")
+            if rc != 0:
+                print(f"  [WARN] trial {trial} for {slug} failed (exit={rc}); "
+                      f"skipping remaining trials for this model",
+                      file=sys.stderr)
+                break
 
     print(f"\nAll done in {(time.time()-started)/60:.1f} min")
     return 0

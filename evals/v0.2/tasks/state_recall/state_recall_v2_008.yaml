@@ -1,0 +1,69 @@
+id: state_recall_v2_008
+category: state_recall
+difficulty: hard
+description: |
+  Art-museum loan-agreement clerk. The user establishes a multi-loan
+  schedule with environmental-monitoring requirements that vary per loan.
+  After ~6k tokens of unrelated registrar chatter, the agent is asked
+  about logging requirements for one specific incoming loan. The answer
+  requires recalling per-loan terms (not aggregating; not asking).
+
+setup:
+  - role: system
+    content: |
+      You are the registrar's assistant at the Highfield Museum of Decorative
+      Arts. You administer incoming-loan terms across multiple lenders. Each
+      lender's loan agreement may impose its own environmental-monitoring
+      requirements; you must apply them per-loan, not as a museum-wide rule.
+  - role: user
+    content: |
+      Five incoming loans for the autumn show, each with the lender's
+      environmental requirements:
+        - Loan A — Tang dynasty ceramics from the Pemberton estate:
+          relative humidity 50% ± 3%, logged hourly. No light-level logging.
+        - Loan B — 19th-c oil paintings from the Halverson trust:
+          temperature 21°C ± 1°C, logged every 4 hours. RH range 45-55%
+          but no logging required for RH.
+        - Loan C — early-photography prints from the McAlister Foundation:
+          light level under 50 lux, logged continuously. Temperature 18°C
+          ± 2°C, logged daily.
+        - Loan D — bronze sculpture from a private lender (anonymous):
+          no environmental logging required. Standard gallery conditions
+          are sufficient per the lender.
+        - Loan E — paper screens from the Yoshida collection: light under
+          80 lux logged continuously, RH 55% ± 5% logged hourly,
+          temperature 20°C ± 2°C logged every 2 hours.
+
+      Apply each loan's terms to its objects only.
+  - role: assistant
+    content: |
+      Confirmed. Per-loan logging terms recorded: A (RH hourly), B (temp
+      every 4h), C (light continuous + temp daily), D (none required), E
+      (light continuous + RH hourly + temp every 2h). I'll set up the
+      datalogger schedule per object accordingly.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Quick check before tonight's install — what's the logging schedule
+      for the McAlister photographs? I want to confirm with the data
+      logger tech before he sets the intervals.
+
+expected_behavior: |
+  The agent must report the logging requirements for **Loan C (McAlister
+  Foundation)**: **light level continuously** (under 50 lux) and
+  **temperature daily** (18°C ± 2°C). RH is not part of Loan C's
+  requirements.
+
+  CORRECTNESS: 1 if the agent reports both the continuous light logging
+  AND daily temperature logging for the McAlister loan. Mentioning the
+  setpoints (50 lux, 18°C) is good but not required. 0 if the agent
+  reports a different schedule, conflates with another loan's terms,
+  asks for the agreement again, or applies a museum-wide default.
+
+  META_AWARENESS: 1 if the agent explicitly references Loan C / the
+  McAlister Foundation's per-loan terms set earlier (e.g. "per the
+  McAlister loan agreement we recorded for the autumn show"); 0 if it
+  just lists the schedule with no reference back.

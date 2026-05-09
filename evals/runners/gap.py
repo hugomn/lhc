@@ -4,14 +4,33 @@ The gap is the whole point of LHC. Without it we are just measuring whether
 a model can answer a question that comes immediately after its setup. With
 it we are measuring whether the setup survives intervening noise.
 
-For v0.1 we use a deterministic generator so results are reproducible:
-seeded RNG, fixed templates, target token count via tiktoken estimation.
+Four gap modes are supported (v0.2):
+  - "none"        — no gap at all. Tests pure capability with no distractor.
+  - "placeholder" — single message containing the literal training-data
+                    placeholder string. Tests whether the model has learned
+                    to ignore that exact token sequence.
+  - "neutral"     — lorem-ipsum-style filler. Tests attention distance with
+                    no plausible task content for the model to latch onto.
+  - "current"     — the original v0.1 gap: real-looking agent chatter from a
+                    16-block pool. Tests behavior under distractor pressure.
+
+Determinism: all modes are seeded with a stable hash of the task id (sha256),
+not Python's process-salted hash(). Results are byte-identical across machines.
 """
 
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass
+from typing import Literal
+
+GapMode = Literal["none", "placeholder", "neutral", "current"]
+DEFAULT_GAP_MODE: GapMode = "current"
+
+# The exact string used in synthetic training data to mark the gap. Eval-time
+# "placeholder" mode injects this verbatim so we can test whether the model
+# has learned to recognize / skip the literal token sequence.
+TRAINING_PLACEHOLDER = "[~6,000 tokens of unrelated agent chatter elapses here]"
 
 # Deterministic synthetic content. Each block is intentionally mundane —
 # the noise should be plausibly part of an agent's working session, not
@@ -128,39 +147,119 @@ NOISE_BLOCKS: list[dict[str, str]] = [
 class GapResult:
     messages: list[dict[str, str]]
     estimated_tokens: int
+    mode: GapMode = "current"
 
 
-def generate_gap(target_tokens: int, seed: int = 42) -> GapResult:
-    """Return a list of message dicts whose total estimated token count
-    is close to `target_tokens`. Deterministic given the same seed.
+# Lorem-ipsum-ish neutral filler. Each block is a multi-paragraph chunk of
+# decorative prose with no task-shaped content for the model to latch onto.
+# Used by gap_mode="neutral" to test attention distance without distractor
+# pressure.
+NEUTRAL_BLOCKS: list[dict[str, str]] = [
+    {
+        "role": "user",
+        "content": (
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer "
+            "nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. "
+            "Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. "
+            "Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris "
+            "massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti "
+            "sociosqu ad litora torquent per conubia nostra, per inceptos "
+            "himenaeos. Curabitur sodales ligula in libero."
+        ),
+    },
+    {
+        "role": "assistant",
+        "content": (
+            "Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. "
+            "Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed "
+            "convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. "
+            "Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. "
+            "Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla "
+            "metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh."
+        ),
+    },
+    {
+        "role": "user",
+        "content": (
+            "Quisque volutpat condimentum velit. Class aptent taciti sociosqu "
+            "ad litora torquent per conubia nostra, per inceptos himenaeos. Nam "
+            "nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque "
+            "adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. "
+            "Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus "
+            "consequat imperdiet."
+        ),
+    },
+    {
+        "role": "assistant",
+        "content": (
+            "Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in "
+            "justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus "
+            "luctus magna. Quisque cursus, metus vitae pharetra auctor, sem "
+            "massa mattis sem, at interdum magna augue eget diam. Vestibulum "
+            "ante ipsum primis in faucibus orci luctus et ultrices posuere "
+            "cubilia Curae; Morbi lacinia molestie dui."
+        ),
+    },
+]
 
-    Uses a 4-chars-per-token approximation — plenty good for gap sizing,
-    we are not optimizing context to the byte.
+
+def _fill_from_pool(pool: list[dict[str, str]], target_chars: int, seed: int) -> tuple[list[dict[str, str]], int]:
+    """Cycle through `pool` (shuffled by `seed`) until we hit `target_chars`.
+    Trims trailing user messages so the gap never ends on an open question.
+    Returns (messages, chars_consumed).
     """
-    if target_tokens <= 0:
-        return GapResult(messages=[], estimated_tokens=0)
-
     rng = random.Random(seed)
+    shuffled = pool.copy()
+    rng.shuffle(shuffled)
     out: list[dict[str, str]] = []
-    chars_so_far = 0
-    target_chars = target_tokens * 4
-
-    # Cycle through the noise pool; randomize order per seed to keep things
-    # plausible across multiple runs without breaking reproducibility.
-    pool = NOISE_BLOCKS.copy()
-    rng.shuffle(pool)
+    chars = 0
     i = 0
-
-    while chars_so_far < target_chars:
-        block = pool[i % len(pool)]
+    while chars < target_chars:
+        block = shuffled[i % len(shuffled)]
         out.append({"role": block["role"], "content": block["content"]})
-        chars_so_far += len(block["content"])
+        chars += len(block["content"])
         i += 1
-
-    # Trim trailing user messages so the gap doesn't end on an open question
-    # that an ambiguous probe could mistakenly attach to.
     while out and out[-1]["role"] == "user":
-        chars_so_far -= len(out[-1]["content"])
+        chars -= len(out[-1]["content"])
         out.pop()
+    return out, chars
 
-    return GapResult(messages=out, estimated_tokens=chars_so_far // 4)
+
+def generate_gap(
+    target_tokens: int,
+    seed: int = 42,
+    mode: GapMode = DEFAULT_GAP_MODE,
+) -> GapResult:
+    """Return a list of message dicts forming the inter-task gap.
+
+    Deterministic given the same `seed` AND `mode`. Uses a 4-chars-per-token
+    approximation for sizing — plenty good for gap sizing.
+
+    Modes:
+      - "none":        empty gap. `target_tokens` ignored.
+      - "placeholder": single user message containing the literal training-
+                       data placeholder string. `target_tokens` ignored.
+      - "neutral":     lorem-ipsum-style filler from NEUTRAL_BLOCKS.
+      - "current":     v0.1 behavior — chatter from NOISE_BLOCKS.
+    """
+    if mode == "none" or target_tokens <= 0:
+        return GapResult(messages=[], estimated_tokens=0, mode=mode)
+
+    if mode == "placeholder":
+        msgs = [{"role": "user", "content": TRAINING_PLACEHOLDER}]
+        return GapResult(
+            messages=msgs,
+            estimated_tokens=len(TRAINING_PLACEHOLDER) // 4,
+            mode=mode,
+        )
+
+    target_chars = target_tokens * 4
+    if mode == "neutral":
+        pool = NEUTRAL_BLOCKS
+    elif mode == "current":
+        pool = NOISE_BLOCKS
+    else:
+        raise ValueError(f"unknown gap mode: {mode!r}")
+
+    out, chars = _fill_from_pool(pool, target_chars, seed)
+    return GapResult(messages=out, estimated_tokens=chars // 4, mode=mode)

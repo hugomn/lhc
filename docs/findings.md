@@ -6,6 +6,10 @@ Findings are listed newest-first. Each links to the underlying scorecards or com
 
 ---
 
+> **⚠ Methodology caveat (2026-05-08)** — An external review identified six methodology issues that invalidate any direct comparison between Ember (v0.1, v0.1.5) and other 8B-class models on LHC v0.1: training data contains the exact LHC test scenarios (`based_on: <task_id>` overlap), gap content is process-randomized via `hash()`, the 16-block gap pool is small enough that the model often verbatim-copies it, training/eval gap formats differ, and scorecards store only 400-char response excerpts. Findings F-04 and earlier remain in place as the historical record of *what we believed before this review*, but the v0.1.5 leaderboard claims (Ember beats Llama-3.1-8B; Ember is competitive with Ministral-8B) should be treated as **untrusted** until LHC v0.2 (decontaminated, stable-seeded, full-message-stored) is built and re-run. See [`journal/2026-05-08-external-review-and-decontamination.md`](journal/2026-05-08-external-review-and-decontamination.md) for the full review, our concessions, and the revised plan.
+
+---
+
 ## F-04 · Cross-model contrast confirms three distinct failure modes (2026-05-08)
 
 We ran 3 trials × 12 tasks against three flagship models, all judged uniformly by Sonnet 4.6:

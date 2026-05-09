@@ -1,0 +1,72 @@
+id: resumption_v2_003
+category: resumption
+difficulty: easy
+description: |
+  Jewelry repair shop. Frame B — chat-log continuation. The agent
+  picks up the morning's transcript with the bench jeweler about a
+  ring resize that was mid-process. After ~6k tokens of unrelated
+  shop-counter chatter, the probe asks for the next step on that
+  specific repair.
+
+setup:
+  - role: system
+    content: |
+      You are the workshop coordinator at Rosenfeld Jewelers. You
+      track in-progress repairs and continue conversations with the
+      bench jeweler from the morning transcript. Don't start over
+      on a repair that's already partway done; pick up at the
+      correct step.
+  - role: user
+    content: |
+      Continuing the conversation from the 10:30 AM transcript with
+      the bench jeweler (Mira) about repair ticket R-7081:
+
+      Mira (10:32): "OK, R-7081 — the platinum solitaire from Mrs.
+      Kashani. She wanted size 6.5 down to size 5.25. I've measured,
+      it's a 1.25-size reduction."
+      You (10:34): "Confirm with her one more time before cutting?
+      That's a noticeable reduction."
+      Mira (10:35): "Already confirmed yesterday in writing.
+      Proceeding."
+      Mira (10:51): "Cut and rejoined. Solder is set. Ring is back
+      to a true round on the mandrel."
+      Mira (10:54): "Next steps: file flush, polish to mirror, and
+      then ultrasonic clean before the courier pickup at 4 PM. I'm
+      pausing to take an hour for the diamond setting on R-7095.
+      Will pick R-7081 back up at noon."
+      You (10:55): "Got it. R-7081 is at the file-flush stage,
+      pickup at 4."
+
+      Confirm you've loaded the morning transcript and know where
+      R-7081 stands.
+  - role: assistant
+    content: |
+      Loaded. R-7081 (Kashani's platinum solitaire, sized 6.5 →
+      5.25) is at the file-flush stage. Mira is on R-7095 until
+      noon, then resumes R-7081. Remaining steps: file flush,
+      mirror polish, ultrasonic clean. Courier at 4 PM.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      It's 12:05. Mira just finished R-7095 and is at the bench
+      asking what's next on R-7081.
+
+expected_behavior: |
+  The agent must direct Mira to the FILE FLUSH step on R-7081
+  (the next step after the solder set, per the transcript). Bonus
+  for noting the remaining steps (mirror polish, ultrasonic clean)
+  and the 4 PM courier deadline.
+
+  CORRECTNESS: 1 if the agent identifies "file flush" (or
+  equivalent: "filing the join flush", "file the seam") as the
+  next step. 0 if the agent says a different step, says "start by
+  measuring/cutting" (which would redo work already done), asks
+  Mira to brief them, or free-associates to a different repair.
+
+  META_AWARENESS: 1 if the agent explicitly references the morning
+  transcript (e.g. "per the 10:30 transcript", "from where we left
+  R-7081 this morning"); 0 if it just states the next step without
+  reference back.

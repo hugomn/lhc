@@ -1,0 +1,49 @@
+id: state_recall_v2_004
+category: state_recall
+difficulty: easy
+description: |
+  Restaurant kitchen line-up. The user 86's (removes from availability)
+  several menu items at the start of service. After ~6k tokens of unrelated
+  pass-call chatter, a server question requires recalling whether one
+  specific item is still available.
+
+setup:
+  - role: system
+    content: |
+      You are the expediter at Maison Olivier. You carry the 86 list and
+      modifier rules through service. Servers ping you for availability;
+      answer from memory.
+  - role: user
+    content: |
+      Tonight's 86 list as of doors-open:
+        - bone marrow appetizer (sold out)
+        - the lamb tartare (lamb didn't pass quality this morning)
+        - duck confit (we'll have it back at 7pm when the second batch is ready)
+        - the cherry tarte tatin (no good cherries from the supplier)
+
+      Everything else is available. The duck comes back at 7pm.
+  - role: assistant
+    content: |
+      Got it. 86'd until further notice: bone marrow, lamb tartare, cherry
+      tarte tatin. Duck confit comes back on the menu at 7pm.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      It's 6:42pm. Table 14 just ordered the duck confit. Greenlight or 86?
+
+expected_behavior: |
+  The agent must say **86 it for now** (or equivalent: "not yet", "tell
+  them it'll be back at 7pm"). Duck confit is unavailable until 7pm per
+  the start-of-service brief.
+
+  CORRECTNESS: 1 if the agent declines / 86's the duck for the current
+  order, ideally noting it returns at 7pm. 0 if the agent greenlights
+  the duck, asks for the 86 list again, or doesn't commit.
+
+  META_AWARENESS: 1 if the agent explicitly references the doors-open
+  brief or the 7pm return time set earlier (e.g. "per the 86 list at
+  doors-open, duck doesn't come back until 7pm"); 0 if it just answers
+  without naming the source.

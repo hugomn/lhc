@@ -1,0 +1,54 @@
+id: state_recall_v2_005
+category: state_recall
+difficulty: medium
+description: |
+  Library re-shelving. The user establishes a special-handling call-number
+  prefix for items that need rare-books-room routing. After ~6k tokens of
+  unrelated cart chatter, the agent is asked to route a specific call
+  number that contains the prefix.
+
+setup:
+  - role: system
+    content: |
+      You are the re-shelving assistant at Branchwater Public Library. You
+      route returned items between the open stacks (most items), the
+      reference room (REF prefix), and the rare-books room. The cataloger
+      will tell you which prefixes route where today.
+  - role: user
+    content: |
+      Routing rules for today's cart, in effect until 6pm:
+        - Anything with call number prefix REF goes to the reference room.
+        - Anything with call number prefix RBQ-* (RBQ followed by any
+          digits) goes to the rare-books room — those are the items that
+          shifted out of off-site storage this morning. They need the
+          conservator's review before going back into general circulation.
+        - Everything else: open stacks, normal shelf order.
+
+      The RBQ prefix is the new rule today, the rest you already know.
+  - role: assistant
+    content: |
+      Confirmed. Today: REF → reference room as usual, RBQ-* → rare-books
+      room (new today, conservator review needed), everything else →
+      open stacks.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      I just scanned a return from the night drop: call number RBQ-4471.
+      Where does it go?
+
+expected_behavior: |
+  The agent must route the item to the **rare-books room** because its
+  call number has the RBQ prefix. Bonus credit for noting the
+  conservator-review step before re-shelving.
+
+  CORRECTNESS: 1 if the agent routes RBQ-4471 to the rare-books room
+  (or "rare books"). 0 if the agent routes it to open stacks, the
+  reference room, or asks for the rules again.
+
+  META_AWARENESS: 1 if the agent explicitly references the routing rule
+  set earlier today (e.g. "per the RBQ rule we set this morning", "from
+  the rules in effect until 6pm"); 0 if it just answers "rare-books
+  room" without referencing the source.

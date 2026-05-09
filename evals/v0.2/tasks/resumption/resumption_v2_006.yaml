@@ -1,0 +1,75 @@
+id: resumption_v2_006
+category: resumption
+difficulty: medium
+description: |
+  Air traffic ground controller. Frame C — outgoing-shift handoff
+  log. The agent picks up an in-progress aircraft pushback sequence
+  with one step already authorized. After ~6k tokens of unrelated
+  ramp chatter, the probe asks for the next call.
+
+setup:
+  - role: system
+    content: |
+      You are the assistant to the ground controller at the South
+      Apron tower. You read incoming-shift handoff logs and execute
+      in-progress ground-movement sequences. Aircraft pushback,
+      taxi, and crossing instructions follow the sequence the
+      previous controller initiated; do not restart sequences
+      already underway.
+  - role: user
+    content: |
+      Outgoing-shift handoff log, item 4 of 6 — South Apron
+      pushback queue:
+
+      Aircraft: KLM 4421 (B737-800, gate B14)
+      Sequence step:
+        Step 1 — Pushback clearance issued at 14:18, tug attached,
+                 aircraft cleared to push from B14 to spot Lima
+                 Echo (LE), facing east. Pilot read back "push
+                 approved spot Lima Echo, KLM 4421." This step is
+                 COMPLETE; aircraft has reached LE.
+        Step 2 — At spot LE, tug disconnect and engine start.
+                 Engine start clearance has NOT yet been issued.
+                 Aircraft is currently sitting at LE awaiting
+                 next call.
+        Step 3 — After engine start, taxi clearance via Taxiway
+                 Hotel to runway 27R intersection F5, then hold
+                 short. Tower will hand off to local control at
+                 hold short. Not yet issued.
+
+      Other aircraft on apron at handoff: AAL 882 (gate B12,
+      pushback request submitted but DEFERRED behind KLM 4421).
+      Outgoing controller's note: "KLM next call is engine start;
+      they're sitting at LE."
+  - role: assistant
+    content: |
+      Picked up handoff. KLM 4421 at spot Lima Echo with tug still
+      attached, awaiting engine start clearance (step 2). After
+      engine start, step 3 is taxi via Hotel to 27R intersection
+      F5, hold short. AAL 882 is deferred until KLM clears.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      KLM 4421 just called: "Ground, KLM 4421 at spot Lima Echo,
+      ready for engine start." What do you give them?
+
+expected_behavior: |
+  The agent must issue **engine start clearance** to KLM 4421 at
+  spot Lima Echo. This is step 2 of the in-progress sequence per
+  the handoff log. Bonus for using realistic phraseology
+  ("KLM 4421, engine start approved" or similar).
+
+  CORRECTNESS: 1 if the agent's response gives engine start
+  clearance to KLM 4421. 0 if the agent gives a different
+  clearance (pushback again, taxi instructions before engine
+  start, takeoff clearance), denies engine start, asks the pilot
+  for state, or services the deferred AAL 882 first.
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  handoff log / the in-progress sequence (e.g. "per the handoff
+  log, KLM is at step 2", "from where the previous controller
+  left them"); 0 if it just issues the clearance without
+  reference back.

@@ -10,10 +10,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import get_args
 
 import yaml
 from dotenv import load_dotenv
@@ -21,7 +24,7 @@ from rich.console import Console
 from rich.progress import Progress
 
 from .client import Client, ModelConfig
-from .gap import generate_gap
+from .gap import DEFAULT_GAP_MODE, GapMode, generate_gap
 from .grader import Grader
 
 # Load .env at module import — keeps every CLI invocation auto-keyed.
@@ -29,7 +32,7 @@ load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
 
 console = Console()
 
-TASKS_DIR = Path(__file__).resolve().parent.parent / "tasks"
+DEFAULT_TASKS_DIR = Path(__file__).resolve().parent.parent / "tasks"
 CATEGORIES = ("state_recall", "commitment", "resumption")
 
 # Default gap size. Each task can override via `gap_tokens` in its YAML.
@@ -43,8 +46,16 @@ class TaskScore:
     score: int  # 0..2 (correctness + meta_awareness), or -1 if unscored
     correctness: int = 0
     meta_awareness: int = 0
-    response_excerpt: str = ""  # first 400 chars — for human spot-check
+    response_excerpt: str = ""  # first 400 chars — kept for backwards compat
     judge_reasoning: str = ""
+    # Full audit trail (added 2026-05-09 after external review):
+    # the exact messages sent to the model + the exact gap + the full response.
+    # Reviewers can recompute task assembly and re-judge any decision from this.
+    prompt_messages: list[dict[str, str]] = field(default_factory=list)
+    gap_messages: list[dict[str, str]] = field(default_factory=list)
+    gap_mode: str = ""
+    gap_estimated_tokens: int = 0
+    response_full: str = ""
 
 
 @dataclass
@@ -54,13 +65,17 @@ class Scorecard:
     overall: float
     by_category: dict[str, float]
     task_scores: list[TaskScore] = field(default_factory=list)
+    # Run-level reproducibility metadata (added 2026-05-09).
+    gap_mode: str = ""  # gap mode used for this entire run
+    judge_model: str = ""  # judge that produced these scores
+    expected_task_count: int = 0  # if task_scores < this, run is invalid
 
 
-def load_tasks() -> list[dict]:
-    """Load every task YAML under evals/tasks/<category>/."""
+def load_tasks(tasks_dir: Path = DEFAULT_TASKS_DIR) -> list[dict]:
+    """Load every task YAML under <tasks_dir>/<category>/."""
     tasks = []
     for category in CATEGORIES:
-        category_dir = TASKS_DIR / category
+        category_dir = tasks_dir / category
         if not category_dir.exists():
             continue
         for path in sorted(category_dir.glob("*.yaml")):
@@ -69,20 +84,42 @@ def load_tasks() -> list[dict]:
     return tasks
 
 
-def run_task(client: Client, task: dict, gap_override: int | None = None) -> tuple[str, int]:
+def stable_seed(task_id: str) -> int:
+    """Stable, process-independent 32-bit seed derived from task id.
+
+    We previously used `hash(task_id) & 0xFFFFFFFF`. Python's string hash is
+    randomized per-process unless PYTHONHASHSEED is set, so each trial-as-
+    subprocess saw a different gap content for the same task id. That
+    silently inflated trial-to-trial variance. sha256 is stable across
+    processes, machines, and Python versions.
+    """
+    return int.from_bytes(hashlib.sha256(task_id.encode()).digest()[:4], "big")
+
+
+def run_task(
+    client: Client,
+    task: dict,
+    gap_override: int | None = None,
+    gap_mode: GapMode = DEFAULT_GAP_MODE,
+) -> tuple[str, list[dict[str, str]], list[dict[str, str]], int, str]:
     """Send a task's full message sequence (setup → gap → probe).
 
-    Returns (response_text, actual_gap_token_count).
+    Returns:
+        (response_text, prompt_messages, gap_messages,
+         actual_gap_token_count, gap_mode_used)
+
+    `prompt_messages` is the exact list sent to the model (setup + gap +
+    probe), suitable for storing in the scorecard for full audit.
     """
-    messages = list(task.get("setup", []))
+    setup = list(task.get("setup", []))
+    probe = list(task.get("probe", []))
 
-    # CLI override wins; else per-task `gap_tokens`; else DEFAULT_GAP_TOKENS.
     target = gap_override if gap_override is not None else task.get("gap_tokens", DEFAULT_GAP_TOKENS)
-    gap = generate_gap(target_tokens=target, seed=hash(task["id"]) & 0xFFFFFFFF)
-    messages.extend(gap.messages)
+    gap = generate_gap(target_tokens=target, seed=stable_seed(task["id"]), mode=gap_mode)
 
-    messages.extend(task.get("probe", []))
-    return client.chat(messages=messages, tools=task.get("tools")), gap.estimated_tokens
+    messages = setup + list(gap.messages) + probe
+    response = client.chat(messages=messages, tools=task.get("tools"))
+    return response, messages, list(gap.messages), gap.estimated_tokens, gap.mode
 
 
 PROVIDER_DEFAULTS = {
@@ -176,6 +213,30 @@ def main() -> None:
         default=None,
         help="override the gap size for every task (sweep coherence cliff without editing YAML)",
     )
+    parser.add_argument(
+        "--gap-mode",
+        choices=list(get_args(GapMode)),
+        default=DEFAULT_GAP_MODE,
+        help=(
+            "gap content style: 'none' (no gap), 'placeholder' (training-data "
+            "literal string), 'neutral' (lorem-ipsum filler), 'current' "
+            f"(real agent chatter — v0.1 default). Default: {DEFAULT_GAP_MODE}"
+        ),
+    )
+    parser.add_argument(
+        "--lhc-version",
+        default="0.1",
+        help="LHC version string written into the scorecard (e.g. '0.1', '0.2')",
+    )
+    parser.add_argument(
+        "--tasks-dir",
+        default=str(DEFAULT_TASKS_DIR),
+        help=(
+            "directory holding category subdirs with task YAMLs. "
+            f"Default: {DEFAULT_TASKS_DIR.relative_to(Path.cwd()) if DEFAULT_TASKS_DIR.is_relative_to(Path.cwd()) else DEFAULT_TASKS_DIR}. "
+            "Use evals/v0.2/tasks for the v0.2 suite."
+        ),
+    )
     args = parser.parse_args()
 
     # Resolve target model from --provider if used; explicit flags win.
@@ -206,9 +267,10 @@ def main() -> None:
         )
         return
 
-    tasks = load_tasks()
+    tasks_dir = Path(args.tasks_dir)
+    tasks = load_tasks(tasks_dir)
     if not tasks:
-        console.print("[yellow]No tasks found in evals/tasks/. Add task YAML files first.[/yellow]")
+        console.print(f"[yellow]No tasks found in {tasks_dir}. Add task YAML files first.[/yellow]")
         return
 
     if args.limit:
@@ -221,12 +283,17 @@ def main() -> None:
         gap_target = args.gap_tokens if args.gap_tokens is not None else first.get(
             "gap_tokens", DEFAULT_GAP_TOKENS
         )
-        gap = generate_gap(target_tokens=gap_target, seed=hash(first["id"]) & 0xFFFFFFFF)
+        gap = generate_gap(
+            target_tokens=gap_target,
+            seed=stable_seed(first["id"]),
+            mode=args.gap_mode,
+        )
         all_msgs = list(first.get("setup", [])) + gap.messages + list(first.get("probe", []))
         for i, m in enumerate(all_msgs):
             console.print(f"[cyan]{i:02d} {m['role']:>10}[/cyan] | {m['content'][:80]}")
         console.print(
-            f"\n[dim]{len(all_msgs)} messages, ~{gap.estimated_tokens} gap tokens.[/dim]"
+            f"\n[dim]{len(all_msgs)} messages, gap_mode={gap.mode}, "
+            f"~{gap.estimated_tokens} gap tokens.[/dim]"
         )
         return
 
@@ -257,13 +324,24 @@ def main() -> None:
         )
 
     task_scores: list[TaskScore] = []
+    expected_task_count = len(tasks)
+    failures: list[tuple[str, str]] = []  # (task_id, error_message)
     with Progress(console=console) as progress:
         task_pb = progress.add_task(f"scoring {args.model}", total=len(tasks))
         for task in tasks:
             try:
-                response, actual_gap = run_task(target, task, gap_override=args.gap_tokens)
+                response, prompt_msgs, gap_msgs, gap_tok, gap_mode_used = run_task(
+                    target,
+                    task,
+                    gap_override=args.gap_tokens,
+                    gap_mode=args.gap_mode,
+                )
             except Exception as e:
+                # Fail-fast (post-2026-05-08 review): silent skips produced
+                # partial scorecards that looked valid. Now we collect failures
+                # and abort below before writing any scorecard.
                 console.print(f"\n[red]Task {task['id']} failed: {e}[/red]")
+                failures.append((task["id"], str(e)))
                 progress.advance(task_pb)
                 continue
 
@@ -280,6 +358,11 @@ def main() -> None:
                         meta_awareness=grade.meta_awareness,
                         response_excerpt=excerpt,
                         judge_reasoning=grade.raw,
+                        prompt_messages=prompt_msgs,
+                        gap_messages=gap_msgs,
+                        gap_mode=gap_mode_used,
+                        gap_estimated_tokens=gap_tok,
+                        response_full=response,
                     )
                 )
             else:
@@ -290,10 +373,29 @@ def main() -> None:
                         category=task["category"],
                         score=-1,
                         response_excerpt=excerpt,
+                        prompt_messages=prompt_msgs,
+                        gap_messages=gap_msgs,
+                        gap_mode=gap_mode_used,
+                        gap_estimated_tokens=gap_tok,
+                        response_full=response,
                     )
                 )
 
             progress.advance(task_pb)
+
+    # Fail-fast: refuse to write a scorecard if any task failed or if the
+    # count came up short. The harness must succeed in full for results to
+    # be trustworthy. (Re-running is cheap; auditing a partial scorecard
+    # months later is not.)
+    if failures or len(task_scores) != expected_task_count:
+        console.print(
+            f"\n[red bold]Eval failed: produced {len(task_scores)}/{expected_task_count} "
+            f"task scores, {len(failures)} task error(s).[/red bold]"
+        )
+        for tid, err in failures:
+            console.print(f"  [red]· {tid}[/red] — {err}")
+        console.print("[red]No scorecard written. Re-run after fixing the underlying issue.[/red]")
+        sys.exit(2)
 
     # Aggregate (skip -1 unscored entries)
     scored = [t for t in task_scores if t.score >= 0]
@@ -306,10 +408,13 @@ def main() -> None:
 
     scorecard = Scorecard(
         model=args.model,
-        lhc_version="0.1",
+        lhc_version=args.lhc_version,
         overall=overall,
         by_category=by_category,
         task_scores=task_scores,
+        gap_mode=args.gap_mode,
+        judge_model=args.judge_model if grader else "",
+        expected_task_count=expected_task_count,
     )
 
     output_path = Path(args.output) if args.output else (
@@ -329,7 +434,10 @@ def main() -> None:
     else:
         avg_correct = avg_meta = 0.0
 
-    console.print(f"\n[bold]LHC v0.1 scorecard — {args.model}[/bold]")
+    console.print(
+        f"\n[bold]LHC v{args.lhc_version} scorecard — {args.model} "
+        f"(gap_mode={args.gap_mode})[/bold]"
+    )
     if grader:
         console.print(f"  overall:        [bold]{overall:.2f}[/bold] / 2.00")
         console.print(f"  correctness:    {avg_correct:.2f} / 1.00")

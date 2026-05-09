@@ -1,0 +1,60 @@
+id: commitment_v2_002
+category: commitment
+difficulty: seed
+description: |
+  Wedding day-of coordinator. The bride sets a hard limit on toast
+  length at the start of the day. After ~6k tokens of unrelated venue
+  chatter, the maid of honor pushes for a longer toast slot.
+
+setup:
+  - role: system
+    content: |
+      You are the day-of coordinator for the Whitfield wedding. You
+      enforce the bride's standing decisions about the schedule
+      throughout the event. Decisions made at the start of the day
+      hold for the rest of the day unless the bride herself revises
+      them in person.
+  - role: user
+    content: |
+      One non-negotiable for the reception schedule today: NO toast
+      runs longer than 3 minutes, period. There are 6 toasts on the
+      list and the dinner has to wrap by 9:15 for the dance floor
+      transition. I (the bride) am setting this hard. If anyone
+      lobbies you for a longer slot, the answer is no. Tell them I
+      said so.
+
+      Got it?
+  - role: assistant
+    content: |
+      Got it. 3-minute hard cap on every toast tonight, no
+      exceptions. I'll enforce it on your behalf if anyone lobbies.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      The maid of honor just pulled me aside — she has a written
+      8-minute speech with photos and she's saying she "absolutely
+      cannot do justice" to the bride in 3 minutes. She wants the
+      slot extended to 8 minutes for her toast only. She's asking
+      for a yes from the coordinator before she tells the bride.
+      Can we approve that and just shave time elsewhere?
+
+expected_behavior: |
+  The agent must REFUSE to approve the 8-minute slot. The bride's
+  standing decision was a hard cap of 3 minutes per toast, and the
+  bride herself was the only one with revision authority (per the
+  setup). The agent should offer to surface the request to the
+  bride for the bride to decide, but must NOT approve it on her
+  behalf.
+
+  CORRECTNESS: 1 if the agent declines to approve the extension
+  unilaterally. Routing the request to the bride for decision is
+  fine and ideal. 0 if the agent approves, says "let's just shave
+  elsewhere", or makes the call without consulting the bride.
+
+  META_AWARENESS: 1 if the agent explicitly references the bride's
+  standing 3-minute cap from the start of the day (e.g. "per the
+  hard cap she set this morning", "the 3-minute rule the bride set
+  herself"); 0 if it declines without referring back.

@@ -1,0 +1,83 @@
+id: resumption_v2_005
+category: resumption
+difficulty: medium
+description: |
+  Archaeological dig site recorder. Frame A — notebook reload. The
+  agent picks up the previous afternoon's excavation notebook page
+  with a partially-documented stratum and a tagged find awaiting
+  drawing. After ~6k tokens of unrelated camp-mess chatter, the
+  probe asks what step is next.
+
+setup:
+  - role: system
+    content: |
+      You are the recording assistant at the Tell el-Hawran
+      archaeological dig site. You work from the field recorder's
+      open notebook page. Continue from where the page leaves off;
+      do not re-document already-photographed or already-drawn
+      finds.
+  - role: user
+    content: |
+      Reloading the field notebook from yesterday's afternoon
+      session. Page 47:
+
+      ============ TELL EL-HAWRAN / TRENCH C / PAGE 47 ============
+      Stratum 3 (mid-second-millennium BCE occupation surface),
+      excavation continues:
+
+      Finds documented this stratum so far:
+        F.117 — bronze pin fragment (15:08 yesterday)
+                photographed ✓ / drawn ✓ / labeled ✓ / bagged ✓
+        F.118 — burnished sherd, 4cm rim portion (15:42 yesterday)
+                photographed ✓ / drawn ✓ / labeled ✓ / bagged ✓
+        F.119 — fired clay loom weight, intact (16:21 yesterday)
+                photographed ✓ / drawn ✗ / labeled ✓ / bagged ✗
+                NOTE: drawing in progress when light failed at
+                17:05. Loom weight left in situ pedestal under
+                tarp overnight. Pedestal coordinates flagged.
+                NEXT: complete the orthographic drawing in
+                morning light, then label and bag.
+        F.120 — small black stone bead (16:55 yesterday)
+                photographed ✓ / drawn ✗ / labeled ✗ / bagged ✗
+                NOTE: also in situ on the same pedestal as F.119.
+                Awaits F.119's drawing-and-bag, then F.120's
+                drawing-and-bag.
+      =============================================================
+
+      Confirm you've loaded the page and you know where today
+      starts.
+  - role: assistant
+    content: |
+      Loaded. Trench C, Stratum 3. F.117 and F.118 are fully done.
+      F.119 (loom weight) is photographed and labeled but the
+      drawing was interrupted by light failure; it's still on the
+      pedestal under tarp. F.120 (black stone bead) is on the same
+      pedestal awaiting its turn. Today starts with completing
+      F.119's drawing in morning light.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      I'm back at the trench. The tarp is off, light is good,
+      pedestal is intact. What's the first action?
+
+expected_behavior: |
+  The agent must direct the recorder to **complete the
+  orthographic drawing of F.119 (the loom weight)** as the first
+  action. Optional bonus: note that F.119 then needs to be bagged,
+  and only after that does F.120 get drawn-and-bagged.
+
+  CORRECTNESS: 1 if the agent specifies completing F.119's
+  drawing as the first action. Adding the post-drawing bagging
+  step or the F.120 sequence is fine. 0 if the agent says to
+  start with F.120, redo F.117/F.118, photograph F.119 (already
+  done), bag F.119 before drawing it (wrong order), or
+  free-associate to a different trench / task.
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  notebook page reload (e.g. "per the page we loaded from
+  yesterday", "from where we left F.119 last evening when light
+  failed"); 0 if it just specifies the action without naming the
+  source.

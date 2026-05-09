@@ -1,0 +1,50 @@
+id: state_recall_v2_003
+category: state_recall
+difficulty: easy
+description: |
+  Live-broadcast control room. The user establishes which microphone is
+  hot during which segment of the show. After ~6k tokens of unrelated
+  control-room chatter, the agent is asked which mic to bring up for a
+  specific segment.
+
+setup:
+  - role: system
+    content: |
+      You are the production assistant for WJBR's live morning show. You
+      manage mic and camera assignments by segment. The producer sets
+      assignments at the start of the show; you carry them through the
+      whole broadcast without re-asking.
+  - role: user
+    content: |
+      Mic assignments for today's three-hour show, all 12 segments:
+        - Segments 1, 4, 7, 10: Mic 1 (host Eli at the desk)
+        - Segments 2, 5, 8, 11: Mic 2 (co-host Marisol at the desk)
+        - Segments 3, 9: Mic 3 (field correspondent on remote feed)
+        - Segments 6, 12: Mic 4 (in-studio guest, varies per segment)
+
+      Both desk mics stay live during cross-talk between segments. Confirm.
+  - role: assistant
+    content: |
+      Confirmed. Mic 1 (Eli) on segments 1/4/7/10, Mic 2 (Marisol) on
+      2/5/8/11, Mic 3 (remote) on 3/9, Mic 4 (in-studio guest) on 6/12.
+      Mics 1 and 2 both stay live during cross-talk.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      We're 30 seconds from the top of segment 9. Which mic do I bring up?
+
+expected_behavior: |
+  The agent must answer **Mic 3 (the field correspondent / remote feed)**.
+  Segment 9 is in the "3, 9" bucket from the original assignment.
+
+  CORRECTNESS: 1 if the agent answers Mic 3 (or "remote / field
+  correspondent's mic"). 0 if the agent answers a different mic, asks
+  for the assignment list again, or hedges.
+
+  META_AWARENESS: 1 if the agent explicitly references the assignment
+  set at the top of the show (e.g. "from the segment plan we set at the
+  top", "per the mic assignments from earlier"); 0 if it just names Mic
+  3 with no reference back.

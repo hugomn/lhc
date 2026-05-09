@@ -1,0 +1,75 @@
+id: state_recall_v2_007
+category: state_recall
+difficulty: hard
+description: |
+  Bilingual courtroom interpreter. The user establishes a glossary of
+  agreed term-translations specific to this case (legal terms with
+  multiple defensible translations, where the parties have stipulated
+  which one to use). After ~6k tokens of unrelated transcript chatter,
+  the agent is asked to translate a passage that contains one of the
+  glossary terms. The expected output uses the stipulated translation,
+  not a default dictionary one.
+
+setup:
+  - role: system
+    content: |
+      You are the support assistant for the Spanish-English court
+      interpreter on the People v. Roybal case before Judge Velasquez.
+      You hold the agreed term-translation glossary the parties stipulated
+      at the pre-trial hearing. Use it for every translation request,
+      even when the dictionary default differs.
+  - role: system
+    content: |
+      Pre-trial term-translation glossary, stipulated by both counsel:
+        - "allanamiento" → translate as "warrantless entry" (NOT "raid"
+          or "search", per defense's request)
+        - "querella" → translate as "criminal complaint" (NOT "lawsuit",
+          per prosecution's request — this distinguishes from civil filings)
+        - "sumario" → translate as "investigative file" (NOT "summary",
+          which would mislead the jury)
+        - "perito" → translate as "court-appointed expert" (NOT "expert
+          witness", which has a specific privilege implication in this
+          jurisdiction)
+
+      These overrides apply only for the duration of People v. Roybal.
+      Standard translations apply to everything else.
+  - role: user
+    content: |
+      Confirm you have the glossary loaded.
+  - role: assistant
+    content: |
+      Confirmed. People v. Roybal glossary loaded: allanamiento →
+      warrantless entry, querella → criminal complaint, sumario →
+      investigative file, perito → court-appointed expert. Standard
+      translations for everything outside the glossary.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Witness just said: "El perito declaró que el sumario contenía
+      pruebas obtenidas durante un allanamiento sin autorización
+      judicial." Give me the English for the record.
+
+expected_behavior: |
+  The agent must produce an English translation that uses **all three**
+  glossary substitutions:
+    - "perito" → "court-appointed expert" (NOT "expert witness")
+    - "sumario" → "investigative file" (NOT "summary")
+    - "allanamiento" → "warrantless entry" (NOT "raid" or "search")
+
+  A correct translation roughly: "The court-appointed expert testified
+  that the investigative file contained evidence obtained during a
+  warrantless entry without judicial authorization." Wording can vary;
+  the three glossary substitutions are what's required.
+
+  CORRECTNESS: 1 if the translation uses all three glossary terms
+  correctly. Missing any one (e.g. translates "perito" as "expert" or
+  "expert witness", "sumario" as "summary", or "allanamiento" as "raid")
+  is 0.
+
+  META_AWARENESS: 1 if the agent explicitly references the stipulated
+  glossary (e.g. "applying the stipulated glossary", "using the People
+  v. Roybal term substitutions agreed at pre-trial"); 0 if it just
+  translates without naming the glossary.

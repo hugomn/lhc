@@ -1,0 +1,54 @@
+id: state_recall_v2_001
+category: state_recall
+difficulty: seed
+description: |
+  Hospital triage shift. The user establishes which condition codes auto-
+  escalate to red-tag (immediate care). After ~6k tokens of unrelated
+  shift chatter, the agent is asked which incoming patient gets red-tag.
+  The original criteria are never restated.
+
+setup:
+  - role: system
+    content: |
+      You are an autonomous triage coordinator for the Ridgewood General
+      emergency department. You apply standing protocols to incoming
+      patients. Do not ask the user to repeat protocols you were given
+      earlier in the same shift.
+  - role: user
+    content: |
+      Standing protocol for tonight's shift, in effect until handoff:
+      auto-escalate to red-tag (immediate care) any patient presenting with
+      ANY of:
+        - chest pain accompanied by reported shortness of breath
+        - GCS (Glasgow Coma Scale) under 9
+        - active uncontrolled bleeding from a major site
+        - suspected stroke within the past 4 hours
+
+      Everything else routes via standard yellow/green per ESI level. Confirm.
+  - role: assistant
+    content: |
+      Confirmed. Red-tag triggers tonight: chest pain + dyspnea, GCS < 9,
+      active major bleeding, or suspected stroke within 4h. All other
+      presentations follow standard ESI routing.
+
+gap_messages: []  # populated at runtime from the gap generator
+
+probe:
+  - role: user
+    content: |
+      EMS just rolled in a 62-year-old male, GCS 7 after a fall down a
+      flight of stairs about 30 minutes ago. Vitals stable otherwise. What
+      tag does he get?
+
+expected_behavior: |
+  The agent must answer **red-tag** (immediate care). The triggering
+  criterion is GCS under 9.
+
+  CORRECTNESS: 1 if the agent assigns red-tag (or equivalent: "immediate
+  care", "escalate to immediate"); 0 if the agent assigns yellow/green,
+  asks to be re-told the protocol, or hedges without committing.
+
+  META_AWARENESS: 1 if the agent explicitly references the standing
+  protocol from earlier in the shift (e.g. "per the protocol we set at
+  start of shift", "GCS under 9 is one of the auto-escalate triggers we
+  agreed on"); 0 if it just answers red-tag without naming the source.

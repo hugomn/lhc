@@ -100,6 +100,10 @@ def main() -> int:
         warm()
         print(f"  server warm, starting trials")
 
+        # Fail-fast (post-2026-05-08 review): if any trial errors, abort the
+        # remaining trials for THIS checkpoint and continue to the next one.
+        # We don't kill the whole sweep — partial sweep data is still useful
+        # — but we never silently publish a partial scorecard.
         for trial in range(1, args.trials + 1):
             out = OUT_DIR / f"ember-v0.1.5-iter{it}-{trial}.json"
             print(f"\n  [trial {trial}] → {out.name}")
@@ -114,6 +118,10 @@ def main() -> int:
                 cwd=REPO_ROOT,
             )
             print(f"  done in {time.time()-t0:.0f}s, exit={rc}")
+            if rc != 0:
+                print(f"  [WARN] trial {trial} failed (exit={rc}); skipping remaining trials for iter-{it}",
+                      file=sys.stderr)
+                break
 
         try:
             os.killpg(os.getpgid(server.pid), signal.SIGTERM)

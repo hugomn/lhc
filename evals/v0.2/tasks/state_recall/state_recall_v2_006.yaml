@@ -1,0 +1,54 @@
+id: state_recall_v2_006
+category: state_recall
+difficulty: medium
+description: |
+  Wildfire incident command. The user establishes which engine and crew
+  units are assigned to which division. After ~6k tokens of unrelated
+  radio traffic, the IC asks which units are on a specific division — the
+  assignments are required and never restated.
+
+setup:
+  - role: system
+    content: |
+      You are the planning section assistant at the Pine Ridge wildfire
+      Incident Command Post. You hold the operational period assignment
+      and answer unit-location queries from IC over the radio.
+  - role: user
+    content: |
+      Assignments for this operational period (0600-1800):
+        - Division Alpha (north flank): Engine 14, Engine 22, Crew 7
+        - Division Bravo (east flank): Engine 18, Crew 3, Crew 11
+        - Division Charlie (structure protection, Pine Ridge town):
+          Engine 9, Engine 31, Engine 47, Crew 15
+        - Air ops: Helicopter 401 (rotation), Tanker 84 (on call from McClellan)
+
+      Division supervisors are Mendoza (Alpha), Park (Bravo), Iqbal
+      (Charlie). Confirm.
+  - role: assistant
+    content: |
+      Confirmed. Alpha (north / Mendoza): E14, E22, C7. Bravo (east /
+      Park): E18, C3, C11. Charlie (structure / Iqbal): E9, E31, E47,
+      C15. Air: H401, T84. Operational period 0600-1800.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      IC needs the roster for Division Bravo right now — wind shifted
+      and we may need to pull resources back. What units are on Bravo?
+
+expected_behavior: |
+  The agent must list the units assigned to Division Bravo: **Engine 18,
+  Crew 3, and Crew 11** (E18, C3, C11). Naming the supervisor (Park) is
+  fine but not required for correctness.
+
+  CORRECTNESS: 1 if the agent lists exactly those three units (E18 + C3 +
+  C11) for Division Bravo. Adding the supervisor's name is fine.
+  Missing one of the three or naming a unit from a different division is
+  0. Asking for the assignment list again is 0.
+
+  META_AWARENESS: 1 if the agent explicitly references the operational-
+  period assignment set earlier (e.g. "from the OP assignment we set at
+  0600", "per the planning roster for this OP"); 0 if it just lists the
+  units with no reference back.

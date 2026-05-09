@@ -1,0 +1,97 @@
+id: resumption_v2_007
+category: resumption
+difficulty: hard
+description: |
+  Book editor with two open manuscript revisions. Frame B — chat-log
+  continuation with multi-thread state. The agent picks up a morning
+  transcript with two threads (two different MS revisions), one of
+  which was blocked on the author's reply and the other progressing.
+  After ~6k tokens of unrelated office chatter, the probe says one
+  blocker has cleared and asks for status on both threads.
+
+setup:
+  - role: system
+    content: |
+      You are the editorial assistant at Holcomb-Hayes Press. You
+      track multi-thread editorial work from the morning's
+      transcript. Resume both threads from where they were left;
+      do not reset state and do not lose track of which thread
+      was blocked.
+  - role: user
+    content: |
+      Continuing the conversation from this morning's editor
+      transcript:
+
+      ---- MORNING TRANSCRIPT, 09:00-10:45 ----
+
+      PROJECT ALPHA — "The Vanishing Cartographer" (Margolis,
+        debut novel, slated for spring catalog).
+      Status at 10:42: Substantive edits complete, line edits
+        delivered to author Margolis on Wednesday. ALPHA is
+        BLOCKED on Margolis's reply. We agreed: do not move
+        forward on copy edits until Margolis returns the
+        line-edit pass with her decisions. No other action on
+        ALPHA today.
+
+      PROJECT BETA — "Steel and Steam" (Vasilenko, second novel,
+        slated for fall catalog).
+      Status at 10:44: Substantive edits IN PROGRESS, currently
+        at chapter 14 of 28. Drafting query letter for chapter
+        14's POV inconsistency before moving to chapter 15. Plan
+        for the rest of the day on BETA: finish chapter 14
+        queries, then 15, then 16, aiming to get through 17 by
+        EOD.
+
+      ---- END TRANSCRIPT ----
+
+      Confirm both threads' state.
+  - role: assistant
+    content: |
+      Confirmed. Two open threads:
+        ALPHA (Margolis, "The Vanishing Cartographer"): BLOCKED
+          on Margolis's line-edit reply. No forward action today
+          until she returns it.
+        BETA (Vasilenko, "Steel and Steam"): IN PROGRESS,
+          substantive edit at chapter 14, drafting query for the
+          POV issue. Plan: finish ch 14 queries, then 15, 16, aim
+          for 17 by EOD.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Margolis just emailed back — she returned the line-edit pass
+      with all her decisions on a clean PDF. Where do we stand on
+      everything?
+
+expected_behavior: |
+  The agent must address BOTH threads in its response, with the
+  correct state changes:
+
+  PROJECT ALPHA: now UNBLOCKED. Margolis's reply is the dependency
+  that was holding ALPHA. The agent should note that the next
+  step on ALPHA is to begin copy edits (the step that was waiting
+  on her decisions), or at minimum that ALPHA is unblocked and
+  ready to advance.
+
+  PROJECT BETA: still in progress, no change from the morning's
+  state — substantive edit at chapter 14, drafting POV query.
+  The agent should say BETA continues per the original plan
+  (finish ch 14, then 15-17 by EOD), OR explicitly choose to
+  pause BETA to move ALPHA forward — but it must NOT silently
+  drop BETA from the picture, and it must NOT report BETA at the
+  wrong chapter or as blocked.
+
+  CORRECTNESS: 1 if the agent (a) identifies ALPHA as unblocked
+  and ready for the next step (copy edits) AND (b) accurately
+  reports BETA's state (substantive edit at ch 14, in progress
+  toward the EOD goal) without confusing the two threads. 0 if
+  the agent drops one thread, swaps state between them, claims
+  ALPHA is still blocked, claims BETA is at a different chapter,
+  or restarts the morning's planning from scratch.
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  morning transcript (e.g. "per the morning transcript",
+  "from where we left both threads at 10:45"); 0 if it just
+  describes state with no reference back.

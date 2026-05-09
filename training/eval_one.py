@@ -10,6 +10,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import signal
 import socket
@@ -100,6 +101,7 @@ def main() -> int:
         print(f"  warmup error (continuing): {e}", file=sys.stderr)
 
     started = time.time()
+    rc_for_return = 0
     for i in range(args.trials):
         trial_num = args.start_trial + i
         out = OUT_DIR / f"{args.out_prefix}-iter{args.iter}-{trial_num}.json"
@@ -116,13 +118,39 @@ def main() -> int:
         )
         print(f"  trial {trial_num} done in {time.time()-t0:.0f}s, exit={rc}")
 
+        # Fail-fast: a nonzero exit means the harness refused to write a
+        # scorecard (or wrote one we should not trust). Stop the loop, kill
+        # the server, surface the failure to the caller.
+        if rc != 0:
+            print(f"  [FATAL] trial {trial_num} exited nonzero. Aborting remaining trials.",
+                  file=sys.stderr)
+            rc_for_return = rc
+            break
+
+        # Verify the scorecard has the expected number of task scores.
+        # Catches the case where the harness wrote a scorecard but with a
+        # short list (shouldn't happen post-fail-fast, but cheap to check).
+        try:
+            sc = json.loads(out.read_text())
+            actual = len(sc.get("task_scores", []))
+            expected = sc.get("expected_task_count", 0) or actual
+            if expected and actual != expected:
+                print(f"  [FATAL] trial {trial_num} scorecard has {actual} task scores, "
+                      f"expected {expected}. Aborting.", file=sys.stderr)
+                rc_for_return = 3
+                break
+        except Exception as e:
+            print(f"  [FATAL] could not read scorecard {out}: {e}", file=sys.stderr)
+            rc_for_return = 4
+            break
+
     print(f"\n  total: {(time.time()-started)/60:.1f} min")
 
     try:
         os.killpg(os.getpgid(server.pid), signal.SIGTERM)
     except Exception:
         pass
-    return 0
+    return rc_for_return
 
 
 if __name__ == "__main__":

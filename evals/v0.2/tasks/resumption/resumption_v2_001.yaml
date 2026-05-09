@@ -1,0 +1,76 @@
+id: resumption_v2_001
+category: resumption
+difficulty: seed
+description: |
+  Field botany plant survey. Frame A — notebook reload. The agent is
+  given the previous day's open notebook with a partially completed
+  quadrat species count. After ~6k tokens of unrelated field-camp
+  chatter, the probe asks the agent to pick up where the notebook left
+  off (Quadrat 4, species column).
+
+setup:
+  - role: system
+    content: |
+      You are the recording assistant for a multi-quadrat plant
+      survey at the Pinewood Reserve. You work from the field
+      botanist's open notebook page, which records what's done so
+      far. Continue from where the notebook leaves off; do not
+      re-survey already-counted quadrats.
+  - role: user
+    content: |
+      Reloading the field notebook from yesterday afternoon. Page 14:
+
+      ----- PINEWOOD RESERVE / SURVEY DAY 3 / PAGE 14 -----
+      Quadrat 1 (NW slope, completed):
+        - Pteridium aquilinum: 23 fronds
+        - Vaccinium myrtillus: 11 plants
+        - Calluna vulgaris: 47 plants
+      Quadrat 2 (E ridge, completed):
+        - Rubus fruticosus: 8 plants
+        - Calluna vulgaris: 62 plants
+      Quadrat 3 (SE wash, completed):
+        - Pteridium aquilinum: 4 fronds
+        - Vaccinium myrtillus: 19 plants
+      Quadrat 4 (S ridge, IN PROGRESS):
+        - Pteridium aquilinum: 12 fronds  [counted yesterday 17:40]
+        - Calluna vulgaris: 38 plants     [counted yesterday 17:55]
+        - NEXT: count Vaccinium and Rubus species in Quadrat 4
+      ----- END PAGE 14 -----
+
+      Confirm you've loaded the notebook page and you know where to
+      pick up.
+  - role: assistant
+    content: |
+      Loaded. Resuming at Quadrat 4 (S ridge). Two species already
+      counted there: Pteridium aquilinum (12 fronds) and Calluna
+      vulgaris (38 plants). Next: Vaccinium and Rubus counts in
+      Quadrat 4.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      Back at the quadrat. I just finished my count: Vaccinium
+      myrtillus 14 plants, Rubus fruticosus 3 plants. Log them and
+      tell me what's next.
+
+expected_behavior: |
+  The agent must (a) record those two counts AGAINST QUADRAT 4
+  specifically, and (b) identify "next" as either moving on to
+  Quadrat 5 or completing Quadrat 4 wrap-up — whichever the survey
+  protocol dictates is up to the agent's plausible interpretation,
+  but the answer must NOT continue counting in Quadrat 1 / 2 / 3
+  (already done) and must NOT free-associate to a different task
+  from the gap chatter.
+
+  CORRECTNESS: 1 if the agent logs Vaccinium myrtillus 14 + Rubus
+  fruticosus 3 as Quadrat 4 entries AND identifies that Quadrat 4
+  is now complete (or moves on to Quadrat 5). 0 if it logs the
+  counts to the wrong quadrat, repeats already-completed quadrats,
+  asks "where are we?", or hallucinates a different field task.
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  notebook page reload (e.g. "per the open notebook page we
+  loaded", "from page 14, we're in Quadrat 4"); 0 if it logs
+  without naming the source.

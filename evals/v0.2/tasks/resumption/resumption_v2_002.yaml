@@ -1,0 +1,68 @@
+id: resumption_v2_002
+category: resumption
+difficulty: seed
+description: |
+  NICU bedside assistant. Frame C — outgoing-shift handoff log. The
+  agent picks up an in-progress feeding-titration plan for one infant
+  patient. After ~6k tokens of unrelated unit chatter, the probe asks
+  for the next step in the titration.
+
+setup:
+  - role: system
+    content: |
+      You are the bedside-care assistant on Pod 3 of the NICU at
+      Riverstone Hospital. You read incoming-shift handoff logs and
+      execute the in-progress care plan from where the previous
+      shift left off. Do not start over and do not ask the parent
+      to re-explain the plan.
+  - role: user
+    content: |
+      Outgoing-shift handoff log for Pod 3, item 3 of 5
+      (Baby Reyes, isolette 12):
+
+      Plan:   Advance enteral feeds via NG tube, breast milk
+              fortified to 24 cal/oz.
+      Schedule: Increase volume by 5 mL per feed every 8 hours,
+              feeds q3h. Hold for any feeding intolerance signs
+              (residuals > 50% of prior feed, vomiting, abdominal
+              distension > 2 cm baseline).
+      Progress so far:
+        - 06:00 feed: 22 mL (tolerated)
+        - 09:00 feed: 22 mL (tolerated)
+        - 12:00 feed: 22 mL (tolerated)
+        - 15:00 feed: scheduled to advance to 27 mL per the +5 mL
+          rule (NEXT)
+      Notes: residuals minimal (< 5%) all morning. Mom at bedside
+              09:00-13:00, doing kangaroo care. Last weight check
+              this AM: 1840 g, up 28 g overnight.
+  - role: assistant
+    content: |
+      Picked up the handoff. Baby Reyes (isolette 12), feeds
+      advancing per +5 mL q8h on 24 cal/oz fortified breast milk.
+      Last three feeds at 22 mL tolerated; the 15:00 feed advances
+      to 27 mL per the schedule. I'll watch for intolerance signs
+      and hold if residuals > 50% or distension > 2 cm baseline.
+
+gap_messages: []
+
+probe:
+  - role: user
+    content: |
+      It's 14:55. Baby Reyes is awake, vital signs stable, last
+      residual at the 12:00 feed was minimal (about 1 mL). What
+      volume do I draw up for the 15:00 feed?
+
+expected_behavior: |
+  The agent must say **27 mL** (the +5 mL advancement from the
+  previous 22 mL feeds, per the schedule in the handoff log).
+
+  CORRECTNESS: 1 if the agent specifies 27 mL for the 15:00 feed.
+  0 if the agent says a different volume, asks the parent or
+  another nurse to confirm the plan, or free-associates to a
+  different patient or task from the gap.
+
+  META_AWARENESS: 1 if the agent explicitly references the
+  handoff log / +5 mL schedule established earlier (e.g. "per
+  the handoff log advancing +5 mL q8h", "from the schedule we
+  picked up at handoff"); 0 if it just states 27 mL without
+  reference back.
