@@ -8,32 +8,54 @@ This repo is the home of:
 - **The Ember training pipeline** — LoRA / DoRA fine-tuning on Apple Silicon (MLX-LM), built around LHC.
 - **A complete, public methodology arc** — including the version of the benchmark we got wrong, the external review that called it out, and the rebuild that produced honest numbers.
 
-## Status (2026-05-09)
+## Status (2026-05-10)
 
-**Ember v0.1.5 did not ship.** A clean, decontaminated re-evaluation showed it underperforms its base model (Qwen3-8B) by 0.13 mean / 0.25 on the production-relevant gap mode, with statistical confidence (95% CI [-0.46, -0.06]). Per our pre-registered decision gates, the v0.1.5 line is retired.
+**Ember v0.1.5 did not ship.** Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet our bar for release ("significant improvement on at least one functionality compared to a same-class model"). The v0.1.5 line is retired.
+
+The path to that conclusion was four rounds of external review in 72 hours:
+
+1. **Round 1 (2026-05-08)** — caught LHC v0.1 contamination, hash-seed bug, train/eval gap mismatch. Triggered the v0.2 rebuild.
+2. **Round 2 (2026-05-09)** — caught that the v0.2 sweep compared Ember (local MLX, with `/no_think`) against the OpenRouter models (no `/no_think`). Inference-config asymmetry confounded the original "Ember regresses by 0.25" verdict.
+3. **Round 3 (2026-05-10)** — blessed the matched-inference diagnostic with a wording change and asked us to close one symmetry nuisance.
+4. **Round 4 (2026-05-10)** — closing that nuisance surfaced an MLX replication issue (within-session vs across-session). Final n=3 fresh-server-restart comparison is a statistical tie; both CIs cross zero.
 
 What you can use today:
 
-- **LHC v0.2 benchmark** — 24 hand-curated tasks, 4 gap-mode ablation, stable seeding, full prompt + response audit trail, judge-stability tested, manual-audit validated. We believe this is the most rigorously-validated long-horizon coherence benchmark publicly available at this scale.
+- **LHC v0.2 benchmark** — 24 hand-curated tasks, 4 gap-mode ablation, stable seeding, full prompt + response audit trail, judge-stability tested, manual-audit validated, and now also matched-inference-validated for the Ember-vs-base comparison. The most rigorously-reviewed long-horizon coherence benchmark we know of at this scale.
 - **The deterministic resume-state validator baseline** — a 100-line Python parser (no LLM in the forward pass) that beats every fine-tuned 8B model we tested on two specific resumption tasks. Sets a hard floor on what "fine-tuning is worth it" means for structured-state tasks.
-- **The full methodology record** — every dead end, every revision, every gate result. See the [journal](docs/journal/) and [findings](docs/findings.md).
+- **The full methodology record** — every dead end, every revision, every external-review round. See the [journal](docs/journal/) and [findings](docs/findings.md).
 
 What we are working on next:
 
-- An honest plan for Ember v0.2, currently being designed and reviewed externally before any new training. See `PLAN.md` after it lands; until then, see the [latest journal entry](docs/journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) for context.
+- Path E: ship the benchmark + parser + methodology writeup. No further training in this cycle. See the [2026-05-10 journal entry](docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md) for the full reasoning.
 
 ## Headline result (LHC v0.2)
 
-| Rank | Model | Mean (max 2.00) |
-|------|-------|----------------:|
-| #1 | **Qwen3-8B base** | **1.413** |
-| #2 | Ministral-8B-2512 | 1.351 |
-| #3 (tie) | **Ember v0.1.5 iter-900** | 1.285 |
-| #3 (tie) | Llama-3.1-8B | 1.285 |
+The 4-model sweep (3 trials × 24 tasks × 4 gap modes per cell, judged by Claude Opus 4.7) produced this leaderboard. **Ember and Qwen3-8B base ran via different inference paths** — see the matched-inference comparison below for the apples-to-apples Ember-vs-base verdict.
 
-3 trials × 24 tasks × 4 gap modes per cell. Judged by Claude Opus 4.7. All four benchmark-validity gates passed (judge stability, rank inversion, CI discrimination, variance attribution). See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode tables.
+| Rank | Model | Mean (max 2.00) | Inference path |
+|------|-------|----------------:|----------------|
+| #1 | **Qwen3-8B base** | **1.413** | OpenRouter, no `/no_think` |
+| #2 | Ministral-8B-2512 | 1.351 | OpenRouter |
+| #3 (tie) | **Ember v0.1.5 iter-900** | 1.285 | local MLX, with `/no_think` |
+| #3 (tie) | Llama-3.1-8B | 1.285 | OpenRouter |
+
+All four benchmark-validity gates passed (judge stability, rank inversion, CI discrimination, variance attribution).
+
+**Ember vs base, matched local-MLX inference, n=3 fresh-server trials per cell:**
+
+| Gap | Ember mean | Qwen-local mean | Δ E−Q | 95% CI (task-bootstrap)¹ |
+|---|---:|---:|---:|---|
+| `current` | 1.222 | 1.181 | **+0.042** | [−0.139, +0.222] |
+| `neutral` | 1.319 | 1.333 | **−0.014** | [−0.139, +0.111] |
+
+Both CIs cross zero: **statistical tie on both gap modes.** Ember is not measurably better than base under matched inference; it is also not measurably worse.
+
+¹ Task-bootstrap CI conditional on the observed 3 restart trials. A hierarchical bootstrap over (task, trial) would be wider, not narrower. Sufficient to reject shipping; not for fine ranking.
 
 A 100-line deterministic parser (no LLM) scored **0.75 on resumption** (8 tasks) — and beat all four LLMs on the two structured-state resumption tasks (warehouse tracker, inconsistency detection). Implication: fine-tuning is the wrong layer for those task structures.
+
+See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode tables, and [`docs/findings.md`](docs/findings.md) F-05 for the full record.
 
 ## What's in this repo
 
@@ -53,8 +75,9 @@ A 100-line deterministic parser (no LLM) scored **0.75 on resumption** (8 tasks)
 
 - [LHC v0.2 results](docs/results.md) — current leaderboard
 - [Findings](docs/findings.md) — living what-we-know doc
-- [Journal — 2026-05-08](docs/journal/2026-05-08-external-review-and-decontamination.md) — the external review that triggered the rebuild
-- [Journal — 2026-05-09](docs/journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) — the sweep that confirmed v0.1.5 underperforms base
+- [Journal — 2026-05-08](docs/journal/2026-05-08-external-review-and-decontamination.md) — round 1: contamination, hash-seed bug, train/eval gap mismatch
+- [Journal — 2026-05-09](docs/journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) — the sweep verdict (later rebuilt under matched inference)
+- [Journal — 2026-05-10](docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md) — rounds 2–4: matched-inference diagnostic + MLX replication observation + final null-result framing
 - [LHC v0.2 decision gates](evals/v0.2/DECISION.md) — pre-registered methodology
 - [LHC v0.2 authoring procedure](evals/v0.2/AUTHORING.md) — how the decontaminated tasks were built
 - [Manifesto](docs/manifesto.md) — why long-horizon coherence matters
@@ -88,6 +111,14 @@ python evals/v0.2/audit_g12_manual.py    # interactive, 12 samples
 python evals/v0.2/analyze.py \
     --scorecards-dir evals/results/published/lhc-v0.2/sweep \
     --audit-results evals/results/published/lhc-v0.2/audit-combined.json
+
+# Matched-inference diagnostic (Ember and base Qwen3-8B both via local MLX,
+# n=3 fresh-server-restart trials per cell)
+python evals/v0.2/diagnostic_local_qwen.py        # Qwen-local trial 1
+python evals/v0.2/diagnostic_qwen_replicate.py    # Qwen-local trials 2 + 3
+python evals/v0.2/diagnostic_ember_rerun.py       # Ember trial 1
+python evals/v0.2/diagnostic_ember_replicate.py   # Ember trials 2 + 3
+python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI
 ```
 
 ## What we learned that someone else can use
@@ -101,6 +132,10 @@ python evals/v0.2/analyze.py \
 - **Deterministic parsers are a real baseline for structured-state tasks.** A 100-line script beat all four 8B-class LLMs on two specific resumption tasks. Anyone training agent models should test this before assuming fine-tuning is the right layer.
 
 - **Storing full prompt + full gap + full response in scorecards costs nothing and enables independent re-judging by anyone, ever.** Excerpt-only storage made our v0.1 scorecards effectively un-auditable. Lesson learned the hard way.
+
+- **Inference-config asymmetry can dominate a benchmark verdict.** The original v0.2 sweep ranked Ember vs OpenRouter-served Qwen3-8B and reported "Ember regresses by 0.25, CI [−0.46, −0.06]." Re-running both via the same local MLX server with the same `/no_think` prefix shrank that delta to +0.04 (a tie). About 5/6 of the apparent regression was inference confound. Anyone benchmarking a fine-tune against its base should run them on the same inference path.
+
+- **MLX-LM server replication: restart between trials.** In our setup on Apple Silicon, MLX outputs were stable within a single server session but varied across fresh server starts. Per-cell stdev across 3 restart trials was 0.02–0.13 on overall mean, with 6 of 24 tasks score-flipping per side. The original sweep's "byte-identical n=3 trials" was a within-session repeat, not three independent samples. We have not isolated the source. Benchmark replications of MLX-served models should restart the server between trials or explicitly state they are within-session.
 
 ## License
 

@@ -6,40 +6,60 @@ Findings are listed newest-first. Each links to the underlying scorecards or com
 
 ---
 
-> **⚠ Status as of 2026-05-09 — Ember v0.1.5 is retired, did not ship.**
-> The LHC v0.2 sweep (decontaminated, audit-validated) shows Ember v0.1.5 underperforms its base model (Qwen3-8B) by 0.25 on the production-relevant `current` gap mode (95% CI [-0.46, -0.06]). Per the pre-registered DECISION.md gates, this fails G1-G4 decisively. v0.1.5's apparent advantage on LHC v0.1 was a contamination artifact (`based_on` derivative seeds in training data overlapped exactly with the test scenarios). All Ember leaderboard claims from F-04 and earlier should be treated as **historical**, not authoritative.
+> **⚠ Status as of 2026-05-10 — Ember v0.1.5 is retired, did not ship.**
+> Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet the bar for release. The original sweep (2026-05-09) compared Ember (local MLX, with `/no_think`) against base Qwen3-8B (OpenRouter, no `/no_think`); external review flagged this as an inference-config confound. The 2026-05-10 diagnostic re-ran both models locally under matched config at n=3 with fresh server starts: Δ E−Q on `current` = +0.042 (95% CI [−0.139, +0.222]); Δ on `neutral` = −0.014 (95% CI [−0.139, +0.111]). Both CIs cross zero. v0.1.5's apparent advantage on LHC v0.1 was a contamination artifact (`based_on` derivative seeds in training data overlapped exactly with the test scenarios). All Ember leaderboard claims from F-04 and earlier should be treated as **historical**, not authoritative.
 >
-> Full backstory: [`journal/2026-05-08-external-review-and-decontamination.md`](journal/2026-05-08-external-review-and-decontamination.md) (the review that triggered the rebuild) and [`journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md`](journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) (the sweep that confirmed the regression). The 48 v0.2 scorecards are at [`evals/results/published/lhc-v0.2/`](../evals/results/published/lhc-v0.2/).
+> Full backstory across four review rounds: [`journal/2026-05-08-external-review-and-decontamination.md`](journal/2026-05-08-external-review-and-decontamination.md) (round 1: contamination + hash-seed bug); [`journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md`](journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) (sweep verdict); [`journal/2026-05-10-mlx-replication-and-diagnostic-closure.md`](journal/2026-05-10-mlx-replication-and-diagnostic-closure.md) (rounds 2–4: inference confound, MLX replication observation, final framing). All scorecards (sweep + diagnostic) at [`evals/results/published/lhc-v0.2/`](../evals/results/published/lhc-v0.2/).
 
 ---
 
-## F-05 · LHC v0.2 leaderboard, 8B-class open models (2026-05-09)
+## F-05 · LHC v0.2 leaderboard, 8B-class open models (2026-05-09, revised 2026-05-10)
 
-LHC v0.2 is the decontaminated benchmark we built after the external review. 24 hand-curated tasks, no `based_on` overlap with anything in `data/seeds/*` or `data/synthetic/*`, 4 gap modes (none / placeholder / neutral / current), stable sha256-seeded gaps, full-prompt-and-response audit trail in every scorecard. All four benchmark-validity gates passed (G9 judge stability, G10 rank inversion, G11 CI discrimination, G13 variance attribution). Manual audit (G12) passed at 0%.
+LHC v0.2 is the decontaminated benchmark we built after the round-1 external review. 24 hand-curated tasks, no `based_on` overlap with anything in `data/seeds/*` or `data/synthetic/*`, 4 gap modes (none / placeholder / neutral / current), stable sha256-seeded gaps, full-prompt-and-response audit trail in every scorecard. All four benchmark-validity gates passed (G9 judge stability, G10 rank inversion, G11 CI discrimination, G13 variance attribution). Manual audit (G12) passed at 0%.
+
+### The original confounded leaderboard (2026-05-09)
 
 We ran 4 models × 4 gap modes × 3 trials = 48 scorecards, judged by Claude Opus 4.7. Mean across all gap modes (max 2.00):
 
-| Rank | Model | Mean | Notes |
+| Rank | Model | Mean | Inference path |
 |------|-------|------|-------|
-| #1 | **Qwen3-8B base** | **1.413** | The base model Ember was fine-tuned from. Best in class on this benchmark. |
-| #2 | Ministral-8B-2512 | 1.351 | Mistral's December 2025 release. Best on resumption (1.281). |
-| #3 (tie) | Ember v0.1.5 iter-900 | 1.285 | Our fine-tune. Worse than its own base by 0.128 mean. |
-| #3 (tie) | Llama-3.1-8B | 1.285 | Meta's flagship 8B. |
+| #1 | **Qwen3-8B base** | **1.413** | OpenRouter, no `/no_think` |
+| #2 | Ministral-8B-2512 | 1.351 | OpenRouter |
+| #3 (tie) | Ember v0.1.5 iter-900 | 1.285 | local MLX, with `/no_think` |
+| #3 (tie) | Llama-3.1-8B | 1.285 | OpenRouter |
 
-**Per-category breakdown (all gap modes pooled):**
+**Round-2 external review flagged this leaderboard as confounded.** Ember ran through local MLX with the slowlit `/no_think` system prefix; the OpenRouter models had no such prefix. Different inference setups, not just different weights.
 
-| Model | state_recall | commitment | resumption |
-|-------|-------------:|-----------:|-----------:|
-| Qwen3-8B base | 1.271 | 1.740 | 1.229 |
-| Ministral-8B-2512 | 1.062 | 1.708 | 1.281 |
-| Ember v0.1.5 | 1.042 | **1.625** | 1.188 |
-| Llama-3.1-8B | 1.177 | 1.531 | 1.146 |
+### The matched-inference diagnostic (2026-05-10)
 
-The largest Ember-vs-base regression is on **commitment** (1.625 vs 1.740, Δ -0.115). That is the category v0.1.5's hand-written act-then-narrate seeds were specifically designed to fix. The seeds did not fix it; they appear to have made it worse.
+We re-ran Ember v0.1.5 iter-900 and base Qwen3-8B both via local MLX, both with `/no_think`, capped prompt cache, n=3 fresh-server-start trials per cell:
 
-**Deterministic baseline reference:** A 100-line Python parser (no LLM in the forward pass) scored **0.75 on resumption** alone. It scored 2/2 on `resumption_v2_004` (warehouse tracker) and `resumption_v2_008` (the inconsistency-detection task — Ember's archetype nemesis from v0.1's `resumption_004`). For those structured-state tasks specifically, *parsing beats every fine-tuned 8B model we tested*, including Ember. See [`evals/results/published/lhc-v0.2/deterministic-baseline.json`](../evals/results/published/lhc-v0.2/deterministic-baseline.json).
+| Gap | Ember mean (n=3) | Qwen-local mean (n=3) | Δ E−Q | 95% CI (task-bootstrap)¹ |
+|---|---:|---:|---:|---|
+| `current` | 1.222 | 1.181 | **+0.042** | [−0.139, +0.222] |
+| `neutral` | 1.319 | 1.333 | **−0.014** | [−0.139, +0.111] |
 
-Scorecards: [`evals/results/published/lhc-v0.2/sweep/`](../evals/results/published/lhc-v0.2/sweep/). Full verdict (all 13 gates + decision): [`evals/results/published/lhc-v0.2/verdict.json`](../evals/results/published/lhc-v0.2/verdict.json). Pre-registered methodology: [`evals/v0.2/DECISION.md`](../evals/v0.2/DECISION.md).
+Both CIs cross zero. **Statistical tie on both gap modes.** Yesterday's "Ember regresses by 0.25, CI [−0.46, −0.06]" was inflated by inference-config asymmetry; about 5/6 of that gap was confound.
+
+¹ Task-bootstrap CI conditional on the observed 3 restart trials. A hierarchical bootstrap over (task, trial) would be wider, not narrower. Sufficient to reject shipping; not for fine ranking.
+
+### Round-4 reviewer's required wording
+
+> Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet the bar for release.
+
+Two earlier claims are explicitly **withdrawn**:
+- "Ember demonstrably regresses against base." — was inference confound.
+- "v0.1.5 collapses to confident-wrong terse style on `state_recall_v2_004`." — was a within-session caching artifact; across fresh server starts, Ember scores [1, 0, 2] on the same task.
+
+### MLX replication observation
+
+In our MLX-LM server setup on Apple Silicon, outputs were stable within a single server session but varied across fresh server starts. We have not isolated the source (could be MLX-LM server, Metal kernels, cache state, sampling defaults, warmup, or process init). The narrow, defensible claim: **benchmark replications of MLX-served models should restart the server between trials or explicitly state they are within-session repeats.** The original sweep's "byte-identical n=3 trials" was a within-session repeat, not three independent samples.
+
+### Deterministic baseline reference
+
+A 100-line Python parser (no LLM in the forward pass) scored **0.75 on resumption** alone. It scored 2/2 on `resumption_v2_004` (warehouse tracker) and `resumption_v2_008` (the inconsistency-detection task — Ember's archetype nemesis from v0.1's `resumption_004`). For those structured-state tasks specifically, *parsing beats every fine-tuned 8B model we tested*. See [`evals/results/published/lhc-v0.2/deterministic-baseline.json`](../evals/results/published/lhc-v0.2/deterministic-baseline.json).
+
+Scorecards: [`evals/results/published/lhc-v0.2/sweep/`](../evals/results/published/lhc-v0.2/sweep/) (original) and [`evals/results/published/lhc-v0.2/diagnostic-ember-rerun/`](../evals/results/published/lhc-v0.2/diagnostic-ember-rerun/) + [`diagnostic-local-qwen/`](../evals/results/published/lhc-v0.2/diagnostic-local-qwen/) (matched-inference). Full original verdict (13 gates + decision): [`evals/results/published/lhc-v0.2/verdict-final.json`](../evals/results/published/lhc-v0.2/verdict-final.json). Pre-registered methodology: [`evals/v0.2/DECISION.md`](../evals/v0.2/DECISION.md).
 
 ---
 

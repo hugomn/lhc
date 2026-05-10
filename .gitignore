@@ -51,9 +51,10 @@ evals/results/*
 *.key
 *.pem
 
-# Temp briefing / review docs (ad-hoc, not part of the canonical doc set)
+# Temp briefing / review / workshop docs (ad-hoc, not part of the canonical doc set)
 REVIEW_BRIEF.md
 REVIEW_*.md
+PLAN-v0.*.md
 
 # OS
 .DS_Store
