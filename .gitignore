@@ -39,6 +39,10 @@ data/synthetic/**/*.parquet
 data/synthetic/**/mlx_lora/
 data/synthetic/**/mlx_lora_dry/
 
+# Working Parquet builds — regenerable via evals/v0.2/build_parquet.py;
+# the canonical published copies live inside the HF dataset, not in this repo.
+evals/v0.2/data/
+
 # Eval results — only the canonical `published/` subtree is tracked.
 # Everything else under evals/results/ is exploratory and gitignored.
 evals/results/*
