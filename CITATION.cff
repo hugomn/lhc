@@ -7,7 +7,14 @@ authors:
     given-names: Hugo
     email: hugomn@gmail.com
 repository-code: "https://github.com/hugomn/lhc"
-url: "https://github.com/hugomn/lhc"
+url: "https://huggingface.co/datasets/hugonogueira/lhc-v0.2"
+identifiers:
+  - type: url
+    value: "https://huggingface.co/datasets/hugonogueira/lhc-v0.2"
+    description: "HuggingFace dataset"
+  - type: url
+    value: "https://github.com/hugomn/lhc"
+    description: "GitHub repository (code, methodology, audit trail)"
 abstract: >-
   LHC (Long-Horizon Coherence) is a decontaminated, audit-validated open
   benchmark that measures and discriminates 8B-class language models on

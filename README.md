@@ -2,9 +2,12 @@
 
 > A decontaminated, audit-validated benchmark for evaluating long-horizon coherence in 8B-class agent models.
 
+[![HuggingFace Dataset](https://img.shields.io/badge/🤗%20Dataset-hugonogueira%2Flhc--v0.2-yellow)](https://huggingface.co/datasets/hugonogueira/lhc-v0.2)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
+
 This repo contains:
 
-- **LHC v0.2** — 24 hand-curated tasks, 4 gap-mode ablation, full audit trail, four rounds of external review.
+- **LHC v0.2** — 24 hand-curated tasks, 4 gap-mode ablation, full audit trail, four rounds of external review. Also published as the [`hugonogueira/lhc-v0.2`](https://huggingface.co/datasets/hugonogueira/lhc-v0.2) HuggingFace dataset.
 - **Deterministic baseline** — 100-line Python parser that beats every fine-tuned 8B model we tested on two structured-state tasks.
 - **The honest training record** — every dead end, including the fine-tuned model that didn't beat its base.
 
