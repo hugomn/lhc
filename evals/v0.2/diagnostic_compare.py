@@ -35,6 +35,7 @@ This script computes:
 from __future__ import annotations
 
 import json
+import argparse
 import random
 import sys
 from pathlib import Path
@@ -42,8 +43,15 @@ from statistics import mean, stdev
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
-EMBER_RERUN_DIR = REPO_ROOT / "evals" / "results" / "v0.2" / "diagnostic-ember-rerun"
-LOCAL_QWEN_DIR = REPO_ROOT / "evals" / "results" / "v0.2" / "diagnostic-local-qwen"
+# Default to the published canonical scorecards so the script works in a clean
+# clone (working evals/results/v0.2/ is gitignored). Override via --ember-dir
+# and --qwen-dir if you generated fresh scorecards locally.
+PUBLISHED_DIR = REPO_ROOT / "evals" / "results" / "published" / "lhc-v0.2"
+WORKING_DIR = REPO_ROOT / "evals" / "results" / "v0.2"
+EMBER_RERUN_DIR = PUBLISHED_DIR / "diagnostic-ember-rerun"
+LOCAL_QWEN_DIR = PUBLISHED_DIR / "diagnostic-local-qwen"
+EMBER_RERUN_DIR_WORKING = WORKING_DIR / "diagnostic-ember-rerun"
+LOCAL_QWEN_DIR_WORKING = WORKING_DIR / "diagnostic-local-qwen"
 GAP_MODES = ("current", "neutral")
 TRIALS = (1, 2, 3)
 N_TASKS = 24
@@ -118,17 +126,54 @@ def paired_bootstrap_ci(
     return point, lo, hi
 
 
+def _resolve_dir(cli_path: str | None, published: Path, working: Path, name: str) -> Path:
+    """Pick the source dir: explicit CLI > published canonical > working dir.
+
+    The published dir is preferred because it works in a clean clone. The
+    working dir is checked as a fallback for when someone has just generated
+    fresh scorecards locally and wants to compare those.
+    """
+    if cli_path:
+        p = Path(cli_path)
+        if not p.exists():
+            print(f"[fatal] --{name}-dir does not exist: {p}", file=sys.stderr)
+            sys.exit(2)
+        return p
+    if published.exists():
+        return published
+    if working.exists():
+        return working
+    print(
+        f"[fatal] no scorecards for {name}: tried {published.relative_to(REPO_ROOT)} "
+        f"and {working.relative_to(REPO_ROOT)}. Pass --{name}-dir <path> to override.",
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
+
 def main() -> int:
-    if not EMBER_RERUN_DIR.exists() or not LOCAL_QWEN_DIR.exists():
-        print(f"[fatal] need both ember-rerun and local-qwen dirs", file=sys.stderr)
-        return 2
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument(
+        "--ember-dir",
+        default=None,
+        help="dir containing ember-v015-iter900__<gap>__trial<N>.json (default: published canonical)",
+    )
+    parser.add_argument(
+        "--qwen-dir",
+        default=None,
+        help="dir containing qwen3-8b-local__<gap>__trial<N>.json (default: published canonical)",
+    )
+    args = parser.parse_args()
+
+    ember_dir = _resolve_dir(args.ember_dir, EMBER_RERUN_DIR, EMBER_RERUN_DIR_WORKING, "ember")
+    qwen_dir = _resolve_dir(args.qwen_dir, LOCAL_QWEN_DIR, LOCAL_QWEN_DIR_WORKING, "qwen")
 
     print("=" * 78)
     print("  Diagnostic v3: Ember vs local-Qwen-base, n=3 fresh-server trials each")
     print("=" * 78)
     print()
-    print(f"  Ember scorecards:    {EMBER_RERUN_DIR.relative_to(REPO_ROOT)}")
-    print(f"  Qwen-local scorecards: {LOCAL_QWEN_DIR.relative_to(REPO_ROOT)}")
+    print(f"  Ember scorecards:    {ember_dir.relative_to(REPO_ROOT)}")
+    print(f"  Qwen-local scorecards: {qwen_dir.relative_to(REPO_ROOT)}")
     print(f"  Bootstrap: paired, {BOOTSTRAP_ITERS} iters, seed={RNG_SEED:#x}")
 
     # ── per-trial overall scores + stdev per cell ───────────────────────────
@@ -137,8 +182,8 @@ def main() -> int:
     print(f"  {'-'*24} {'-'*6} {'-'*6} {'-'*6} {'-'*7} {'-'*7} {'-'*7}")
     cells = []
     for model_label, model_slug, src in [
-        ("Ember v0.1.5 iter-900", "ember-v015-iter900", EMBER_RERUN_DIR),
-        ("Qwen3-8B base (local)", "qwen3-8b-local", LOCAL_QWEN_DIR),
+        ("Ember v0.1.5 iter-900", "ember-v015-iter900", ember_dir),
+        ("Qwen3-8B base (local)", "qwen3-8b-local", qwen_dir),
     ]:
         for gap in GAP_MODES:
             trs = [load_cell(model_slug, gap, t, src) for t in TRIALS]
@@ -157,8 +202,8 @@ def main() -> int:
     print(f"  {'-'*10} {'-'*8} {'-'*8} {'-'*8} {'-'*22}")
     headline = {}
     for gap in GAP_MODES:
-        e_means = trial_means("ember-v015-iter900", gap, EMBER_RERUN_DIR)
-        q_means = trial_means("qwen3-8b-local", gap, LOCAL_QWEN_DIR)
+        e_means = trial_means("ember-v015-iter900", gap, ember_dir)
+        q_means = trial_means("qwen3-8b-local", gap, qwen_dir)
         e_overall = mean(e_means.values())
         q_overall = mean(q_means.values())
         point, lo, hi = paired_bootstrap_ci(e_means, q_means)
@@ -168,9 +213,9 @@ def main() -> int:
 
     # ── per-category breakdown for current ───────────────────────────────────
     print(f"\n{'='*78}\n  By-category, gap=current (n=3 trial means per task)\n{'='*78}")
-    e_means = trial_means("ember-v015-iter900", "current", EMBER_RERUN_DIR)
-    q_means = trial_means("qwen3-8b-local", "current", LOCAL_QWEN_DIR)
-    cats = task_categories("ember-v015-iter900", "current", EMBER_RERUN_DIR)
+    e_means = trial_means("ember-v015-iter900", "current", ember_dir)
+    q_means = trial_means("qwen3-8b-local", "current", qwen_dir)
+    cats = task_categories("ember-v015-iter900", "current", ember_dir)
     print(f"\n  {'category':<14} {'Ember':>8} {'Qwen-local':>11} {'Δ E−Q':>8}  {'n tasks':>8}")
     print(f"  {'-'*14} {'-'*8} {'-'*11} {'-'*8}  {'-'*8}")
     for cat in ("state_recall", "commitment", "resumption"):
@@ -185,8 +230,8 @@ def main() -> int:
     print(f"  Stable tasks omitted.\n")
     print(f"  {'task':<28} {'Ember t1/t2/t3':>16} {'Qwen-loc t1/t2/t3':>20}")
     print(f"  {'-'*28} {'-'*16} {'-'*20}")
-    e_var = task_variance_table("ember-v015-iter900", "current", EMBER_RERUN_DIR)
-    q_var = task_variance_table("qwen3-8b-local", "current", LOCAL_QWEN_DIR)
+    e_var = task_variance_table("ember-v015-iter900", "current", ember_dir)
+    q_var = task_variance_table("qwen3-8b-local", "current", qwen_dir)
     e_var_lookup = {tid: scs for tid, scs, _ in e_var}
     q_var_lookup = {tid: scs for tid, scs, _ in q_var}
     noisy_tids = sorted({

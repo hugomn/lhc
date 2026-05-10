@@ -115,7 +115,7 @@ A task's score is `correctness + meta_awareness`, range `0..2`. The model's over
 
 The runner guarantees:
 
-- **Deterministic gap.** Same task ID = same gap content for the same `gap_tokens` budget. The gap seed is `hash(task_id) & 0xFFFFFFFF`.
+- **Deterministic gap.** Same task ID = same gap content for the same `gap_tokens` budget. The gap seed is the first 4 bytes of `sha256(task_id)` (see `stable_seed` in [`evals/runners/lhc.py`](../evals/runners/lhc.py)). This is stable across machines and processes — earlier versions used the built-in `hash(task_id)`, which was process-randomized on Python 3.3+ and silently inflated trial-to-trial variance. The fix is documented in the round-1 external review (2026-05-08).
 - **Deterministic message order.** `setup + gap + probe` always assembled in that order, no shuffling of setup or probe.
 - **Frozen task content.** v0.1 task YAML files do not change once published.
 - **Pinned judge prompt.** `JUDGE_SYSTEM_PROMPT` in `grader.py` is part of the v0.1 contract.

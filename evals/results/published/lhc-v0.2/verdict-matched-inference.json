@@ -1,0 +1,114 @@
+{
+  "verdict_version": "matched-inference-v1",
+  "generated_at": "2026-05-10",
+  "generator": "evals/v0.2/diagnostic_compare.py + ad-hoc artifact builder; see docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md",
+  "description": "Matched local-MLX comparison of Ember v0.1.5 iter-900 vs base Qwen3-8B on LHC v0.2. n=3 fresh-server-restart trials per cell. Same /no_think prefix, same capped-cache MLX server config. Replaces verdict-original-confounded.json which encoded the inference-confounded sweep verdict.",
+  "public_wording": "Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet the bar for release.",
+  "replication_caveat": "In our MLX-LM server setup on Apple Silicon, outputs were stable within a single server session but varied across fresh server starts. Source not isolated (could be MLX-LM server, Metal kernels, cache state, sampling defaults, warmup, or process init). Benchmark replications should restart the server between trials or explicitly state they are within-session repeats.",
+  "ci_methodology": "Task-bootstrap CI conditional on the observed 3 restart trials, paired across tasks, 10000 iterations, RNG seed 0xEADBEE. A hierarchical bootstrap over (task, trial) would be wider, not narrower. Sufficient to reject shipping; not for fine ranking.",
+  "cells": {
+    "ember-v015-iter900__current": {
+      "model_slug": "ember-v015-iter900",
+      "gap_mode": "current",
+      "trials": [
+        1.2916666666666667,
+        1.125,
+        1.25
+      ],
+      "mean": 1.2222222222222223,
+      "stdev": 0.0867360833110889,
+      "range": 0.16666666666666674,
+      "n_tasks": 24
+    },
+    "qwen3-8b-local__current": {
+      "model_slug": "qwen3-8b-local",
+      "gap_mode": "current",
+      "trials": [
+        1.1666666666666667,
+        1.1666666666666667,
+        1.2083333333333333
+      ],
+      "mean": 1.1805555555555556,
+      "stdev": 0.02405626121623432,
+      "range": 0.04166666666666652,
+      "n_tasks": 24
+    },
+    "ember-v015-iter900__neutral": {
+      "model_slug": "ember-v015-iter900",
+      "gap_mode": "neutral",
+      "trials": [
+        1.375,
+        1.3333333333333333,
+        1.25
+      ],
+      "mean": 1.3194444444444444,
+      "stdev": 0.06364688465216443,
+      "range": 0.125,
+      "n_tasks": 24
+    },
+    "qwen3-8b-local__neutral": {
+      "model_slug": "qwen3-8b-local",
+      "gap_mode": "neutral",
+      "trials": [
+        1.4583333333333333,
+        1.3333333333333333,
+        1.2083333333333333
+      ],
+      "mean": 1.3333333333333333,
+      "stdev": 0.125,
+      "range": 0.25,
+      "n_tasks": 24
+    }
+  },
+  "comparisons": {
+    "current": {
+      "ember_mean": 1.2222222222222223,
+      "qwen_local_mean": 1.1805555555555556,
+      "delta_E_minus_Q": 0.04166666666666668,
+      "ci_lower_95": -0.13888888888888887,
+      "ci_upper_95": 0.22222222222222224,
+      "ci_includes_zero": true,
+      "verdict": "TIE"
+    },
+    "neutral": {
+      "ember_mean": 1.3194444444444444,
+      "qwen_local_mean": 1.3333333333333333,
+      "delta_E_minus_Q": -0.013888888888888876,
+      "ci_lower_95": -0.1388888888888889,
+      "ci_upper_95": 0.11111111111111115,
+      "ci_includes_zero": true,
+      "verdict": "TIE"
+    }
+  },
+  "category_breakdown_current": {
+    "state_recall": {
+      "ember_mean": 1.0416666666666667,
+      "qwen_local_mean": 0.875,
+      "delta": 0.16666666666666669,
+      "n_tasks": 8
+    },
+    "commitment": {
+      "ember_mean": 1.4166666666666667,
+      "qwen_local_mean": 1.4583333333333333,
+      "delta": -0.04166666666666666,
+      "n_tasks": 8
+    },
+    "resumption": {
+      "ember_mean": 1.2083333333333333,
+      "qwen_local_mean": 1.2083333333333333,
+      "delta": 1.3877787807814457e-17,
+      "n_tasks": 8
+    }
+  },
+  "per_task_variance_current": {
+    "ember-v015-iter900": {
+      "tasks_with_score_variance": 6,
+      "n_tasks": 24
+    },
+    "qwen3-8b-local": {
+      "tasks_with_score_variance": 6,
+      "n_tasks": 24
+    }
+  },
+  "verdict_branch": "TIE on both gap modes \u2014 CI crosses zero. Per pre-registered branch logic (DECISION.md): Ember not better than base, do not publish v0.1.5."
+}

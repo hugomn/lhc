@@ -1,4 +1,9 @@
 {
+  "status": "CONFOUNDED \u2014 DO NOT CITE FOR EMBER vs BASE COMPARISON",
+  "status_reason": "This verdict was computed against the original 2026-05-09 sweep, in which Ember ran via local MLX with the slowlit /no_think system prefix while base Qwen3-8B (and Ministral, Llama) ran via OpenRouter without that prefix. Round-2 external review (2026-05-09) flagged this inference-config asymmetry. The matched-inference diagnostic at verdict-matched-inference.json is the corrected reading: Ember vs base on current \u0394 +0.042 (95% CI [-0.139, +0.222]), TIE. The G4 95% CI in this file ([-0.46, -0.06]) is RETRACTED.",
+  "retracted_field": "gate_results[3] (G4) \u2014 delta_point_estimate -0.25 and CI [-0.4583, -0.0556] are no longer credible.",
+  "retained_for": "audit trail \u2014 to show what the pre-registered analyzer produced when fed the confounded sweep scorecards. The methodology (analyzer code, decision matrix, gate definitions) is unchanged and correct; the input data was confounded.",
+  "corrected_verdict_at": "evals/results/published/lhc-v0.2/verdict-matched-inference.json",
   "decision_row": "Ember not better than base (G1\u2013G4 fail)",
   "action": "STOP the v0.1.5 line. Whatever Ember v0.1.5 is doing, it is not measurably improving on base Qwen3-8B in a clean comparison. Either retrain on a different recipe (more distractor-style data, different rank/modules) or pivot base. Do not publish v0.1.",
   "gate_results": [

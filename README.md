@@ -86,12 +86,14 @@ See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode table
 
 ## Run LHC v0.2
 
+### Evaluate any OpenAI-compatible model
+
 ```bash
 git clone https://github.com/hugomn/lhc.git
 cd lhc
 uv venv && source .venv/bin/activate
 uv pip install -e .
-cp .env.example .env  # add your provider keys (OPENROUTER_API_KEY + ANTHROPIC_API_KEY for the published sweep)
+cp .env.example .env  # add provider keys (OPENROUTER_API_KEY + ANTHROPIC_API_KEY work for the published sweep models)
 
 # One model × one gap mode × one trial
 python -m evals.runners.lhc \
@@ -101,11 +103,28 @@ python -m evals.runners.lhc \
     --gap-mode current \
     --lhc-version 0.2 \
     --tasks-dir evals/v0.2/tasks
+```
 
-# Full sweep (4 models × 4 gap modes × 3 trials = 48 scorecards, ~3 hours, ~$5)
+To evaluate a model you serve yourself (vLLM, MLX-LM server, etc.), set `SLOWLIT_BASE_URL` to your endpoint and use `--provider slowlit`. **Important**: the slowlit provider injects `/no_think` as a system-prompt prefix by default (Qwen3-family thinking-mode opt-out). If you're benchmarking a model that doesn't support `/no_think` mode, override the prefix in the `slowlit` provider config or use `--provider openrouter` with an OpenRouter-mirrored deployment instead — see `evals/runners/lhc.py` for the prefix-injection logic. **Whichever inference path you pick, document it alongside your scorecard** — the original 2026-05-09 sweep was confounded by exactly this asymmetry, see [findings.md F-05](docs/findings.md).
+
+### Multi-trial protocol for MLX-served models
+
+In our setup on Apple Silicon, MLX-LM server outputs were stable within a single server session but varied across fresh server starts (~0.07–0.13 stdev on overall mean across 3 restart trials, with 6/24 tasks score-flipping per side). If your fine-tune is served via MLX-LM and you want to compare it against another model's score:
+
+- **Restart the MLX server between trials** (or accept that your "n=3" is one sample with within-session caching).
+- The diagnostic scripts in `evals/v0.2/diagnostic_*_replicate.py` show the protocol: launch a fresh `mlx_lm.server` process per trial.
+- Aim for ≥3 fresh-server-restart trials on both sides of any comparison; report mean + stdev + a paired bootstrap CI (see `evals/v0.2/diagnostic_compare.py`).
+
+We have not isolated the source of the cross-restart variance (could be MLX-LM server, Metal kernels, cache state, sampling defaults, warmup, or process init). If your stack is different, your variance characteristics may be different — measure first.
+
+### Reproduce our results
+
+```bash
+# Original 4-model sweep — 4 models × 4 gap modes × 3 trials = 48 scorecards, ~3 hours, ~$5
+# Note: this is OUR sweep config (model list and output paths are hardcoded); not a researcher-facing matrix runner
 python -m training.sweep_v02 --skip-existing
 
-# Audit + verdict
+# Audit + original verdict (with the now-retracted G4 CI; see findings.md F-05)
 python evals/v0.2/audit_g9_judge_stability.py --per-model 30
 python evals/v0.2/audit_g12_manual.py    # interactive, 12 samples
 python evals/v0.2/analyze.py \
@@ -118,12 +137,12 @@ python evals/v0.2/diagnostic_local_qwen.py        # Qwen-local trial 1
 python evals/v0.2/diagnostic_qwen_replicate.py    # Qwen-local trials 2 + 3
 python evals/v0.2/diagnostic_ember_rerun.py       # Ember trial 1
 python evals/v0.2/diagnostic_ember_replicate.py   # Ember trials 2 + 3
-python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI
+python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI; defaults to published scorecards
 ```
 
 ## What we learned that someone else can use
 
-- **Benchmark contamination is easy to introduce and hard to detect.** LHC v0.1's derivative-seed contamination *masked an actual regression* — without the v0.2 rebuild, we would have shipped a model that was worse than its base. The contamination check tooling at [`evals/v0.2/build_banned_overlap.py`](evals/v0.2/build_banned_overlap.py) is reusable for any benchmark-vs-fine-tune comparison.
+- **Benchmark contamination is easy to introduce and hard to detect.** LHC v0.1's derivative-seed contamination *masked non-improvement* — without the v0.2 rebuild, we would have shipped a model whose apparent improvement on the contaminated benchmark was an artifact and which, on a clean matched-inference comparison, does not measurably beat its base. The contamination check tooling at [`evals/v0.2/build_banned_overlap.py`](evals/v0.2/build_banned_overlap.py) is reusable for any benchmark-vs-fine-tune comparison.
 
 - **Pre-registering decision gates and refusing to move them is the methodology that produced an honest result.** [`evals/v0.2/DECISION.md`](evals/v0.2/DECISION.md) was locked before any model run. When the data showed Ember worse than base, we had no path to argue around it.
 
@@ -136,6 +155,14 @@ python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI
 - **Inference-config asymmetry can dominate a benchmark verdict.** The original v0.2 sweep ranked Ember vs OpenRouter-served Qwen3-8B and reported "Ember regresses by 0.25, CI [−0.46, −0.06]." Re-running both via the same local MLX server with the same `/no_think` prefix shrank that delta to +0.04 (a tie). About 5/6 of the apparent regression was inference confound. Anyone benchmarking a fine-tune against its base should run them on the same inference path.
 
 - **MLX-LM server replication: restart between trials.** In our setup on Apple Silicon, MLX outputs were stable within a single server session but varied across fresh server starts. Per-cell stdev across 3 restart trials was 0.02–0.13 on overall mean, with 6 of 24 tasks score-flipping per side. The original sweep's "byte-identical n=3 trials" was a within-session repeat, not three independent samples. We have not isolated the source. Benchmark replications of MLX-served models should restart the server between trials or explicitly state they are within-session.
+
+## Publishing your own scorecard
+
+If you run LHC against a model and want to share scorecards:
+
+1. **Self-identify your scorecards.** Add `model_slug`, `base_model`, `adapter` (or `null`), `inference_path`, `inference_provider`, `system_prompt_prefix`, and `server_config` fields at the top of each scorecard JSON. The published diagnostic scorecards under `evals/results/published/lhc-v0.2/diagnostic-*` show the shape. Filenames disambiguate; JSON content also should.
+2. **Document the inference path in any comparison.** "Model X scored Y on LHC v0.2 `current`" is missing the inference path. "Model X (vLLM, no system prefix, n=3 fresh-process trials) scored Y±σ on LHC v0.2 `current`" is comparable to ours.
+3. **If you publish artifacts to HuggingFace from a working directory, do not upload ignored files.** This repo's `.gitignore` covers `.env`, `models/`, `checkpoints/`, `evals/results/v0.2/` (working scorecards) and other local-only state. Use a clean `git ls-files` + `huggingface-cli upload` rather than `huggingface-cli upload .`.
 
 ## License
 

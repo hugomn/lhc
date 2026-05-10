@@ -1,6 +1,21 @@
 {
   "model": "Qwen/Qwen3-8B",
   "lhc_version": "0.2",
+  "model_slug": "qwen3-8b-local",
+  "base_model": "Qwen/Qwen3-8B",
+  "adapter": null,
+  "inference_path": "local_mlx_lm_server",
+  "inference_provider": "slowlit",
+  "system_prompt_prefix": "/no_think",
+  "server_config": {
+    "server": "mlx_lm.server",
+    "host": "127.0.0.1",
+    "port": 8080,
+    "prompt_cache_size": 2,
+    "prompt_cache_bytes": 4000000000,
+    "fresh_server_restart_per_trial": true
+  },
+  "generator": "evals/v0.2/diagnostic_local_qwen.py (trial 1) + evals/v0.2/diagnostic_qwen_replicate.py (trials 2, 3)",
   "overall": 1.21,
   "by_category": {
     "state_recall": 0.75,

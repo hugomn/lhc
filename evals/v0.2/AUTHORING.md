@@ -53,30 +53,19 @@ Pick at least 3 distinct frames across the 8 resumption tasks. None of them shou
 
 ### 5. Run the local contamination check
 
-We provide a small script that takes a draft task YAML and checks its content against the banned-overlap manifest. **All hits should be deliberate or justified in the task's manifest entry.**
+> **Status (2026-05-10):** `check_task.py` was not written for the initial v0.2 batch. The 24 frozen tasks were decontaminated by manual review against [`banned_overlap.json`](banned_overlap.json) at authoring time (entity names, scaffolding phrases, domain shapes cross-checked by the author). The contamination check tooling at [`build_banned_overlap.py`](build_banned_overlap.py) is the load-bearing artifact — it scans seeds + synthetic training data and emits per-LHC-task contamination buckets, which is what the manual review checked against. A future task addition will land alongside `check_task.py`.
+
+When the script lands, the procedure will be:
 
 ```bash
 python evals/v0.2/check_task.py evals/v0.2/tasks/state_recall/foo.yaml
 ```
 
-(see `check_task.py` — yet to be written; will land alongside the first batch of v0.2 tasks)
+**All hits should be deliberate or justified in the task's manifest entry.**
 
 ### 6. Record provenance in the v0.2 manifest
 
-Each task gets one entry in `evals/v0.2/manifest.json`:
-
-```json
-{
-  "id": "state_recall_v2_001",
-  "category": "state_recall",
-  "difficulty": "easy",
-  "author": "hugomn + claude",
-  "date": "2026-05-09",
-  "intended_axis": "state_recall over a long gap",
-  "forbidden_nearest_neighbor": "state_recall_001",   // the v0.1 task this category-slot replaces
-  "why_non_overlapping": "scenario domain is hospital triage protocols, not engineering on-call; no entity or phrase reuse from any banned bucket"
-}
-```
+Each task has one entry in [`evals/v0.2/manifest.json`](manifest.json), including its file path, sha256 (first 16 chars), category, difficulty, decontamination status, the v0.1 nearest-neighbor it replaces, and the rationale for non-overlap. The full manifest was generated 2026-05-10 from the existing 24 frozen tasks + `banned_overlap.json`. New tasks should append entries to that file with the same shape.
 
 This manifest is the durable record of *why* each v0.2 task is held out from Ember's training distribution. If contamination is later suspected, this is what we audit.
 

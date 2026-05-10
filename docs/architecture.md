@@ -24,7 +24,7 @@ Each task is a YAML file under `evals/tasks/<category>/<task_id>.yaml`. It decla
 
 ### 2. Message assembly
 
-`runners/lhc.py::run_task` calls `gap.py::generate_gap` with `target_tokens` and a deterministic seed (hash of the task id). The gap is a sequence of synthetic user/assistant exchanges from a fixed pool, shuffled and cycled until the token budget is hit.
+`runners/lhc.py::run_task` calls `gap.py::generate_gap` with `target_tokens` and a deterministic seed derived from the task id via `stable_seed` (first 4 bytes of `sha256(task_id)`, stable across machines and processes). The gap is a sequence of synthetic user/assistant exchanges from a fixed pool, shuffled and cycled until the token budget is hit.
 
 The gap pool is intentionally mundane — plausible side-errand chatter that the model has to hold but not act on. Variety prevents the model from pattern-matching the gap as filler.
 

@@ -33,7 +33,8 @@ lhc-v0.2/
 ├── audit-g9.json                   # judge stability rejudge: 120 samples, 1 flip (0.83%)
 ├── audit-g12.json                  # manual audit: 12 samples, 0 disagreements (after revision)
 ├── audit-combined.json             # G9 + G12 merged, fed into the analyzer
-├── verdict-final.json              # final 13-gate analyzer output + decision matrix routing
+├── verdict-original-confounded.json # 13-gate analyzer output for the original sweep — RETAINED for audit trail; G4's CI [-0.46, -0.06] is now retracted (was inflated by inference-config asymmetry, see verdict-matched-inference.json for the corrected reading)
+├── verdict-matched-inference.json  # n=3 matched-local-MLX comparison — current verdict surface
 └── deterministic-baseline.json     # 100-line Python parser baseline (resumption-only, 8 tasks)
 ```
 
@@ -64,7 +65,7 @@ python evals/v0.2/audit_g12_manual.py    # interactive, 12 samples
 python evals/v0.2/analyze.py \
     --scorecards-dir evals/results/v0.2/sweep \
     --audit-results evals/results/v0.2/audit-combined.json \
-    --output evals/results/v0.2/verdict-final.json
+    --output evals/results/v0.2/verdict-original-confounded.json
 ```
 
 The deterministic baseline is independent:

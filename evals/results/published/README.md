@@ -14,17 +14,20 @@ published/
 │   └── deepseek-target-{1,2,3}.json     # DeepSeek V4 Pro target, Sonnet judge
 ├── v0.1.5/                            # Ember v0.1.5 sweep results (HISTORICAL — see caveat below)
 ├── 8b-class-leaderboard/              # 8B-class comparison on LHC v0.1 (HISTORICAL — see caveat below)
-└── lhc-v0.2/                          # CURRENT canonical results (2026-05-09)
-    ├── README.md                          # detailed layout + how to reproduce
-    ├── sweep/                             # 4 models × 4 gap modes × 3 trials
-    ├── audit-{g9,g12,combined}.json       # audit results
-    ├── verdict-final.json                 # 13-gate analyzer output
-    └── deterministic-baseline.json        # 100-line parser baseline
+└── lhc-v0.2/                          # CURRENT canonical results (sweep 2026-05-09 + matched-inference diagnostic 2026-05-10)
+    ├── README.md                                  # detailed layout + how to reproduce
+    ├── sweep/                                     # 4 models × 4 gap modes × 3 trials (original sweep)
+    ├── diagnostic-ember-rerun/                    # Ember n=3 fresh-server-restart trials, matched local MLX
+    ├── diagnostic-local-qwen/                     # base Qwen n=3 fresh-server-restart trials, matched local MLX
+    ├── audit-{g9,g12,combined}.json               # audit results
+    ├── verdict-original-confounded.json           # 13-gate analyzer output for original sweep — RETAINED for audit trail; G4's CI [-0.46, -0.06] retracted (was inflated by inference confound)
+    ├── verdict-matched-inference.json             # corrected verdict from n=3 matched-local-MLX comparison — current verdict surface
+    └── deterministic-baseline.json                # 100-line parser baseline
 ```
 
 ## Status
 
-> **The LHC v0.1 published results (v0.1/, v0.1.5/, 8b-class-leaderboard/) are historical, not authoritative.** An external review on 2026-05-08 identified that the LHC v0.1 task scenarios overlapped with Ember's training data via `based_on` derivative seeds, plus four other methodology issues (process-randomized gap content, tiny gap pool, train/eval gap mismatch, truncated scorecards). The LHC v0.2 sweep on 2026-05-09 confirmed that, on a clean benchmark, Ember v0.1.5 is *worse* than its base Qwen3-8B — meaning the v0.1 leaderboard claims for Ember were contamination artifacts.
+> **The LHC v0.1 published results (v0.1/, v0.1.5/, 8b-class-leaderboard/) are historical, not authoritative.** An external review on 2026-05-08 identified that the LHC v0.1 task scenarios overlapped with Ember's training data via `based_on` derivative seeds, plus four other methodology issues (process-randomized gap content, tiny gap pool, train/eval gap mismatch, truncated scorecards). The LHC v0.2 sweep on 2026-05-09 — corrected by the matched-inference diagnostic on 2026-05-10 — confirmed that on a clean benchmark with apples-to-apples local-MLX inference, **Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B** (Δ E−Q = +0.042 on `current`, −0.014 on `neutral`, both 95% CIs cross zero). The v0.1 leaderboard's apparent Ember advantage was a contamination artifact.
 >
 > Use `lhc-v0.2/` for any current claim. The v0.1 results stay published as the historical record of *what we believed at each point*, not as an authoritative leaderboard. See [`docs/findings.md`](../../../docs/findings.md) for the full caveat and [`docs/journal/`](../../../docs/journal/) for the methodology arc.
 

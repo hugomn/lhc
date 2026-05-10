@@ -1,45 +1,17 @@
-# Training
+# Training (HISTORICAL — Ember v0.1.5 era)
 
-LoRA post-training of an open-weight base model on long-horizon coherence data.
+> **Status: this directory is preserved for the methodology arc, not as researcher-facing tooling.** It contains the LoRA / DoRA fine-tuning code that produced Ember v0.1.5 — the model that did not measurably beat its base under matched local inference and was not released. The training-side story is part of the load-bearing example for the [methodology contribution](../README.md), but if you're here to evaluate your own fine-tune on LHC, you don't need anything in this directory. See the top-level [`README.md`](../README.md) `## Run LHC v0.2` section instead.
 
-## Approach for v0.1
+If you want to read this code as historical context:
 
-- **Base**: Qwen2.5-7B-Instruct (Apache-2.0, well-supported in MLX-LM, fits in M5 Pro RAM with room for training).
-- **Method**: LoRA via [MLX-LM](https://github.com/ml-explore/mlx-examples/tree/main/llms) on Apple Silicon. Local. No cloud compute for v0.1.
-- **Dataset**: ~2,000 LHC-shaped examples from `data/synthetic/`. See [`PLAN.md`](../PLAN.md) Stage 1 for dataset construction.
-- **Compute**: M5 Pro 68GB. Single training run is ~4–8 hours.
+- **[`sweep_v02.py`](sweep_v02.py)** — the 4-model × 4-gap-mode × 3-trial sweep driver that produced the original 2026-05-09 verdict. Hardcoded model list (Ember/Qwen3-8B/Ministral/Llama-3.1-8B), hardcoded output paths. Not a researcher-facing matrix runner.
+- **`sweep_v15.py`**, **`sweep_8b_class.py`** — older sweep configs from before LHC v0.2.
+- **Training recipes** — see git history for the LoRA/DoRA configs that produced `checkpoints/ember-v0.1.5/`.
 
-The full plan is documented in [`PLAN.md`](../PLAN.md). This README is the operational entry point once Stage 2 of that plan is complete.
+For the actual decision arc behind this code:
 
-## Run (placeholder — operational once Stage 3 lands)
+- [`docs/journal/2026-05-08-external-review-and-decontamination.md`](../docs/journal/2026-05-08-external-review-and-decontamination.md) — round 1 review, methodology rebuild
+- [`docs/journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md`](../docs/journal/2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) — sweep verdict (later corrected by matched-inference diagnostic)
+- [`docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md`](../docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md) — matched-inference correction; v0.1.5 retired
 
-```bash
-# Convert base model to MLX format (one-time)
-mlx_lm.convert --hf-path Qwen/Qwen2.5-7B-Instruct --mlx-path ./models/qwen-7b
-
-# LoRA training
-mlx_lm.lora \
-    --model ./models/qwen-7b \
-    --train \
-    --data data/synthetic/v0.1 \
-    --batch-size 4 \
-    --iters 1000 \
-    --adapter-path checkpoints/ember-v0.1
-
-# Merge LoRA into base for distribution
-mlx_lm.fuse \
-    --model ./models/qwen-7b \
-    --adapter-path checkpoints/ember-v0.1 \
-    --save-path models/ember-v0.1
-```
-
-The `configs/` directory will hold the canonical hyperparameter YAML once we lock the recipe.
-
-## Future paths
-
-- **Tier 2 (14B base):** scaling to Qwen2.5-14B with the same recipe. Same M5 Pro can host it; training takes longer.
-- **Cloud step:** if v0.1 hits the LHC target and a v0.2 needs more compute, rent an H100 from RunPod / Lambda / Crusoe. Out of scope for v0.1 — local first.
-
-## Infra
-
-`infra/accelerate_8xh100.yaml` is leftover scaffold for a future cloud path. Ignore it for v0.1; MLX-LM does not use Accelerate.
+For an "evaluate my own fine-tune on LHC" path: there is no canned matrix runner today. Use [`evals.runners.lhc`](../evals/runners/lhc.py) directly with `--provider <your-provider>` and `--model <your-model>`, and run multiple trials yourself with fresh server starts (see the [MLX replication observation](../docs/findings.md) F-05 about why fresh server starts matter on Apple Silicon).
