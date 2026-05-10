@@ -3,7 +3,10 @@
 > A decontaminated, audit-validated benchmark for evaluating long-horizon coherence in 8B-class agent models.
 
 [![HuggingFace Dataset](https://img.shields.io/badge/🤗%20Dataset-hugonogueira%2Flhc--v0.2-yellow)](https://huggingface.co/datasets/hugonogueira/lhc-v0.2)
+[![Writeup](https://img.shields.io/badge/📝%20Writeup-hugo.im-blue)](https://hugo.im/posts/lhc-v02-long-horizon-coherence-benchmark/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
+
+> **Long-form writeup:** [LHC v0.2: A Benchmark for Long-Horizon Agent Coherence (and the Methodology That Got It Honest)](https://hugo.im/posts/lhc-v02-long-horizon-coherence-benchmark/) (also in [Portuguese](https://hugo.im/pt/posts/lhc-v02-long-horizon-coherence-benchmark/)).
 
 This repo contains:
 

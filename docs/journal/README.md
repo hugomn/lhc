@@ -43,6 +43,7 @@ Commits, scorecards, files referenced.
 
 ## Index
 
+- [`2026-05-10e-path-e-shipped-writeup-and-cycle-closed.md`](2026-05-10e-path-e-shipped-writeup-and-cycle-closed.md) — Path E artifact #3 shipped: long-form writeup live on hugo.im in EN and PT. v0.2 cycle formally closed. Open questions for a possible v0.3 carried forward (OQ-10..OQ-14). Decisions D-25..D-27.
 - [`2026-05-10d-deterministic-baseline-shipped-and-overclaim-corrected.md`](2026-05-10d-deterministic-baseline-shipped-and-overclaim-corrected.md) — Path E artifact #2 shipped: standalone parser repo at `hugomn/lhc-resume-state-parser`. Caught a real "beats every fine-tuned model" overclaim that had been load-bearing in the docs since 2026-05-09 (5 review rounds had not surfaced it); corrected across 6 places.
 - [`2026-05-10c-lhc-v02-published-to-huggingface.md`](2026-05-10c-lhc-v02-published-to-huggingface.md) — Path E artifact #1 shipped: `hugonogueira/lhc-v0.2` is live on HuggingFace, public, Apache-2.0. 97 files: 24 task YAMLs, 60 scorecards, 3 audits, both verdicts, baseline, provenance manifest, dataset card. Initial commit `fd9aa7f`.
 - [`2026-05-10b-repo-rebrand-to-personal-namespace.md`](2026-05-10b-repo-rebrand-to-personal-namespace.md) — Repo transferred from `slowlitlabs/ember` to `hugomn/lhc` on GitHub. Front-of-house docs re-attributed to Hugo Nogueira; HF target paths shifted to `hugonogueira/*`. Journal history preserved verbatim per append-only convention.
