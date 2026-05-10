@@ -43,6 +43,7 @@ Commits, scorecards, files referenced.
 
 ## Index
 
+- [`2026-05-10d-deterministic-baseline-shipped-and-overclaim-corrected.md`](2026-05-10d-deterministic-baseline-shipped-and-overclaim-corrected.md) — Path E artifact #2 shipped: standalone parser repo at `hugomn/lhc-resume-state-parser`. Caught a real "beats every fine-tuned model" overclaim that had been load-bearing in the docs since 2026-05-09 (5 review rounds had not surfaced it); corrected across 6 places.
 - [`2026-05-10c-lhc-v02-published-to-huggingface.md`](2026-05-10c-lhc-v02-published-to-huggingface.md) — Path E artifact #1 shipped: `hugonogueira/lhc-v0.2` is live on HuggingFace, public, Apache-2.0. 97 files: 24 task YAMLs, 60 scorecards, 3 audits, both verdicts, baseline, provenance manifest, dataset card. Initial commit `fd9aa7f`.
 - [`2026-05-10b-repo-rebrand-to-personal-namespace.md`](2026-05-10b-repo-rebrand-to-personal-namespace.md) — Repo transferred from `slowlitlabs/ember` to `hugomn/lhc` on GitHub. Front-of-house docs re-attributed to Hugo Nogueira; HF target paths shifted to `hugonogueira/*`. Journal history preserved verbatim per append-only convention.
 - [`2026-05-10-mlx-replication-and-diagnostic-closure.md`](2026-05-10-mlx-replication-and-diagnostic-closure.md) — Two more rounds of external review. Yesterday's "Ember regresses" verdict rebuilt as "statistically indistinguishable from base under matched local inference; does not meet bar for release." Discovered MLX session-vs-restart replication issue. Path E green-lit.

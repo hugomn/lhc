@@ -8,7 +8,7 @@
 This repo contains:
 
 - **LHC v0.2** — 24 hand-curated tasks, 4 gap-mode ablation, full audit trail, four rounds of external review. Also published as the [`hugonogueira/lhc-v0.2`](https://huggingface.co/datasets/hugonogueira/lhc-v0.2) HuggingFace dataset.
-- **Deterministic baseline** — 100-line Python parser that beats every fine-tuned 8B model we tested on two structured-state tasks.
+- **Deterministic baseline** — ~80-line Python parser that scores 2/2 deterministically on two structured-state resumption tasks where every fine-tuned 8B model we tested averaged below 2.0 across 12 cells. Standalone repo: [hugomn/lhc-resume-state-parser](https://github.com/hugomn/lhc-resume-state-parser).
 - **The honest training record** — every dead end, including the fine-tuned model that didn't beat its base.
 
 ## What this is for
@@ -56,7 +56,7 @@ Both CIs cross zero: **statistical tie on both gap modes.** Ember is not measura
 
 ¹ Task-bootstrap CI conditional on the observed 3 restart trials. A hierarchical bootstrap over (task, trial) would be wider, not narrower. Sufficient to reject shipping; not for fine ranking.
 
-A 100-line deterministic parser (no LLM) scored **0.75 on resumption** (8 tasks) — and beat all four LLMs on the two structured-state resumption tasks (warehouse tracker, inconsistency detection). Implication: fine-tuning is the wrong layer for those task structures.
+A ~80-line deterministic parser (no LLM) scored **0.75 / 2.00 on resumption** (8 tasks). On the two structured-state tasks (`resumption_v2_004` warehouse tracker and `resumption_v2_008` inconsistency detection), the parser scores 2/2 deterministically; across the original sweep, every fine-tuned 8B model we tested (Ember, Qwen3-8B base, Ministral, Llama-3.1-8B) had a mean below 2.0 on at least one of those tasks. Some LLM cells match the parser's max score of 2/2; none of the LLMs match the parser's deterministic *mean*. Implication: for structured-state resumption, fine-tuning may be the wrong layer.
 
 See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode tables, and [`docs/findings.md`](docs/findings.md) F-05 for the full record.
 

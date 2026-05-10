@@ -75,7 +75,7 @@ These per-category means are from the original sweep and are subject to the same
 
 A 100-line Python parser with **no LLM in the forward pass** scored **0.75 on resumption** (8 tasks). It detects structured-state markers (`NEXT:`, `[NEXT]`, "next planned action") and surfaces inconsistencies in payloads with conflicting CAPS-DASH-LETTER tokens (e.g. `RECIPE-A` vs `RECIPE-B` in the same loaded state).
 
-The parser scored **2/2 on `resumption_v2_004`** (warehouse pick-pack tracker) and **2/2 on `resumption_v2_008`** (the inconsistency-detection task — v0.2's analog of v0.1's `resumption_004` Ember-killer). For both of those structured-state tasks, *parsing beats every fine-tuned 8B model we tested*, including Ember.
+The parser scored **2/2 deterministically on `resumption_v2_004`** (warehouse pick-pack tracker) and **2/2 deterministically on `resumption_v2_008`** (inconsistency-detection — v0.2's analog of v0.1's `resumption_004` Ember-killer). On both of those structured-state tasks, every fine-tuned 8B model we tested (Ember, Qwen3-8B base, Ministral-8B-2512, Llama-3.1-8B) averaged below 2.0 across 12 cells per task. Some LLM cells hit 2/2; none of the LLMs match the parser's deterministic *mean*.
 
 Implication: for production agent workflows where the inter-session state is structured, fine-tuning is the wrong layer. A schema validator + parser does the job better and at zero inference cost. See [`evals/v0.2/deterministic_baseline.py`](../evals/v0.2/deterministic_baseline.py) for the parser, and [`evals/results/published/lhc-v0.2/deterministic-baseline.json`](../evals/results/published/lhc-v0.2/deterministic-baseline.json) for the scorecard.
 
