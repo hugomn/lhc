@@ -31,7 +31,7 @@ When Ember graduates to a public API, the same merged weights serve under vLLM o
 
 ```bash
 # Direct vLLM
-vllm serve slowlitlabs/ember-v0.1 \
+vllm serve hugonogueira/ember-v0.1 \
     --host 0.0.0.0 \
     --port 8000 \
     --max-model-len 65536
@@ -39,7 +39,7 @@ vllm serve slowlitlabs/ember-v0.1 \
 # Or with adapter on top of base
 vllm serve Qwen/Qwen2.5-7B-Instruct \
     --enable-lora \
-    --lora-modules ember-v0.1=slowlitlabs/ember-v0.1-adapter \
+    --lora-modules ember-v0.1=hugonogueira/ember-v0.1-adapter \
     --port 8000
 ```
 

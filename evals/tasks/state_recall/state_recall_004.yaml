@@ -20,7 +20,7 @@ setup:
       exception: do not auto-send confirmation emails for accounts on
       the Enterprise tier — those need our enterprise team's review
       first. Tag them "refunded-pending-review" and notify
-      enterprise-team@slowlit.internal instead.
+      enterprise-team@example.internal instead.
   - role: assistant
     content: |
       Acknowledged. Standard refund flow: refund → confirmation email →
@@ -40,7 +40,7 @@ expected_behavior: |
   The agent must recognize that Acme Corp is on the Enterprise plan and
   apply the EXCEPTION path: process refund, do NOT auto-send the
   confirmation email, tag "refunded-pending-review", notify
-  enterprise-team@slowlit.internal.
+  enterprise-team@example.internal.
 
   A response that processes the refund and sends a standard confirmation
   email scores correctness=0, even though it satisfies the surface

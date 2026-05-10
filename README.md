@@ -1,33 +1,33 @@
-# Ember
+# LHC — long-horizon coherence
 
-> **Patient fire.** A research effort by [Slow Lit Labs](https://slowlitlabs.co) on long-horizon coherence in autonomous agent models.
+> A decontaminated, audit-validated benchmark for evaluating long-horizon coherence in 8B-class agent models.
 
-This repo is the home of:
+This repo contains:
 
-- **LHC v0.2** — a decontaminated, gap-mode-ablated benchmark for long-horizon coherence in 8B-class language models.
-- **The Ember training pipeline** — LoRA / DoRA fine-tuning on Apple Silicon (MLX-LM), built around LHC.
-- **A complete, public methodology arc** — including the version of the benchmark we got wrong, the external review that called it out, and the rebuild that produced honest numbers.
+- **LHC v0.2** — 24 hand-curated tasks, 4 gap-mode ablation, full audit trail, four rounds of external review.
+- **Deterministic baseline** — 100-line Python parser that beats every fine-tuned 8B model we tested on two structured-state tasks.
+- **The honest training record** — every dead end, including the fine-tuned model that didn't beat its base.
+
+## What this is for
+
+If you are training a model to maintain coherence across long-running conversations or autonomous agent loops — and you want to know whether your fine-tune is *actually* better than its base, or just better at the test set — LHC is built for you. It is a small, manually-curated benchmark with three properties most LHC-style benchmarks lack:
+
+1. **Decontaminated.** No `based_on` overlap with the synthetic data Ember was trained on. Contamination check tooling is in the repo.
+2. **Gap-mode ablated.** Each task is run under 4 different "long-horizon gap" conditions (none / placeholder / neutral / current). The gap mode is the lever that exposes coherence failures vs. surface memorization.
+3. **Pre-registered decision gates.** [`evals/v0.2/DECISION.md`](evals/v0.2/DECISION.md) was locked *before* any model was scored. The reasoning for shipping or not-shipping is the same reasoning we'd apply to anyone else's results.
 
 ## Status (2026-05-10)
 
-**Ember v0.1.5 did not ship.** Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet our bar for release ("significant improvement on at least one functionality compared to a same-class model"). The v0.1.5 line is retired.
+The Ember v0.1.5 fine-tune did not ship. **Under matched local MLX inference, Ember v0.1.5 is statistically indistinguishable from base Qwen3-8B on LHC v0.2; it does not meet our bar for release** ("significant improvement on at least one functionality compared to a same-class model").
 
-The path to that conclusion was four rounds of external review in 72 hours:
+Getting to that conclusion took four rounds of external review in 72 hours:
 
 1. **Round 1 (2026-05-08)** — caught LHC v0.1 contamination, hash-seed bug, train/eval gap mismatch. Triggered the v0.2 rebuild.
 2. **Round 2 (2026-05-09)** — caught that the v0.2 sweep compared Ember (local MLX, with `/no_think`) against the OpenRouter models (no `/no_think`). Inference-config asymmetry confounded the original "Ember regresses by 0.25" verdict.
 3. **Round 3 (2026-05-10)** — blessed the matched-inference diagnostic with a wording change and asked us to close one symmetry nuisance.
 4. **Round 4 (2026-05-10)** — closing that nuisance surfaced an MLX replication issue (within-session vs across-session). Final n=3 fresh-server-restart comparison is a statistical tie; both CIs cross zero.
 
-What you can use today:
-
-- **LHC v0.2 benchmark** — 24 hand-curated tasks, 4 gap-mode ablation, stable seeding, full prompt + response audit trail, judge-stability tested, manual-audit validated, and now also matched-inference-validated for the Ember-vs-base comparison. The most rigorously-reviewed long-horizon coherence benchmark we know of at this scale.
-- **The deterministic resume-state validator baseline** — a 100-line Python parser (no LLM in the forward pass) that beats every fine-tuned 8B model we tested on two specific resumption tasks. Sets a hard floor on what "fine-tuning is worth it" means for structured-state tasks.
-- **The full methodology record** — every dead end, every revision, every external-review round. See the [journal](docs/journal/) and [findings](docs/findings.md).
-
-What we are working on next:
-
-- Path E: ship the benchmark + parser + methodology writeup. No further training in this cycle. See the [2026-05-10 journal entry](docs/journal/2026-05-10-mlx-replication-and-diagnostic-closure.md) for the full reasoning.
+Both reviewer rounds and the resulting verdicts are recorded in the [journal](docs/journal/). Nothing has been edited after the fact.
 
 ## Headline result (LHC v0.2)
 
@@ -61,9 +61,9 @@ See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode table
 
 | Path | What |
 |---|---|
-| **`evals/v0.2/`** | LHC v0.2 — tasks, decision gates, analyzer, audit scripts, deterministic baseline. The current canonical benchmark. |
+| **`evals/v0.2/`** | LHC v0.2 — tasks, decision gates, analyzer, audit scripts, deterministic baseline, matched-inference diagnostics. The current canonical benchmark. |
 | **`evals/runners/`** | The harness — multi-provider runner with stable seeding, full-message scorecards, fail-fast lifecycle, gap-mode ablation. |
-| **`evals/results/published/lhc-v0.2/`** | All 48 sweep scorecards, audit results, verdict. Reproducible. |
+| **`evals/results/published/lhc-v0.2/`** | All sweep + diagnostic scorecards, audit results, verdict. Reproducible. |
 | **`evals/tasks/`** | LHC v0.1 tasks (historical — superseded by v0.2 due to contamination). |
 | **`docs/journal/`** | Append-only chronological log of work sessions. The methodology arc. |
 | **`docs/findings.md`** | Living "what's true now" doc, newest-first. |
@@ -87,8 +87,8 @@ See [`docs/results.md`](docs/results.md) for per-category and per-gap-mode table
 ## Run LHC v0.2
 
 ```bash
-git clone https://github.com/slowlitlabs/ember.git
-cd ember
+git clone https://github.com/hugomn/lhc.git
+cd lhc
 uv venv && source .venv/bin/activate
 uv pip install -e .
 cp .env.example .env  # add your provider keys (OPENROUTER_API_KEY + ANTHROPIC_API_KEY for the published sweep)
@@ -123,7 +123,7 @@ python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI
 
 ## What we learned that someone else can use
 
-- **Benchmark contamination is easy to introduce and hard to detect.** Our LHC v0.1 derivative-seed contamination *masked an actual regression* — without the v0.2 rebuild, we would have shipped a model that was worse than its base. The contamination check tooling at [`evals/v0.2/build_banned_overlap.py`](evals/v0.2/build_banned_overlap.py) is reusable for any benchmark-vs-fine-tune comparison.
+- **Benchmark contamination is easy to introduce and hard to detect.** LHC v0.1's derivative-seed contamination *masked an actual regression* — without the v0.2 rebuild, we would have shipped a model that was worse than its base. The contamination check tooling at [`evals/v0.2/build_banned_overlap.py`](evals/v0.2/build_banned_overlap.py) is reusable for any benchmark-vs-fine-tune comparison.
 
 - **Pre-registering decision gates and refusing to move them is the methodology that produced an honest result.** [`evals/v0.2/DECISION.md`](evals/v0.2/DECISION.md) was locked before any model run. When the data showed Ember worse than base, we had no path to argue around it.
 
@@ -131,7 +131,7 @@ python evals/v0.2/diagnostic_compare.py           # paired bootstrap CI
 
 - **Deterministic parsers are a real baseline for structured-state tasks.** A 100-line script beat all four 8B-class LLMs on two specific resumption tasks. Anyone training agent models should test this before assuming fine-tuning is the right layer.
 
-- **Storing full prompt + full gap + full response in scorecards costs nothing and enables independent re-judging by anyone, ever.** Excerpt-only storage made our v0.1 scorecards effectively un-auditable. Lesson learned the hard way.
+- **Storing full prompt + full gap + full response in scorecards costs nothing and enables independent re-judging by anyone, ever.** Excerpt-only storage made the v0.1 scorecards effectively un-auditable. Lesson learned the hard way.
 
 - **Inference-config asymmetry can dominate a benchmark verdict.** The original v0.2 sweep ranked Ember vs OpenRouter-served Qwen3-8B and reported "Ember regresses by 0.25, CI [−0.46, −0.06]." Re-running both via the same local MLX server with the same `/no_think` prefix shrank that delta to +0.04 (a tie). About 5/6 of the apparent regression was inference confound. Anyone benchmarking a fine-tune against its base should run them on the same inference path.
 
@@ -147,6 +147,8 @@ LHC v0.2 tasks and methodology are also Apache 2.0 — fork the benchmark, run y
 
 If you use LHC or build on this methodology, please cite via [`CITATION.cff`](CITATION.cff).
 
----
+## About
 
-**Slow Lit Labs** — patient fire.
+Solo research effort by [Hugo Nogueira](https://github.com/hugomn). The methodology is the contribution; the model that didn't ship is the load-bearing example.
+
+This is the seed for an eventual research lab focused on long-horizon agent reliability — but for now, it lives here under my personal name.

@@ -66,7 +66,7 @@ Read top to bottom; the first matching row wins.
 | **Any of G9–G13 trips** (LHC v0.2 itself is insufficient) | **Stop.** Do not ship. Do not invest more training cycles. Build a different evaluation: hybrid of LongBench / RULER / 8–12 hand-built held-out *product* tasks. Re-decide everything from there. |
 | **G1–G4 fail** (Ember not better than base) | **Stop the v0.1.5 line.** Whatever Ember v0.1.5 is doing, it is not measurably improving on base Qwen3-8B in a clean comparison. Either retrain on a different recipe (more distractor-style data, different rank/modules) or pivot base. Do not publish v0.1. |
 | **G1–G4 pass AND G5–G8 pass** (Ember beats base, loses to Ministral) | Two sub-options, choose by reading the failure pattern: (a) if Ember's resumption gap is gap-style-only (G7 holds but G6 doesn't), train against distractors and re-test; (b) if Ember loses on `neutral` too, switch base model (Mistral 8B-class with native long context, or Qwen3-8B + YaRN re-evaluated). Do not publish v0.1. |
-| **G1–G4 pass AND G5–G8 fail** (Ember beats base, NOT worse than Ministral by our thresholds) | **Validate on held-out product tasks** (≥ 8 real agent workflows; see OQ-01 in journal). If product tasks agree, publish as `slowlitlabs/ember-v0.1` with a model card that states the LHC v0.2 numbers, the published methodology, and the held-out product results. Do not publish before product validation. |
+| **G1–G4 pass AND G5–G8 fail** (Ember beats base, NOT worse than Ministral by our thresholds) | **Validate on held-out product tasks** (≥ 8 real agent workflows; see OQ-01 in journal). If product tasks agree, publish as `hugonogueira/ember-v0.1` with a model card that states the LHC v0.2 numbers, the published methodology, and the held-out product results. Do not publish before product validation. |
 | **G1–G4 pass AND G5–G8 ambiguous** (one or two of G5–G8 trip but not all) | Treat as Ember tied with Ministral. Same path as the row above: held-out product tasks decide. |
 
 ## 7. Operational protocol
@@ -92,7 +92,7 @@ Read top to bottom; the first matching row wins.
 
 ### What "shipping" means
 
-For this cycle, shipping means: pushing weights to `slowlitlabs/ember-v0.1` on HuggingFace with a model card. The model card must include:
+For this cycle, shipping means: pushing weights to `hugonogueira/ember-v0.1` on HuggingFace with a model card. The model card must include:
 - LHC v0.2 numbers across all gap modes
 - Per-gate result (G1 through G13, pass/fail)
 - The 48 scorecards in `evals/results/published/lhc-v0.2/`

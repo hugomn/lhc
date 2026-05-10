@@ -1,4 +1,4 @@
-# Why Ember
+# Why long-horizon coherence
 
 Most agent models are trained on chat data and post-trained for tool use as an afterthought. They behave well for one turn, well for ten turns, and deteriorate predictably after that.
 
@@ -8,20 +8,22 @@ But the agents that matter — the ones that operate a company, run a research p
 
 The unsolved problem is not how to make a single autonomous run longer. The unsolved problem is how to make an agent that is **the same agent** when it wakes up tomorrow as it was when it slept tonight. An agent that remembers a decision it made on Monday when a contradictory request comes in on Friday. An agent that picks up a half-finished workflow after a two-week pause and recovers state without prompting.
 
-This is the work Ember is for.
+That is what LHC measures. That is what this work is for.
 
 ## The thesis in one paragraph
 
-A frontier-tier open model, post-trained specifically on the failure modes of long-life autonomous operation. Not a new pretraining run — the field has done that work and we will not waste capital re-doing it. We start from the best open agent base available, and we make it measurably better at a single, narrowly defined, genuinely hard problem: **coherence across long context gaps**.
+A frontier-tier open model, post-trained specifically on the failure modes of long-life autonomous operation. Not a new pretraining run — the field has done that work and we will not waste capital re-doing it. We start from the best open agent base available and we try to make it measurably better at a single, narrowly defined, genuinely hard problem: **coherence across long context gaps**. We have not yet succeeded; the v0.1.5 attempt did not measurably beat its base. The benchmark and methodology that made that finding honest are this repo's actual contribution.
 
-## What we are not
+## What this is not
 
-We are not training a chatbot. We are not training a coding assistant. We are not racing GPT-5 or Claude on general intelligence benchmarks.
+This is not a chatbot. This is not a coding assistant. This is not racing GPT-5 or Claude on general intelligence benchmarks.
 
-We are training the model that powers the agent that runs the company.
+This is the measurement infrastructure for the model that would eventually power the agent that runs the company.
 
 ## Patient fire
 
-Slow Lit Labs is built for endurance, not speed. While the field races to ship the next model in the next quarter, we are building agents that work at week 12. Small team. Long horizons. Patient fire.
+This work is built for endurance, not speed. While the field races to ship the next model in the next quarter, this is research on agents that work at week 12. Solo, currently. Long horizons. Patient fire.
 
-— Slow Lit Labs
+— Hugo Nogueira
+
+> Long-term destination: a research lab focused on long-horizon agent reliability, currently working name *Slow Lit Labs*. The lab is not yet incorporated; this repo lives under my personal username until it is.

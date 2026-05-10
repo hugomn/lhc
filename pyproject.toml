@@ -1,12 +1,12 @@
 [project]
-name = "ember"
-version = "0.1.0.dev0"
-description = "A foundation model for agents that live."
+name = "lhc"
+version = "0.2.0"
+description = "LHC — long-horizon coherence benchmark for 8B-class agent models."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-authors = [{ name = "Slow Lit Labs" }]
-keywords = ["llm", "agents", "fine-tuning", "evals"]
+authors = [{ name = "Hugo Nogueira", email = "hugomn@gmail.com" }]
+keywords = ["llm", "agents", "long-horizon-coherence", "benchmark", "fine-tuning", "evals"]
 
 dependencies = [
     "openai>=1.50.0",
@@ -41,8 +41,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://slowlitlabs.co"
-Repository = "https://github.com/slowlitlabs/ember"
+Homepage = "https://github.com/hugomn/lhc"
+Repository = "https://github.com/hugomn/lhc"
+Issues = "https://github.com/hugomn/lhc/issues"
 
 [build-system]
 requires = ["hatchling"]

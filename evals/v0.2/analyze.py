@@ -636,7 +636,7 @@ def apply_decision_matrix(gates: list[GateResult]) -> tuple[str, str]:
             "Ember beats base, NOT worse than Ministral (G1–G4 pass AND G5–G8 fail)",
             "VALIDATE on held-out product tasks (≥ 8 real agent workflows; see "
             "OQ-01 in journal). If product tasks agree, publish as "
-            "slowlitlabs/ember-v0.1 with a model card that states the LHC v0.2 "
+            "hugonogueira/ember-v0.1 with a model card that states the LHC v0.2 "
             "numbers, the published methodology, and the held-out product results. "
             "Do not publish before product validation.",
         )

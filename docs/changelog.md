@@ -65,7 +65,7 @@ All notable changes to Ember and LHC are documented here. Format: keep a record 
 
 - ~2,000 LHC-shaped synthetic post-training examples, generated and filtered via Sonnet 4.6.
 - LoRA fine-tune of Qwen2.5-7B-Instruct on Apple Silicon (MLX-LM). *(Actually trained on Qwen3-8B, not Qwen2.5-7B-Instruct — base model selection corrected during Stage 2.)*
-- Released as `slowlitlabs/ember-v0.1` on Hugging Face. *(Not released — see retirement decision above.)*
+- Released as `hugonogueira/ember-v0.1` on Hugging Face. *(Not released — see retirement decision above.)*
 - Servable locally via `mlx_lm.server` exposing OpenAI-compatible `/v1/chat/completions`. *(Built and tested locally; never published.)*
 - Target: meta-awareness ≥ 0.70, correctness ≥ 0.95 on LHC v0.1. *(Hit on the contaminated LHC v0.1; missed on the clean LHC v0.2 — see F-05.)*
 
@@ -80,4 +80,5 @@ Every release ships with: weights on Hugging Face, an LHC scorecard tied to a sp
 
 ## Renames
 
+- 2026-05-10 — `slowlitlabs/ember` → **`hugonogueira/lhc`** on GitHub. The repo's substance shifted from "training pipeline that produced Ember" to "long-horizon coherence benchmark plus the honest training record" — the v0.2 sweep made clear that the benchmark + methodology + the model that didn't ship is the contribution, not a model release. Repo lives under the personal username for now; will move back to a Slow Lit Labs org once incorporated. The HuggingFace org for any model artifacts also moves from `slowlitlabs/*` to `hugonogueira/*`.
 - 2026-05-08 — Cinder Labs renamed to **Slow Lit Labs**. GitHub org migrated from `cinderlabsai` to `slowlitlabs`. The Ember model name is unchanged. Brand thesis: *patient fire*.
