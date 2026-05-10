@@ -18,6 +18,8 @@ Every team that has run an agent in production for more than a week has hit at l
 
 LHC is the first eval suite designed specifically to expose these failures in a reproducible, model-agnostic way.
 
+> **Note (2026-05-09):** the sections below describe LHC v0.1. The benchmark has been superseded by **LHC v0.2** (24 decontaminated tasks, gap-mode ablation, audit-validated). The format, rubric, and harness shape carry forward unchanged. For the current authoritative methodology see [`evals/v0.2/AUTHORING.md`](../evals/v0.2/AUTHORING.md), [`evals/v0.2/DECISION.md`](../evals/v0.2/DECISION.md), and [`results.md`](results.md). Why v0.1 was retired: see the [external review journal entry](journal/2026-05-08-external-review-and-decontamination.md). LHC v0.1 task design is preserved below as the historical record.
+
 ## v0.1 task structure — 12 tasks
 
 LHC v0.1 ships with **12 tasks**, organized as 3 categories × 4 difficulty tiers:

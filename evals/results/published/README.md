@@ -8,17 +8,25 @@ Other files under `evals/results/` (run logs, exploratory scorecards, debugging 
 
 ```
 published/
-└── v0.1/                              # tied to LHC v0.1
-    ├── k2.6-sonnet-judge-1.json       # K2.6 target, Sonnet judge, trial 1
-    ├── k2.6-sonnet-judge-2.json
-    ├── k2.6-sonnet-judge-3.json
-    ├── sonnet-target-1.json           # Sonnet target, Sonnet judge, trial 1
-    ├── sonnet-target-2.json
-    ├── sonnet-target-3.json
-    ├── deepseek-target-1.json         # DeepSeek V4 Pro target, Sonnet judge, trial 1
-    ├── deepseek-target-2.json
-    └── deepseek-target-3.json
+├── v0.1/                              # tied to LHC v0.1 (HISTORICAL — see caveat below)
+│   ├── k2.6-sonnet-judge-{1,2,3}.json   # K2.6 target, Sonnet judge
+│   ├── sonnet-target-{1,2,3}.json       # Sonnet target, Sonnet judge
+│   └── deepseek-target-{1,2,3}.json     # DeepSeek V4 Pro target, Sonnet judge
+├── v0.1.5/                            # Ember v0.1.5 sweep results (HISTORICAL — see caveat below)
+├── 8b-class-leaderboard/              # 8B-class comparison on LHC v0.1 (HISTORICAL — see caveat below)
+└── lhc-v0.2/                          # CURRENT canonical results (2026-05-09)
+    ├── README.md                          # detailed layout + how to reproduce
+    ├── sweep/                             # 4 models × 4 gap modes × 3 trials
+    ├── audit-{g9,g12,combined}.json       # audit results
+    ├── verdict-final.json                 # 13-gate analyzer output
+    └── deterministic-baseline.json        # 100-line parser baseline
 ```
+
+## Status
+
+> **The LHC v0.1 published results (v0.1/, v0.1.5/, 8b-class-leaderboard/) are historical, not authoritative.** An external review on 2026-05-08 identified that the LHC v0.1 task scenarios overlapped with Ember's training data via `based_on` derivative seeds, plus four other methodology issues (process-randomized gap content, tiny gap pool, train/eval gap mismatch, truncated scorecards). The LHC v0.2 sweep on 2026-05-09 confirmed that, on a clean benchmark, Ember v0.1.5 is *worse* than its base Qwen3-8B — meaning the v0.1 leaderboard claims for Ember were contamination artifacts.
+>
+> Use `lhc-v0.2/` for any current claim. The v0.1 results stay published as the historical record of *what we believed at each point*, not as an authoritative leaderboard. See [`docs/findings.md`](../../../docs/findings.md) for the full caveat and [`docs/journal/`](../../../docs/journal/) for the methodology arc.
 
 ## Promotion criteria
 

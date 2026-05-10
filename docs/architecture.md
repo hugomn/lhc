@@ -1,5 +1,7 @@
 # Architecture — how the LHC harness works
 
+> **Note (2026-05-09):** the harness shape described here is unchanged for LHC v0.2. Three additions in v0.2 worth flagging: (1) gap content is now stable across processes (sha256-seeded, not Python-`hash()`-seeded), (2) scorecards store full prompt + full gap + full response (not just 400-char excerpts), (3) per-task failures are fatal — partial scorecards are no longer written. See [`evals/v0.2/DECISION.md`](../evals/v0.2/DECISION.md) for the full v0.2 methodology and [`journal/2026-05-08-external-review-and-decontamination.md`](journal/2026-05-08-external-review-and-decontamination.md) for why each change was made.
+
 A single LHC run takes a model, a task, a gap size, and a judge. It produces one row in the scorecard. This doc walks through what happens between input and output, end to end.
 
 ## The five-step flow

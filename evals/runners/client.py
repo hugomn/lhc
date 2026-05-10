@@ -20,6 +20,7 @@ never sees them — keeps grading focused on the actual answer.
 from __future__ import annotations
 
 import re
+import time
 from dataclasses import dataclass
 
 from openai import OpenAI
@@ -61,25 +62,50 @@ class Client:
         Falls back to `reasoning_content` when `content` is empty so reasoning
         models that exhaust the token budget mid-thought still surface output
         to the grader. Strips <think> blocks from the content too.
+
+        Retries up to 2 times with linear backoff if the response shape is
+        malformed (no choices, None message). These are transient upstream
+        issues — we observed one mid-sweep where OpenRouter returned a
+        response object whose .choices was None during the v0.2 sweep. Real
+        errors (auth, model-not-found, hard rate limits) propagate as
+        exceptions and trip the runner's fail-fast.
         """
         if self._config.system_prompt_prefix:
             messages = self._inject_system_prefix(messages, self._config.system_prompt_prefix)
 
-        response = self._client.chat.completions.create(
-            model=self._config.model,
-            messages=messages,
-            tools=tools,
-            temperature=self._config.temperature,
-            max_tokens=self._config.max_tokens,
-        )
-        msg = response.choices[0].message
-        content = msg.content or ""
-        if not content:
-            # Reasoning models often expose this attribute; OpenAI SDK passes
-            # through unknown fields via __dict__ on the message.
-            content = getattr(msg, "reasoning_content", "") or ""
-
-        return _THINK_BLOCK_RE.sub("", content).strip()
+        last_err: Exception | None = None
+        for attempt in range(3):
+            response = self._client.chat.completions.create(
+                model=self._config.model,
+                messages=messages,
+                tools=tools,
+                temperature=self._config.temperature,
+                max_tokens=self._config.max_tokens,
+            )
+            try:
+                if not response or not getattr(response, "choices", None):
+                    raise RuntimeError(
+                        f"upstream returned no choices (attempt {attempt + 1}/3)"
+                    )
+                msg = response.choices[0].message
+                if msg is None:
+                    raise RuntimeError(
+                        f"upstream returned None message (attempt {attempt + 1}/3)"
+                    )
+                content = (msg.content or "").strip()
+                if not content:
+                    # Reasoning models often expose this attribute; OpenAI SDK passes
+                    # through unknown fields via __dict__ on the message.
+                    content = (getattr(msg, "reasoning_content", "") or "").strip()
+                return _THINK_BLOCK_RE.sub("", content).strip()
+            except (RuntimeError, AttributeError, TypeError, IndexError) as e:
+                last_err = e
+                if attempt < 2:
+                    time.sleep(1.5 * (attempt + 1))  # 1.5s, then 3s
+                    continue
+                raise
+        # Unreachable — the loop either returns or raises.
+        raise RuntimeError(f"unexpected: chat retry loop exited; last_err={last_err}")
 
     @staticmethod
     def _inject_system_prefix(

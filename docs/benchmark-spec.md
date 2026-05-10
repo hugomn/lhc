@@ -1,6 +1,8 @@
 # LHC Benchmark Spec — the formal task and rubric definition
 
-This is the contract a new task author or harness implementer relies on. It is the source of truth for what an LHC v0.1 task is, how it is graded, and what guarantees the runner makes.
+> **Note (2026-05-09):** this spec was written for LHC v0.1. The task format, rubric, and runner contract carry forward unchanged to LHC v0.2 — only the task set, gap-mode infrastructure, and scorecard schema have been extended. For LHC v0.2 specifics (gap modes, full-audit scorecards, contamination check) see [`evals/v0.2/AUTHORING.md`](../evals/v0.2/AUTHORING.md). For why v0.1 was retired as the canonical benchmark, see [`journal/2026-05-08-external-review-and-decontamination.md`](journal/2026-05-08-external-review-and-decontamination.md).
+
+This is the contract a new task author or harness implementer relies on. It is the source of truth for what an LHC task is, how it is graded, and what guarantees the runner makes.
 
 ## Task format
 

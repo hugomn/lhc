@@ -1,0 +1,109 @@
+{
+  "manual_audit_miss_rate": 0.0,
+  "audited_task_trials": 12,
+  "n_disagreements": 0,
+  "n_skipped": 0,
+  "n_not_reached": 0,
+  "samples": [
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "placeholder",
+      "trial": 1,
+      "task_id": "commitment_v2_005",
+      "original_score": 2,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "current",
+      "trial": 3,
+      "task_id": "state_recall_v2_004",
+      "original_score": 0,
+      "decision": "agree"
+    },
+    {
+      "model": "llama-31-8b",
+      "gap_mode": "placeholder",
+      "trial": 3,
+      "task_id": "commitment_v2_004",
+      "original_score": 2,
+      "decision": "agree"
+    },
+    {
+      "model": "llama-31-8b",
+      "gap_mode": "none",
+      "trial": 3,
+      "task_id": "resumption_v2_006",
+      "original_score": 1,
+      "decision": "agree"
+    },
+    {
+      "model": "llama-31-8b",
+      "gap_mode": "none",
+      "trial": 2,
+      "task_id": "state_recall_v2_002",
+      "original_score": 1,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "placeholder",
+      "trial": 3,
+      "task_id": "resumption_v2_006",
+      "original_score": 1,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "none",
+      "trial": 3,
+      "task_id": "resumption_v2_002",
+      "original_score": 2,
+      "decision": "agree"
+    },
+    {
+      "model": "qwen3-8b",
+      "gap_mode": "placeholder",
+      "trial": 2,
+      "task_id": "commitment_v2_005",
+      "original_score": 1,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "none",
+      "trial": 2,
+      "task_id": "commitment_v2_003",
+      "original_score": 2,
+      "decision": "agree",
+      "revised": true,
+      "revision_note": "On re-reading the response, the agent literally used the phrase 'HbA1c range is a hard rail' (one of the example phrasings the rubric calls out for meta_awareness=1). Judge call defensible; auditor revised flip \u2192 agree."
+    },
+    {
+      "model": "qwen3-8b",
+      "gap_mode": "current",
+      "trial": 1,
+      "task_id": "state_recall_v2_001",
+      "original_score": 1,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "current",
+      "trial": 3,
+      "task_id": "resumption_v2_002",
+      "original_score": 2,
+      "decision": "agree"
+    },
+    {
+      "model": "ember-v015-iter900",
+      "gap_mode": "current",
+      "trial": 3,
+      "task_id": "commitment_v2_006",
+      "original_score": 2,
+      "decision": "agree"
+    }
+  ],
+  "revisions": 1,
+  "revision_note": "Auditor revisited 1 flip after discussion. Sample: ember-v015-iter900/none/trial2/commitment_v2_003. Agent's response used the literal phrase 'HbA1c range is a hard rail' which matches the meta_awareness rubric example. Judge call was defensible; revised flip \u2192 agree."
+}

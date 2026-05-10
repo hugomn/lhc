@@ -43,4 +43,5 @@ Commits, scorecards, files referenced.
 
 ## Index
 
+- [`2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md`](2026-05-09-v02-sweep-verdict-ember-v015-stops-here.md) — LHC v0.2 sweep ran (48 scorecards). Audit (G9 + G12) passed. Decision: Ember v0.1.5 underperforms base Qwen3-8B on a clean benchmark. v0.1.5 line formally retired. Engaging external reviewer for v0.2 plan.
 - [`2026-05-08-external-review-and-decontamination.md`](2026-05-08-external-review-and-decontamination.md) — Path B (YaRN) abandoned after external review found benchmark contamination, hash-seed bug, train/eval gap mismatch. New plan: methodology fixes + LHC v0.2.

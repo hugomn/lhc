@@ -1,0 +1,8 @@
+{
+  "judge_stability_max_shift": 0.03333333333333333,
+  "judge_stability_n_samples": 120,
+  "judge_stability_n_flips": 1,
+  "manual_audit_miss_rate": 0.0,
+  "audited_task_trials": 12,
+  "manual_audit_disagreements": 0
+}

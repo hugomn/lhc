@@ -1,0 +1,321 @@
+{
+  "decision_row": "Ember not better than base (G1\u2013G4 fail)",
+  "action": "STOP the v0.1.5 line. Whatever Ember v0.1.5 is doing, it is not measurably improving on base Qwen3-8B in a clean comparison. Either retrain on a different recipe (more distractor-style data, different rank/modules) or pivot base. Do not publish v0.1.",
+  "gate_results": [
+    {
+      "name": "G1",
+      "description": "current overall: Ember \u2265 Qwen + 0.20",
+      "passed": false,
+      "detail": {
+        "ember_mean": 1.125,
+        "qwen_mean": 1.375,
+        "delta": -0.25,
+        "threshold": 0.2
+      }
+    },
+    {
+      "name": "G2",
+      "description": "current resumption: Ember \u2265 Qwen + 0.30",
+      "passed": false,
+      "detail": {
+        "ember_resumption_mean": 1.125,
+        "qwen_resumption_mean": 1.2083333333333333,
+        "delta": -0.08333333333333326,
+        "threshold": 0.3
+      }
+    },
+    {
+      "name": "G3",
+      "description": "neutral overall: Ember \u2265 Qwen + 0.10",
+      "passed": false,
+      "detail": {
+        "ember_mean": 1.2916666666666667,
+        "qwen_mean": 1.4583333333333333,
+        "delta": -0.16666666666666652,
+        "threshold": 0.1
+      }
+    },
+    {
+      "name": "G4",
+      "description": "paired-bootstrap 95% CI lower bound (current overall, Ember \u2212 Qwen) > 0.00",
+      "passed": false,
+      "detail": {
+        "delta_point_estimate": -0.25,
+        "ci_lower_95": -0.4583333333333333,
+        "ci_upper_95": -0.05555555555555556
+      }
+    },
+    {
+      "name": "G5",
+      "description": "current overall: Ministral \u2265 Ember + 0.20",
+      "passed": false,
+      "detail": {
+        "ministral_mean": 1.3194444444444444,
+        "ember_mean": 1.125,
+        "delta": 0.19444444444444442,
+        "threshold": 0.2
+      }
+    },
+    {
+      "name": "G6",
+      "description": "neutral overall: Ministral \u2265 Ember + 0.15",
+      "passed": false,
+      "detail": {
+        "ministral_mean": 1.3888888888888888,
+        "ember_mean": 1.2916666666666667,
+        "delta": 0.0972222222222221,
+        "threshold": 0.15
+      }
+    },
+    {
+      "name": "G7",
+      "description": "current resumption: Ministral \u2265 Ember + 0.30",
+      "passed": false,
+      "detail": {
+        "ministral_resumption_mean": 1.2083333333333333,
+        "ember_resumption_mean": 1.125,
+        "delta": 0.08333333333333326,
+        "threshold": 0.3
+      }
+    },
+    {
+      "name": "G8",
+      "description": "No gap mode shows Ember ahead of Ministral by \u2265 0.10",
+      "passed": true,
+      "detail": {
+        "ember_minus_ministral_per_mode": {
+          "neutral": -0.0972222222222221,
+          "current": -0.19444444444444442,
+          "none": 0.013888888888889062,
+          "placeholder": 0.01388888888888884
+        },
+        "max_ember_lead": 0.013888888888889062,
+        "threshold": 0.1
+      }
+    },
+    {
+      "name": "G9",
+      "description": "Judge stability: max overall shift on rejudge < 0.10",
+      "passed": true,
+      "detail": {
+        "max_overall_shift_under_rejudge": 0.03333333333333333,
+        "threshold": 0.1
+      }
+    },
+    {
+      "name": "G10",
+      "description": "No rank changes >2 positions across neutral vs current",
+      "passed": true,
+      "detail": {
+        "neutral_ranks": [
+          [
+            "qwen3-8b",
+            1.458
+          ],
+          [
+            "ministral-8b",
+            1.389
+          ],
+          [
+            "llama-31-8b",
+            1.361
+          ],
+          [
+            "ember-v015-iter900",
+            1.292
+          ]
+        ],
+        "current_ranks": [
+          [
+            "qwen3-8b",
+            1.375
+          ],
+          [
+            "ministral-8b",
+            1.319
+          ],
+          [
+            "llama-31-8b",
+            1.181
+          ],
+          [
+            "ember-v015-iter900",
+            1.125
+          ]
+        ],
+        "max_position_swap": 0
+      }
+    },
+    {
+      "name": "G11",
+      "description": "CI overlap: NOT both Ember/Qwen and Ember/Ministral CIs span \u00b10.15",
+      "passed": true,
+      "detail": {
+        "ember_qwen_ci": [
+          -0.4583333333333333,
+          -0.05555555555555556
+        ],
+        "ember_qwen_spans_pm15": false,
+        "ember_ministral_ci": [
+          -0.47222222222222227,
+          0.05555555555555558
+        ],
+        "ember_ministral_spans_pm15": false
+      }
+    },
+    {
+      "name": "G12",
+      "description": "Manual audit miss-rate < 5%",
+      "passed": true,
+      "detail": {
+        "miss_rate": 0.0,
+        "threshold": 0.05,
+        "audited_count": 12
+      }
+    },
+    {
+      "name": "G13",
+      "description": "SS(model) > SS(gap_mode) \u2014 capability dominates over distractor sensitivity",
+      "passed": true,
+      "detail": {
+        "ss_model": 3.284722222222215,
+        "ss_gap": 2.923611111111109,
+        "ss_total": 440.00000000000006,
+        "frac_model": 0.007465277777777761,
+        "frac_gap": 0.006644570707070701
+      }
+    }
+  ],
+  "summary_stats": {
+    "per_cell": {
+      "ember-v015-iter900__current": {
+        "overall_mean": 1.125,
+        "by_category": {
+          "state_recall": 0.875,
+          "commitment": 1.375,
+          "resumption": 1.125
+        }
+      },
+      "ember-v015-iter900__neutral": {
+        "overall_mean": 1.292,
+        "by_category": {
+          "state_recall": 1.25,
+          "commitment": 1.5,
+          "resumption": 1.125
+        }
+      },
+      "ember-v015-iter900__none": {
+        "overall_mean": 1.347,
+        "by_category": {
+          "state_recall": 1.042,
+          "commitment": 1.75,
+          "resumption": 1.25
+        }
+      },
+      "ember-v015-iter900__placeholder": {
+        "overall_mean": 1.375,
+        "by_category": {
+          "state_recall": 1.0,
+          "commitment": 1.875,
+          "resumption": 1.25
+        }
+      },
+      "llama-31-8b__current": {
+        "overall_mean": 1.181,
+        "by_category": {
+          "state_recall": 1.125,
+          "commitment": 1.417,
+          "resumption": 1.0
+        }
+      },
+      "llama-31-8b__neutral": {
+        "overall_mean": 1.361,
+        "by_category": {
+          "state_recall": 1.333,
+          "commitment": 1.583,
+          "resumption": 1.167
+        }
+      },
+      "llama-31-8b__none": {
+        "overall_mean": 1.292,
+        "by_category": {
+          "state_recall": 1.083,
+          "commitment": 1.625,
+          "resumption": 1.167
+        }
+      },
+      "llama-31-8b__placeholder": {
+        "overall_mean": 1.306,
+        "by_category": {
+          "state_recall": 1.167,
+          "commitment": 1.5,
+          "resumption": 1.25
+        }
+      },
+      "ministral-8b__current": {
+        "overall_mean": 1.319,
+        "by_category": {
+          "state_recall": 1.083,
+          "commitment": 1.667,
+          "resumption": 1.208
+        }
+      },
+      "ministral-8b__neutral": {
+        "overall_mean": 1.389,
+        "by_category": {
+          "state_recall": 1.167,
+          "commitment": 1.792,
+          "resumption": 1.208
+        }
+      },
+      "ministral-8b__none": {
+        "overall_mean": 1.333,
+        "by_category": {
+          "state_recall": 0.958,
+          "commitment": 1.708,
+          "resumption": 1.333
+        }
+      },
+      "ministral-8b__placeholder": {
+        "overall_mean": 1.361,
+        "by_category": {
+          "state_recall": 1.042,
+          "commitment": 1.667,
+          "resumption": 1.375
+        }
+      },
+      "qwen3-8b__current": {
+        "overall_mean": 1.375,
+        "by_category": {
+          "state_recall": 1.125,
+          "commitment": 1.792,
+          "resumption": 1.208
+        }
+      },
+      "qwen3-8b__neutral": {
+        "overall_mean": 1.458,
+        "by_category": {
+          "state_recall": 1.333,
+          "commitment": 1.792,
+          "resumption": 1.25
+        }
+      },
+      "qwen3-8b__none": {
+        "overall_mean": 1.375,
+        "by_category": {
+          "state_recall": 1.292,
+          "commitment": 1.667,
+          "resumption": 1.167
+        }
+      },
+      "qwen3-8b__placeholder": {
+        "overall_mean": 1.444,
+        "by_category": {
+          "state_recall": 1.333,
+          "commitment": 1.708,
+          "resumption": 1.292
+        }
+      }
+    }
+  }
+}
